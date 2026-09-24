@@ -178,6 +178,12 @@
     font-family: var(--font-display), var(--font-sans), sans-serif;
   }
 
+  /* Ícones (lucide): traço mais fino que o padrão 2 para acompanhar Inter e
+     Jost; o peso visual fica próximo ao do texto de 14 px. */
+  svg.lucide {
+    stroke-width: 1.75;
+  }
+
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;

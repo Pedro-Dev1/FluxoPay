@@ -16,9 +16,9 @@ const buttonVariants = cva(
         default: 'bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/85',
         outline:
-          'border border-border-strong bg-card text-foreground hover:bg-surface hover:border-text-tertiary/40 active:bg-muted',
+          'border border-border-strong bg-card text-foreground hover:bg-surface hover:border-text-tertiary/40 active:bg-muted [&_svg]:text-text-secondary',
         secondary:
-          'border border-border-strong bg-card text-foreground hover:bg-surface hover:border-text-tertiary/40 active:bg-muted',
+          'border border-border-strong bg-card text-foreground hover:bg-surface hover:border-text-tertiary/40 active:bg-muted [&_svg]:text-text-secondary',
         ghost: 'text-text-secondary hover:bg-surface hover:text-foreground active:bg-muted',
         link: 'h-auto px-0 text-primary underline-offset-4 hover:underline',
       },

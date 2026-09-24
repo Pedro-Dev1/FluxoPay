@@ -57,7 +57,10 @@ export default async function RootLayout({
     pathname === "/termos" ||
     pathname === "/privacidade" ||
     pathname === "/esqueci-senha" ||
-    pathname.startsWith("/redefinir-senha/")
+    pathname.startsWith("/redefinir-senha/") ||
+    // Site institucional: moldura própria, sem sidebar do sistema
+    (!session && pathname === "/") ||
+    ["/site", "/fluxopay", "/seguranca", "/empresa"].some((r) => pathname === r || pathname.startsWith(r + "/"))
 
   return (
     <html

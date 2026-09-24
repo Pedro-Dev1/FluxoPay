@@ -1,15 +1,16 @@
 "use client"
 
-import { Fragment, useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect } from "react"
 import type { PedidoPagamento } from "@/types/pedido"
-import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
+import { PedidoDrawer } from "@/components/pedido-drawer"
 import { Section } from "@/components/ui/section"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useMaskedCurrency } from "@/components/currency-display"
 import { SimplePager } from "@/components/ui/simple-pager"
-import { Download, ChevronDown, ChevronUp } from "lucide-react"
+import { Download, ChevronDown, ChevronRight, ChevronUp } from "lucide-react"
 
 interface DashboardAnalyticsProps {
   // Já filtrado por quem chama (DashboardClient) — este componente só ordena, pagina e exibe.
@@ -17,23 +18,16 @@ interface DashboardAnalyticsProps {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  pendente_gerente: "Pend. Gerente",
-  pendente_financeiro: "Pend. Financeiro",
+  pendente_gerente: "Aguardando gerente",
+  pendente_financeiro: "Aguardando financeiro",
   aprovado: "Aprovado",
   recusado: "Recusado",
-  correcao: "Correção",
+  correcao: "Correção solicitada",
   pago: "Pago",
-  nota_recebida: "Nota Recebida",
-}
-
-const STATUS_COLORS: Record<string, string> = {
-  pendente_gerente: "bg-warning-subtle text-warning border-warning/30",
-  pendente_financeiro: "bg-accent text-primary border-primary/30",
-  aprovado: "bg-success-subtle text-success border-success/30",
-  recusado: "bg-danger-subtle text-danger border-danger/30",
-  correcao: "bg-warning-subtle text-warning border-warning/30",
-  pago: "bg-success-subtle text-success border-success/30",
-  nota_recebida: "bg-accent text-primary border-primary/30",
+  nota_recebida: "Nota recebida",
+  aguardando_prorrogacao: "Prorrogação solicitada",
+  prorrogacao_negada: "Prorrogação negada",
+  expirado: "Expirado",
 }
 
 function formatDateBR(dateString: string) {
@@ -46,7 +40,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
 
   const [sortField, setSortField] = useState<string>("created_at")
   const [sortAsc, setSortAsc] = useState(false)
-  const [expandedRow, setExpandedRow] = useState<string | null>(null)
+  const [selecionado, setSelecionado] = useState<PedidoPagamento | null>(null)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(25)
 
@@ -254,149 +248,44 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {pagedPedidos.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={7} className="p-0">
-                        <EmptyState
-                          compact
-                          title="Nenhum pedido com esses filtros"
-                          description="Amplie o período ou limpe os filtros acima para ver mais pedidos."
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    pagedPedidos.map((p) => {
-                      const colab = p.colaborador || p.colaboradores
-                      const nome = colab?.nome_completo || "N/A"
-                      const isExpanded = expandedRow === p.id
-                      const tipo = p.tipo_pedido === "reembolso_km" ? "Reembolso de KM" : "Completo"
-
-                      return (
-                        <Fragment key={p.id}>
-                          <TableRow
-                            className="cursor-pointer"
-                            onClick={() => setExpandedRow(isExpanded ? null : p.id)}
-                          >
-                            <TableCell className="type-audit whitespace-nowrap text-text-secondary">{formatDateBR(p.created_at)}</TableCell>
-                            <TableCell className="text-sm font-medium">{nome}</TableCell>
-                            <TableCell className="hidden lg:table-cell text-xs text-muted-foreground">
-                              {(colab as any)?.equipe?.nome || "-"}
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant="outline" className="text-xs font-normal">
-                                {tipo}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <Badge className={`text-xs font-normal ${STATUS_COLORS[p.status] || ""}`}>
-                                {STATUS_LABELS[p.status] || p.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-right text-sm font-medium tabular-nums whitespace-nowrap">
-                              {formatValue(p.valor_total)}
-                            </TableCell>
-                            <TableCell>
-                              {isExpanded ? (
-                                <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                              )}
-                            </TableCell>
-                          </TableRow>
-                          {isExpanded && (
-                            <TableRow key={`${p.id}-detail`}>
-                              <TableCell colSpan={7} className="bg-surface px-6 py-4">
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
-                                  {p.tipo_pedido !== "reembolso_km" && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Salário base</span>
-                                      <span className="font-medium">
-                                        {formatValue(p.salario_base ?? colab?.salario ?? 0)}
-                                      </span>
-                                    </div>
-                                  )}
-                                  {((p.horas_extras_50 || 0) > 0 || (p.horas_extras_100 || 0) > 0) && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Horas extras</span>
-                                      <span className="font-medium">
-                                        {p.horas_extras_50 || 0}h (50%) + {p.horas_extras_100 || 0}h (100%)
-                                      </span>
-                                      {p.motivo_horas_extras && (
-                                        <span className="text-xs text-muted-foreground block">{p.motivo_horas_extras}</span>
-                                      )}
-                                    </div>
-                                  )}
-                                  {(p.valor_km || 0) > 0 && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Reembolso de KM</span>
-                                      <span className="font-medium">{formatValue(p.valor_km)}</span>
-                                    </div>
-                                  )}
-                                  {(p.valor_plantao || 0) > 0 && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Plantão</span>
-                                      <span className="font-medium">{formatValue(p.valor_plantao)}</span>
-                                      {p.motivo_plantao && (
-                                        <span className="text-xs text-muted-foreground block">{p.motivo_plantao}</span>
-                                      )}
-                                    </div>
-                                  )}
-                                  {(p.conducao || 0) > 0 && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Condução</span>
-                                      <span className="font-medium">{formatValue(p.conducao)}</span>
-                                    </div>
-                                  )}
-                                  {(p.comissao || 0) > 0 && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Comissão</span>
-                                      <span className="font-medium">{formatValue(p.comissao || 0)}</span>
-                                      {p.motivo_comissao && (
-                                        <span className="text-xs text-muted-foreground block">{p.motivo_comissao}</span>
-                                      )}
-                                    </div>
-                                  )}
-                                  {(p.valor_desconto || 0) > 0 && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Desconto</span>
-                                      <span className="font-medium text-danger">{formatValue(p.valor_desconto, true)}</span>
-                                      {p.motivo_desconto && (
-                                        <span className="text-xs text-muted-foreground block">{p.motivo_desconto}</span>
-                                      )}
-                                    </div>
-                                  )}
-                                  {p.data_previsao_pagamento && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Previsão de pagamento</span>
-                                      <span className="font-medium">{formatDateBR(p.data_previsao_pagamento)}</span>
-                                    </div>
-                                  )}
-                                  {(p.colaborador as any)?.equipe?.nome && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Equipe</span>
-                                      <span className="font-medium">{(p.colaborador as any).equipe.nome}</span>
-                                    </div>
-                                  )}
-                                  {(p.colaborador as any)?.centro_custo && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Centro de custo</span>
-                                      <span className="font-medium">{(p.colaborador as any).centro_custo.numero} - {(p.colaborador as any).centro_custo.nome}</span>
-                                    </div>
-                                  )}
-                                  {p.criado_por && (
-                                    <div>
-                                      <span className="type-eyebrow block text-text-tertiary">Criado por</span>
-                                      <span className="font-medium">{p.criado_por.nome_completo}</span>
-                                    </div>
-                                  )}
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          )}
-                        </Fragment>
-                      )
-                    })
-                  )}
+                  {pagedPedidos.map((p) => {
+                    const colab = p.colaborador || p.colaboradores
+                    return (
+                      <TableRow
+                        key={p.id}
+                        className="group cursor-pointer"
+                        onClick={() => setSelecionado(p)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            setSelecionado(p)
+                          }
+                        }}
+                        tabIndex={0}
+                        aria-label={`Ver detalhes do pedido de ${colab?.nome_completo ?? "colaborador"}`}
+                      >
+                        <TableCell className="type-audit whitespace-nowrap text-text-secondary">{formatDateBR(p.created_at)}</TableCell>
+                        <TableCell className="max-w-[16rem] truncate text-sm font-medium text-foreground">
+                          {colab?.nome_completo || "Não identificado"}
+                        </TableCell>
+                        <TableCell className="hidden max-w-[10rem] truncate text-sm text-text-secondary lg:table-cell">
+                          {(colab as any)?.equipe?.nome || "Sem equipe"}
+                        </TableCell>
+                        <TableCell className="text-sm text-text-secondary">
+                          {p.tipo_pedido === "reembolso_km" ? "Reembolso de KM" : "Completo"}
+                        </TableCell>
+                        <TableCell>
+                          <StatusBadge status={p.status} />
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap text-right text-sm font-medium tabular-nums text-foreground">
+                          {formatValue(p.valor_total)}
+                        </TableCell>
+                        <TableCell>
+                          <ChevronRight className="h-4 w-4 text-text-tertiary transition-colors group-hover:text-foreground" />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             </div>
@@ -411,6 +300,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
           />
           </>
           )}
+        <PedidoDrawer pedido={selecionado} onOpenChange={(aberto) => !aberto && setSelecionado(null)} />
       </Section>
     </div>
   )

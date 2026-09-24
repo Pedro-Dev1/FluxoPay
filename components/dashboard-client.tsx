@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Filter, Search, X } from "lucide-react"
+import { ListFilter, Search, X } from "lucide-react"
 import { DashboardResumo, type AcaoAgoraItem } from "@/components/dashboard-resumo"
 import { DashboardAnalytics } from "@/components/dashboard-analytics"
 
@@ -159,7 +159,7 @@ export function DashboardClient({
             aria-expanded={showFilters}
             aria-controls="filtros-dashboard"
           >
-            <Filter />
+            <ListFilter />
             Filtros
             {filtrosAtivos && <span className="type-audit text-text-tertiary">{filteredPedidos.length} de {pedidos.length}</span>}
           </Button>

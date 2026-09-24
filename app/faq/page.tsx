@@ -20,7 +20,7 @@ const faqCategories = [
       {
         question: "Como recupero minha senha?",
         answer:
-          "Clique em 'Esqueci minha senha' na tela de login e informe seu e-mail cadastrado. Você receberá um link de redefinição válido por 30 minutos. Se não chegar, contate contato@fluxteme.com.br com seu nome e empresa.",
+          "Clique em 'Esqueci minha senha' na tela de login e informe seu e-mail cadastrado. Você receberá um link de redefinição válido por 1 hora. Se não chegar, contate contato@fluxteme.com.br com seu nome e empresa.",
       },
       {
         question: "Por que minha conta foi bloqueada?",

@@ -8,6 +8,7 @@ import { calcularComposicaoPedido, calcularComposicaoReembolsoKm } from "@/lib/d
 import { enviarEmailNotaFiscalPendente, enviarEmailPedidoAguardandoAprovacao } from "@/lib/email"
 import { requireAuth, requireRole, scopeToTenant, type AuthContext } from "@/lib/auth-utils"
 import { criarNotificacaoTransacional, resolverAprovadores } from "@/lib/notificacoes"
+import { exigirSubordinado, idsVisiveis } from "@/lib/hierarquia"
 
 export async function criarPedido(data: NovoPedido) {
   const ctx = await requireRole(["Supervisor", "Adm", "Gerente", "Financeiro"])
@@ -21,6 +22,8 @@ export async function criarPedido(data: NovoPedido) {
   if (!colaboradorAlvo) {
     throw new Error("Colaborador não encontrado")
   }
+
+  await exigirSubordinado(supabase, ctx, data.colaborador_id, { incluirProprio: true })
 
   if (data.tipo_pedido !== "reembolso_km" && data.conducao > 0) {
     const hoje = new Date()
@@ -176,6 +179,19 @@ export async function acaoGerente(data: AcaoPedido) {
   const ctx = await requireRole(["Gerente", "Adm"])
   const supabase = await getSupabaseServerClient()
 
+  const { data: pedidoAtual } = await scopeToTenant(
+    supabase.from("pedidos_pagamento").select("colaborador_id").eq("id", data.pedido_id),
+    ctx,
+  ).maybeSingle()
+
+  if (!pedidoAtual) {
+    throw new Error("Pedido não encontrado")
+  }
+
+  // Gerente só decide pedido de quem está abaixo dele — nunca de outro
+  // gerente, nem o próprio.
+  await exigirSubordinado(supabase, ctx, pedidoAtual.colaborador_id, { incluirProprio: false })
+
   const updates: any = {
     observacao_gerente: data.observacao,
     data_aprovacao_gerente: new Date().toISOString(),
@@ -329,7 +345,10 @@ export async function listarPedidos() {
   const ctx = await requireAuth()
   const supabase = await getSupabaseServerClient()
 
-  const { data, error } = await scopeToTenant(
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+  if (visiveis?.length === 0) return []
+
+  let query = scopeToTenant(
     supabase.from("pedidos_pagamento").select(
       `
       *,
@@ -345,7 +364,13 @@ export async function listarPedidos() {
     `,
     ),
     ctx,
-  ).order("created_at", { ascending: false })
+  )
+
+  if (visiveis) {
+    query = query.in("colaborador_id", visiveis)
+  }
+
+  const { data, error } = await query.order("created_at", { ascending: false })
 
   if (error) {
     console.error("[v0] Erro ao listar pedidos:", error)
@@ -358,6 +383,9 @@ export async function listarPedidos() {
 export async function listarPedidosComFiltros(filtros?: { dataInicio?: string; dataFim?: string }) {
   const ctx = await requireAuth()
   const supabase = await getSupabaseServerClient()
+
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+  if (visiveis?.length === 0) return []
 
   let query = scopeToTenant(supabase.from("pedidos_pagamento").select(
     `
@@ -386,6 +414,10 @@ export async function listarPedidosComFiltros(filtros?: { dataInicio?: string; d
     ),
     ctx,
   )
+
+  if (visiveis) {
+    query = query.in("colaborador_id", visiveis)
+  }
 
   // Aplicar filtros de data se fornecidos
   if (filtros?.dataInicio) {
@@ -428,45 +460,10 @@ export async function listarPedidosPendentes() {
 
   console.log("[v0] Filtrando por status:", statusFiltro)
 
-  let colaboradorIds: string[] = []
-
-  if (ctx.tipoAcesso === "Gerente") {
-    // Buscar equipes do gerente
-    const { data: gerenteEquipes, error: gerenteEquipesError } = await supabase
-      .from("gerentes_equipes")
-      .select("equipe_id")
-      .eq("gerente_id", ctx.colaboradorId)
-
-    if (gerenteEquipesError) {
-      console.error("[v0] Erro ao buscar equipes do gerente:", gerenteEquipesError)
-      throw new Error("Erro ao buscar equipes do gerente")
-    }
-
-    const equipeIds = gerenteEquipes.map((e) => e.equipe_id)
-
-    if (equipeIds.length === 0) {
-      return []
-    }
-
-    // Buscar colaboradores das equipes do gerente
-    const { data: colaboradores, error: colaboradoresError } = await supabase
-      .from("colaboradores")
-      .select("id")
-      .in("equipe_id", equipeIds)
-
-    if (colaboradoresError) {
-      console.error("[v0] Erro ao buscar colaboradores:", colaboradoresError)
-      throw new Error("Erro ao buscar colaboradores")
-    }
-
-    colaboradorIds = colaboradores.map((c) => c.id)
-
-    if (colaboradorIds.length === 0) {
-      return []
-    }
-
-    console.log("[v0] Gerente filtrando por colaboradores das suas equipes:", colaboradorIds.length)
-  }
+  // Na fila de aprovação ninguém vê o próprio pedido nem o de um par do
+  // mesmo cargo — só o de quem está abaixo.
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: false })
+  if (visiveis?.length === 0) return []
 
   let query = scopeToTenant(
     supabase
@@ -491,8 +488,8 @@ export async function listarPedidosPendentes() {
     ctx,
   )
 
-  if (ctx.tipoAcesso === "Gerente" && colaboradorIds.length > 0) {
-    query = query.in("colaborador_id", colaboradorIds)
+  if (visiveis) {
+    query = query.in("colaborador_id", visiveis)
   }
 
   query = query.order("created_at", { ascending: false })
@@ -578,124 +575,11 @@ export async function listarPedidosPorSupervisor(supervisorId: string) {
 
   const supabase = await getSupabaseServerClient()
 
-  // Buscar equipes onde o usuário é supervisor
-  const { data: equipes, error: equipesError } = await supabase
-    .from("equipes")
-    .select("id")
-    .eq("supervisor_id", supervisorId)
+  // Colaboradores das equipes dele + os próprios pedidos; outro supervisor
+  // da mesma equipe fica de fora.
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+  if (visiveis?.length === 0) return []
 
-  if (equipesError) {
-    console.error("[v0] Erro ao buscar equipes do supervisor:", equipesError)
-    throw new Error("Erro ao buscar equipes")
-  }
-
-  const equipeIds = equipes.map((e) => e.id)
-
-  if (equipeIds.length === 0) {
-    return []
-  }
-
-  const { data: colaboradores, error: colaboradoresError } = await supabase
-    .from("colaboradores")
-    .select("id")
-    .in("equipe_id", equipeIds)
-    .in("tipo_acesso", ["Colaborador", "Supervisor"])
-
-  if (colaboradoresError) {
-    console.error("[v0] Erro ao buscar colaboradores:", colaboradoresError)
-    throw new Error("Erro ao buscar colaboradores")
-  }
-
-  const colaboradorIds = colaboradores.map((c) => c.id)
-
-  if (colaboradorIds.length === 0) {
-    return []
-  }
-
-  // Buscar pedidos dos colaboradores da equipe
-  const { data, error } = await scopeToTenant(
-    supabase
-      .from("pedidos_pagamento")
-      .select(
-        `
-      *,
-      colaborador:colaboradores!colaborador_id (
-        nome_completo,
-        salario,
-        tipo_acesso,
-        equipe_id,
-        centro_custo_id,
-        equipe:equipes!colaboradores_equipe_id_fkey (
-          id,
-          nome
-        ),
-        centro_custo:centros_custo!colaboradores_centro_custo_id_fkey (
-          id,
-          numero,
-          nome
-        )
-      ),
-      criado_por:colaboradores!criado_por_colaborador_id (
-        nome_completo,
-        tipo_acesso
-      )
-    `,
-      )
-      .in("colaborador_id", colaboradorIds),
-    ctx,
-  ).order("created_at", { ascending: false })
-
-  if (error) {
-    console.error("[v0] Erro ao listar pedidos do supervisor:", error)
-    throw new Error("Erro ao listar pedidos")
-  }
-
-  return data
-}
-
-export async function listarPedidosPorGerente(gerenteId: string, filtros?: { dataInicio?: string; dataFim?: string }) {
-  const ctx = await requireAuth()
-
-  if (gerenteId !== ctx.colaboradorId && !ctx.isSuperAdmin) {
-    throw new Error("Sem permissão")
-  }
-
-  const supabase = await getSupabaseServerClient()
-
-  // Buscar equipes onde o gerente está vinculado
-  const { data: gerenteEquipes, error: gerenteEquipesError } = await supabase
-    .from("gerentes_equipes")
-    .select("equipe_id")
-    .eq("gerente_id", gerenteId)
-
-  if (gerenteEquipesError) {
-    console.error("[v0] Erro ao buscar equipes do gerente:", gerenteEquipesError)
-    throw new Error("Erro ao buscar equipes do gerente")
-  }
-
-  const equipeIds = gerenteEquipes.map((e) => e.equipe_id)
-
-  if (equipeIds.length === 0) {
-    return []
-  }
-
-  const { data: colaboradores, error: colaboradoresError } = await supabase
-    .from("colaboradores")
-    .select("id")
-    .in("equipe_id", equipeIds)
-
-  if (colaboradoresError) {
-    console.error("[v0] Erro ao buscar colaboradores:", colaboradoresError)
-    throw new Error("Erro ao buscar colaboradores")
-  }
-
-  const colaboradorIds = colaboradores.map((c) => c.id)
-
-  if (colaboradorIds.length === 0) {
-    return []
-  }
-
-  // Buscar pedidos dos colaboradores das equipes
   let query = scopeToTenant(
     supabase
       .from("pedidos_pagamento")
@@ -723,10 +607,72 @@ export async function listarPedidosPorGerente(gerenteId: string, filtros?: { dat
         tipo_acesso
       )
     `,
-      )
-      .in("colaborador_id", colaboradorIds),
+      ),
     ctx,
   )
+
+  if (visiveis) {
+    query = query.in("colaborador_id", visiveis)
+  }
+
+  const { data, error } = await query.order("created_at", { ascending: false })
+
+  if (error) {
+    console.error("[v0] Erro ao listar pedidos do supervisor:", error)
+    throw new Error("Erro ao listar pedidos")
+  }
+
+  return data
+}
+
+export async function listarPedidosPorGerente(gerenteId: string, filtros?: { dataInicio?: string; dataFim?: string }) {
+  const ctx = await requireAuth()
+
+  if (gerenteId !== ctx.colaboradorId && !ctx.isSuperAdmin) {
+    throw new Error("Sem permissão")
+  }
+
+  const supabase = await getSupabaseServerClient()
+
+  // Supervisores e colaboradores das equipes dele + os próprios pedidos;
+  // outro gerente vinculado à mesma equipe fica de fora.
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+  if (visiveis?.length === 0) return []
+
+  let query = scopeToTenant(
+    supabase
+      .from("pedidos_pagamento")
+      .select(
+        `
+      *,
+      colaborador:colaboradores!colaborador_id (
+        nome_completo,
+        salario,
+        tipo_acesso,
+        equipe_id,
+        centro_custo_id,
+        equipe:equipes!colaboradores_equipe_id_fkey (
+          id,
+          nome
+        ),
+        centro_custo:centros_custo!colaboradores_centro_custo_id_fkey (
+          id,
+          numero,
+          nome
+        )
+      ),
+      criado_por:colaboradores!criado_por_colaborador_id (
+        nome_completo,
+        tipo_acesso
+      )
+    `,
+      ),
+    ctx,
+  )
+
+  if (visiveis) {
+    query = query.in("colaborador_id", visiveis)
+  }
 
   // Aplicar filtros de data se fornecidos
   if (filtros?.dataInicio) {
@@ -783,6 +729,8 @@ export async function corrigirPedido(
   if (ctx.tipoAcesso === "Gerente" && pedidoAtual.criado_por_colaborador_id !== ctx.colaboradorId) {
     throw new Error("Você só pode corrigir pedidos que você criou")
   }
+
+  await exigirSubordinado(supabase, ctx, pedidoAtual.colaborador_id, { incluirProprio: true })
 
   // Usa o salário congelado no momento da criação do pedido (salario_base), nunca o
   // salário atual do colaborador — senão um reajuste salarial posterior recalcula
@@ -1056,76 +1004,12 @@ export async function listarPedidosComNotaPendente() {
     ctx,
   )
 
-  if (ctx.tipoAcesso === "Supervisor") {
-    const { data: equipes, error: equipesError } = await supabase
-      .from("equipes")
-      .select("id")
-      .eq("supervisor_id", ctx.colaboradorId)
-
-    if (equipesError) {
-      console.error("[v0] Erro ao buscar equipes do supervisor:", equipesError)
-      return []
-    }
-
-    const equipeIds = equipes.map((e) => e.id)
-
-    if (equipeIds.length === 0) {
-      return []
-    }
-
-    const { data: colaboradores, error: colaboradoresError } = await supabase
-      .from("colaboradores")
-      .select("id")
-      .in("equipe_id", equipeIds)
-
-    if (colaboradoresError) {
-      console.error("[v0] Erro ao buscar colaboradores:", colaboradoresError)
-      return []
-    }
-
-    const colaboradorIds = colaboradores.map((c) => c.id)
-
-    if (colaboradorIds.length === 0) {
-      return []
-    }
-
-    query = query.in("colaborador_id", colaboradorIds)
-  } else if (ctx.tipoAcesso === "Gerente") {
-    const { data: gerenteEquipes, error: gerenteEquipesError } = await supabase
-      .from("gerentes_equipes")
-      .select("equipe_id")
-      .eq("gerente_id", ctx.colaboradorId)
-
-    if (gerenteEquipesError) {
-      console.error("[v0] Erro ao buscar equipes do gerente:", gerenteEquipesError)
-      return []
-    }
-
-    const equipeIds = gerenteEquipes.map((e) => e.equipe_id)
-
-    if (equipeIds.length === 0) {
-      return []
-    }
-
-    const { data: colaboradores, error: colaboradoresError } = await supabase
-      .from("colaboradores")
-      .select("id")
-      .in("equipe_id", equipeIds)
-
-    if (colaboradoresError) {
-      console.error("[v0] Erro ao buscar colaboradores:", colaboradoresError)
-      return []
-    }
-
-    const colaboradorIds = colaboradores.map((c) => c.id)
-
-    if (colaboradorIds.length === 0) {
-      return []
-    }
-
-    query = query.in("colaborador_id", colaboradorIds)
-  }
   // Financeiro e Adm veem todos os pedidos
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+  if (visiveis?.length === 0) return []
+  if (visiveis) {
+    query = query.in("colaborador_id", visiveis)
+  }
 
   query = query.order("data_aprovacao_financeiro", { ascending: true })
 
@@ -1278,27 +1162,8 @@ export async function listarTodosPedidos(filtros?: {
 
   console.log("[v0] Listando todos os pedidos com filtros:", filtros)
 
-  let equipesPermitidas: string[] = []
-
-  if (ctx.tipoAcesso === "Gerente") {
-    // Buscar equipes gerenciadas por este gerente
-    const { data: equipesGerente, error: equipesError } = await supabase
-      .from("gerentes_equipes")
-      .select("equipe_id")
-      .eq("gerente_id", ctx.colaboradorId)
-
-    if (equipesError) {
-      console.error("[v0] Erro ao buscar equipes do gerente:", equipesError)
-      throw new Error("Erro ao buscar equipes")
-    }
-
-    equipesPermitidas = equipesGerente?.map((eq) => eq.equipe_id) || []
-
-    if (equipesPermitidas.length === 0) {
-      console.log("[v0] Gerente não possui equipes vinculadas")
-      return []
-    }
-  }
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+  if (visiveis?.length === 0) return []
 
   let query = scopeToTenant(
     supabase.from("pedidos_pagamento").select(
@@ -1339,6 +1204,10 @@ export async function listarTodosPedidos(filtros?: {
     query = query.lt("created_at", dataFimAjustada.toISOString())
   }
 
+  if (visiveis) {
+    query = query.in("colaborador_id", visiveis)
+  }
+
   // Aplicar filtro de status
   if (filtros?.status && filtros.status !== "todos") {
     query = query.eq("status", filtros.status)
@@ -1354,12 +1223,6 @@ export async function listarTodosPedidos(filtros?: {
   }
 
   let pedidosFiltrados = data || []
-
-  if (ctx.tipoAcesso === "Gerente" && equipesPermitidas.length > 0) {
-    pedidosFiltrados = pedidosFiltrados.filter(
-      (pedido) => pedido.colaborador?.equipe_id && equipesPermitidas.includes(pedido.colaborador.equipe_id),
-    )
-  }
 
   // Filtrar por equipe se fornecido
   if (filtros?.equipeId && filtros.equipeId !== "todas") {

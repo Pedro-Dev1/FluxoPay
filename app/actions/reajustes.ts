@@ -4,6 +4,7 @@ import { getSupabaseServerClient } from "@/lib/supabase-server"
 import { revalidatePath } from "next/cache"
 import type { NovoReajuste, HistoricoReajuste } from "@/types/reajuste"
 import { requireAuth, requireRole, scopeToTenant } from "@/lib/auth-utils"
+import { idsVisiveis } from "@/lib/hierarquia"
 
 export async function aplicarReajuste(data: NovoReajuste) {
   // Apenas Financeiro e Adm podem aplicar reajustes
@@ -103,29 +104,15 @@ export async function listarHistoricoReajustes(colaboradorId?: string): Promise<
       ctx,
     ).order("created_at", { ascending: false })
 
+    // Financeiro e Adm veem todos (dentro da própria carteira); os demais só
+    // o próprio histórico e o de quem está abaixo deles na equipe.
+    const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+
     if (colaboradorId) {
+      if (visiveis && !visiveis.includes(colaboradorId)) return []
       query = query.eq("colaborador_id", colaboradorId)
-    } else {
-      if (ctx.tipoAcesso === "Supervisor") {
-        const { data: equipes } = await supabase.from("equipes").select("id").eq("supervisor_id", ctx.colaboradorId)
-
-        if (equipes && equipes.length > 0) {
-          const equipeIds = equipes.map((e) => e.id)
-          const { data: colaboradores } = await supabase.from("colaboradores").select("id").in("equipe_id", equipeIds)
-
-          if (colaboradores && colaboradores.length > 0) {
-            const colaboradorIds = colaboradores.map((c) => c.id)
-            query = query.in("colaborador_id", colaboradorIds)
-          } else {
-            return []
-          }
-        } else {
-          return []
-        }
-      } else if (ctx.tipoAcesso === "Colaborador") {
-        query = query.eq("colaborador_id", ctx.colaboradorId)
-      }
-      // Gerente, Financeiro e Adm veem todos (dentro da própria carteira)
+    } else if (visiveis) {
+      query = query.in("colaborador_id", visiveis)
     }
 
     const { data, error } = await query

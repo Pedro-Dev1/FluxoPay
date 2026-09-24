@@ -138,10 +138,13 @@ export async function resolverAprovadores(
     const gerenteIds = (gerentesEquipes || []).map((g) => g.gerente_id)
     if (gerenteIds.length === 0) return []
 
+    // Nunca notifica o próprio dono do pedido como aprovador dele mesmo.
     const { data: gerentes } = await supabase
       .from("colaboradores")
       .select("id, nome_completo, email")
       .in("id", gerenteIds)
+      .neq("id", colaboradorId)
+      .eq("tipo_acesso", "Gerente")
       .eq("ativo", true)
 
     return (gerentes || []).map((g) => ({ colaboradorId: g.id, nome: g.nome_completo, email: g.email }))

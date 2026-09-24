@@ -4,6 +4,7 @@ import { getSupabaseServerClient } from "@/lib/supabase-server"
 import type { NovoColaborador } from "@/types/colaborador"
 import { revalidatePath } from "next/cache"
 import { requireAuth, requireRole, scopeToTenant } from "@/lib/auth-utils"
+import { idsVisiveis } from "@/lib/hierarquia"
 import bcrypt from "bcryptjs"
 
 export async function criarColaborador(data: NovoColaborador) {
@@ -116,57 +117,13 @@ export async function listarColaboradores() {
   const ctx = await requireAuth()
   const supabase = await getSupabaseServerClient()
 
-  if (ctx.tipoAcesso === "Supervisor") {
-    const { data: equipes, error: equipesError } = await supabase
-      .from("equipes")
-      .select("id")
-      .eq("supervisor_id", ctx.colaboradorId)
-
-    if (equipesError) {
-      console.error("[v0] Erro ao buscar equipes do supervisor:", equipesError)
-      throw new Error("Erro ao buscar equipes")
-    }
-
-    const equipeIds = equipes.map((e) => e.id)
-    if (equipeIds.length === 0) return []
+  // Supervisor e Gerente veem só quem está abaixo deles nas próprias equipes.
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: false })
+  if (visiveis) {
+    if (visiveis.length === 0) return []
 
     const { data, error } = await scopeToTenant(
-      supabase
-        .from("colaboradores")
-        .select("*, equipe:equipes!equipe_id(nome)")
-        .in("equipe_id", equipeIds)
-        .in("tipo_acesso", ["Colaborador"]),
-      ctx,
-    ).order("created_at", { ascending: false })
-
-    if (error) {
-      console.error("[v0] Erro ao listar colaboradores:", error)
-      throw new Error("Erro ao listar colaboradores")
-    }
-
-    return buscarColaboradoresComBloqueio(supabase, data)
-  }
-
-  if (ctx.tipoAcesso === "Gerente") {
-    const { data: gerenteEquipes, error: gerenteEquipesError } = await supabase
-      .from("gerentes_equipes")
-      .select("equipe_id")
-      .eq("gerente_id", ctx.colaboradorId)
-
-    if (gerenteEquipesError) {
-      console.error("[v0] Erro ao buscar equipes do gerente:", gerenteEquipesError)
-      throw new Error("Erro ao buscar equipes do gerente")
-    }
-
-    const equipeIds = gerenteEquipes.map((e) => e.equipe_id)
-    if (equipeIds.length === 0) return []
-
-    const { data, error } = await scopeToTenant(
-      supabase
-        .from("colaboradores")
-        .select("*, equipe:equipes!equipe_id(nome)")
-        .in("equipe_id", equipeIds)
-        .in("tipo_acesso", ["Colaborador", "Supervisor"]),
+      supabase.from("colaboradores").select("*, equipe:equipes!equipe_id(nome)").in("id", visiveis),
       ctx,
     ).order("created_at", { ascending: false })
 
@@ -192,7 +149,7 @@ export async function listarColaboradores() {
 }
 
 export async function getColaboradores() {
-  const ctx = await requireAuth()
+  const ctx = await requireRole(["Adm", "Financeiro"])
   const supabase = await getSupabaseServerClient()
 
   const { data, error } = await scopeToTenant(
@@ -413,86 +370,16 @@ export async function atualizarColaborador(id: string, data: Partial<NovoColabor
   revalidatePath("/", "layout")
 }
 
-export async function listarColaboradoresGerente(gerenteId: string) {
-  const ctx = await requireAuth()
-  const supabase = await getSupabaseServerClient()
-
-  const { data: gerenteEquipes, error: gerenteEquipesError } = await supabase
-    .from("gerentes_equipes")
-    .select("equipe_id")
-    .eq("gerente_id", gerenteId)
-
-  if (gerenteEquipesError) {
-    console.error("[v0] Erro ao buscar equipes do gerente:", gerenteEquipesError)
-    throw new Error("Erro ao buscar equipes do gerente")
-  }
-
-  const equipeIds = gerenteEquipes.map((e) => e.equipe_id)
-  if (equipeIds.length === 0) return []
-
-  const { data, error } = await scopeToTenant(
-    supabase.from("colaboradores").select("*, equipe:equipes!equipe_id(nome)").in("equipe_id", equipeIds),
-    ctx,
-  ).order("created_at", { ascending: false })
-
-  if (error) {
-    console.error("[v0] Erro ao listar colaboradores:", error)
-    throw new Error("Erro ao listar colaboradores")
-  }
-
-  return data
-}
-
 export async function listarColaboradoresComGerente() {
   const ctx = await requireAuth()
   const supabase = await getSupabaseServerClient()
 
-  if (ctx.tipoAcesso === "Supervisor") {
-    const { data: supervisorData } = await supabase
-      .from("colaboradores")
-      .select("equipe_id")
-      .eq("id", ctx.colaboradorId)
-      .single()
-
-    if (!supervisorData?.equipe_id) return []
-
+  // Quem pode receber um lançamento: quem está abaixo na hierarquia das
+  // equipes dele, mais ele mesmo. Nunca um par do mesmo cargo.
+  const visiveis = await idsVisiveis(supabase, ctx, { incluirProprio: true })
+  if (visiveis) {
     const { data, error } = await scopeToTenant(
-      supabase
-        .from("colaboradores")
-        .select("*, equipe:equipes!equipe_id(nome)")
-        .eq("equipe_id", supervisorData.equipe_id)
-        .in("tipo_acesso", ["Supervisor", "Colaborador"]),
-      ctx,
-    ).order("created_at", { ascending: false })
-
-    if (error) {
-      console.error("[v0] Erro ao listar colaboradores:", error)
-      throw new Error("Erro ao listar colaboradores")
-    }
-
-    return buscarColaboradoresComBloqueio(supabase, data)
-  }
-
-  if (ctx.tipoAcesso === "Gerente") {
-    const { data: gerenteEquipes, error: gerenteEquipesError } = await supabase
-      .from("gerentes_equipes")
-      .select("equipe_id")
-      .eq("gerente_id", ctx.colaboradorId)
-
-    if (gerenteEquipesError) {
-      console.error("[v0] Erro ao buscar equipes do gerente:", gerenteEquipesError)
-      throw new Error("Erro ao buscar equipes do gerente")
-    }
-
-    const equipeIds = gerenteEquipes.map((e) => e.equipe_id)
-    if (equipeIds.length === 0) return []
-
-    const { data, error } = await scopeToTenant(
-      supabase
-        .from("colaboradores")
-        .select("*, equipe:equipes!equipe_id(nome)")
-        .or(`equipe_id.in.(${equipeIds.join(",")}),id.eq.${ctx.colaboradorId}`)
-        .in("tipo_acesso", ["Colaborador", "Supervisor", "Gerente"]),
+      supabase.from("colaboradores").select("*, equipe:equipes!equipe_id(nome)").in("id", visiveis),
       ctx,
     ).order("created_at", { ascending: false })
 

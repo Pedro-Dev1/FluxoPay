@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase-server"
 import { revalidatePath } from "next/cache"
 import type { Equipe, NovaEquipe } from "@/types/equipe"
 import { requireAuth, requireRole, scopeToTenant, type AuthContext } from "@/lib/auth-utils"
+import { equipesLideradas, temVisaoRestrita } from "@/lib/hierarquia"
 
 export async function listarEquipes(): Promise<Equipe[]> {
   const ctx = await requireAuth()
@@ -50,6 +51,15 @@ export async function listarEquipes(): Promise<Equipe[]> {
     ...equipe,
     gerentes: gerentesPorEquipe.get(equipe.id) || [],
   }))
+
+  // Supervisor e Gerente só veem as equipes que lideram, e nunca a lista de
+  // gerentes — seriam pares do mesmo cargo.
+  if (temVisaoRestrita(ctx)) {
+    const minhas = new Set(await equipesLideradas(supabase, ctx))
+    return equipesComGerentes
+      .filter((equipe: any) => minhas.has(equipe.id))
+      .map((equipe: any) => ({ ...equipe, gerentes: [] }))
+  }
 
   return equipesComGerentes
 }
@@ -113,7 +123,7 @@ export async function deletarEquipe(id: string): Promise<void> {
 }
 
 export async function listarSupervisores(): Promise<Array<{ id: string; nome_completo: string }>> {
-  const ctx = await requireAuth()
+  const ctx = await requireRole(["Adm", "Financeiro"])
   const supabase = await createAdminClient()
 
   const { data, error } = await scopeToTenant(
@@ -130,7 +140,7 @@ export async function listarSupervisores(): Promise<Array<{ id: string; nome_com
 }
 
 export async function listarColaboradoresPorEquipe(equipeId: string) {
-  const ctx = await requireAuth()
+  const ctx = await requireRole(["Adm", "Financeiro"])
   const supabase = await createAdminClient()
 
   const { data, error } = await scopeToTenant(
@@ -217,6 +227,10 @@ export async function desvincularGerenteEquipe(gerenteId: string, equipeId: stri
 
 export async function listarEquipesPorGerente(gerenteId: string): Promise<Equipe[]> {
   const ctx = await requireAuth()
+
+  if (temVisaoRestrita(ctx) && gerenteId !== ctx.colaboradorId) {
+    throw new Error("Sem permissão")
+  }
   const supabase = await createAdminClient()
 
   const { data, error } = await supabase
@@ -244,7 +258,7 @@ export async function listarEquipesPorGerente(gerenteId: string): Promise<Equipe
 }
 
 export async function listarGerentes(): Promise<Array<{ id: string; nome_completo: string }>> {
-  const ctx = await requireAuth()
+  const ctx = await requireRole(["Adm", "Financeiro"])
   const supabase = await createAdminClient()
 
   const { data, error } = await scopeToTenant(
@@ -263,7 +277,7 @@ export async function listarGerentes(): Promise<Array<{ id: string; nome_complet
 export async function listarColaboradoresSemEquipe(): Promise<
   Array<{ id: string; nome_completo: string; tipo_acesso: string; email: string }>
 > {
-  const ctx = await requireAuth()
+  const ctx = await requireRole(["Adm", "Financeiro"])
   const supabase = await createAdminClient()
 
   const { data, error } = await scopeToTenant(
@@ -333,7 +347,7 @@ export async function removerColaboradorEquipe(colaboradorId: string): Promise<v
 }
 
 export async function buscarEquipe(equipeId: string): Promise<Equipe | null> {
-  const ctx = await requireAuth()
+  const ctx = await requireRole(["Adm", "Financeiro"])
   const supabase = await createAdminClient()
 
   const { data, error } = await scopeToTenant(

@@ -15,7 +15,6 @@ import { TermoComercialGate } from "@/components/termo-comercial-gate"
 import { SystemStatusProvider } from "@/components/system-status-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster as ToasterShadcn } from "@/components/ui/toaster"
 import cn from "classnames"
 
 const inter = Inter({
@@ -68,15 +67,8 @@ export default async function RootLayout({
     >
       <body className="antialiased bg-background font-sans">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-        <Toaster richColors position="top-right" />
-        {/* Duas bibliotecas de toast coexistem no projeto: a maioria dos
-            componentes chama a `toast()` da lib "sonner" (Toaster acima), mas
-            vários outros (admin-*, faturas-list, colaboradores-list) usam o
-            hook useToast() de hooks/use-toast.ts, que só renderiza através
-            deste <ToasterShadcn />. Sem ele montado, toast({...}) daqueles
-            componentes atualizava estado que nada na árvore lia — clique sem
-            nenhum feedback visível, mesmo quando a ação teve sucesso. */}
-        <ToasterShadcn />
+        {/* Sistema único de feedback. hooks/use-toast.ts repassa para cá. */}
+        <Toaster />
         <ValoresVisibilityProvider>
           {!isAuthPage && (
             <SidebarNavigation
@@ -86,11 +78,12 @@ export default async function RootLayout({
             />
           )}
 
-          <div className={cn("min-h-screen", !isAuthPage && "lg:pl-56")}>
+          <div className={cn("min-h-screen", !isAuthPage && "transition-[padding] duration-150 lg:pl-[var(--sidebar-w,14rem)]")}>
             {!isAuthPage && session && (
               <UserHeader
                 nomeCompleto={session.nomeCompleto}
                 email={session.email}
+                tipoAcesso={session.tipoAcesso}
                 cnpj={session.tipoAcesso === "Colaborador" ? session.cnpj : undefined}
                 salario={session.tipoAcesso === "Colaborador" ? session.salario : undefined}
                 isSuperAdmin={session.isSuperAdmin}
@@ -98,7 +91,7 @@ export default async function RootLayout({
                 tenants={tenantsParaSwitcher}
               />
             )}
-            <main className={cn("transition-all duration-300", !isAuthPage && session && "pt-14 lg:pt-0", !isAuthPage && !session && "pt-14 lg:pt-0")}>
+            <main className={cn(!isAuthPage && !session && "pt-14 lg:pt-0")}>
               {!isAuthPage && session ? (
                 <SystemStatusProvider tipoAcesso={session.tipoAcesso}>
                   <AutoLogoutProvider>

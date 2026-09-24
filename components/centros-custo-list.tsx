@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/table"
 import { Plus, Pencil, Trash2, Hash, Building2 } from "lucide-react"
 import { toast } from "sonner"
+import { PageHeader } from "@/components/ui/page-header"
 
 interface CentrosCustoListProps {
   centros: CentroCusto[]
@@ -105,18 +106,18 @@ export function CentrosCustoList({ centros }: CentrosCustoListProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Centros de Custo</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Gerencie os centros de custo da empresa
-          </p>
-        </div>
-        <Button onClick={openNew} size="sm" className="gap-2">
-          <Plus className="h-4 w-4" />
-          Novo Centro de Custo
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Gestão"
+        title="Centros de custo"
+        description="Centros de custo aos quais os prestadores são vinculados."
+        className="mb-0"
+        action={
+          <Button onClick={openNew}>
+            <Plus />
+            Novo centro de custo
+          </Button>
+        }
+      />
 
       <Card>
         <CardContent className="p-0">
@@ -138,8 +139,8 @@ export function CentrosCustoList({ centros }: CentrosCustoListProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[120px]">Numero</TableHead>
-                  <TableHead>Nome da Area</TableHead>
+                  <TableHead className="w-[120px]">Número</TableHead>
+                  <TableHead>Nome da área</TableHead>
                   <TableHead className="w-[100px] text-right">Ações</TableHead>
                 </TableRow>
               </TableHeader>
@@ -195,7 +196,7 @@ export function CentrosCustoList({ centros }: CentrosCustoListProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="nome">Nome da Area</Label>
+              <Label htmlFor="nome">Nome da área</Label>
               <Input
                 id="nome"
                 placeholder="Ex: Departamento Comercial"

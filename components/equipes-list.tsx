@@ -44,6 +44,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Equipe } from "@/types/equipe"
 import { toast } from "sonner"
 import Link from "next/link"
+import { PageHeader } from "@/components/ui/page-header"
 
 interface EquipesListProps {
   equipes: Equipe[]
@@ -126,18 +127,18 @@ export function EquipesList({ equipes, membrosCount = {} }: EquipesListProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-foreground">Equipes</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Gerencie as equipes e seus membros
-          </p>
-        </div>
-        <Button onClick={openNew} size="sm" className="gap-2">
-          <Plus className="h-4 w-4" />
-          Nova Equipe
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Gestão"
+        title="Equipes"
+        description="Equipes, seus supervisores e gerentes. Cada cargo só enxerga quem está abaixo dele."
+        className="mb-0"
+        action={
+          <Button onClick={openNew}>
+            <Plus />
+            Nova equipe
+          </Button>
+        }
+      />
 
       <Card>
         <CardContent className="p-0">
@@ -248,11 +249,11 @@ export function EquipesList({ equipes, membrosCount = {} }: EquipesListProps) {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Nova Equipe</DialogTitle>
+            <DialogTitle>Nova equipe</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="eq-nome">Nome da Equipe</Label>
+              <Label htmlFor="eq-nome">Nome da equipe</Label>
               <Input
                 id="eq-nome"
                 placeholder="Ex: Equipe Comercial"

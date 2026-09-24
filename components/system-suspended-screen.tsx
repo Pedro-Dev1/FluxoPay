@@ -17,7 +17,7 @@ export function SystemSuspendedScreen({ reason }: SystemSuspendedScreenProps) {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-2xl font-semibold text-foreground">Sistema Temporariamente Suspenso</h1>
+            <h1 className="type-subtitle text-foreground">Sistema temporariamente suspenso</h1>
             <p className="text-text-tertiary">
               O Fluxteme está em manutenção no momento.
             </p>

@@ -38,8 +38,8 @@ export function HistoricoReajustesList({ reajustes }: HistoricoReajustesListProp
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Novo Salário</p>
-              <p className="text-xl font-bold text-success">
+              <p className="text-sm text-muted-foreground">Novo salário</p>
+              <p className="text-xl font-semibold text-success">
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",
@@ -50,7 +50,7 @@ export function HistoricoReajustesList({ reajustes }: HistoricoReajustesListProp
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <p className="text-sm text-muted-foreground">Salário Anterior</p>
+              <p className="text-sm text-muted-foreground">Salário anterior</p>
               <p className="font-semibold">
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",

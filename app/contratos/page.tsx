@@ -17,6 +17,7 @@ import {
   CreditCard,
   CheckCircle2,
 } from "lucide-react"
+import { PageHeader } from "@/components/ui/page-header"
 
 const cards = [
   {
@@ -77,21 +78,14 @@ export default async function ContratosPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-5xl">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
       {/* Header */}
-      <div className="mb-8 flex items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-2xl font-semibold text-foreground">Contratos</h1>
-            <Badge variant="secondary" className="text-xs font-medium">
-              Em Desenvolvimento
-            </Badge>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Crie, assine e gerencie contratos digitais.
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Financeiro"
+        title="Contratos"
+        description="Contratos digitais dos prestadores, com assinatura e trilha de cada versão."
+        meta={<Badge variant="secondary">Em desenvolvimento</Badge>}
+      />
 
       {/* Cards grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-10">
@@ -112,7 +106,7 @@ export default async function ContratosPage() {
                     className="text-[11px] font-medium text-warning border-warning/30 bg-warning-subtle flex items-center gap-1"
                   >
                     <Clock className="h-3 w-3" />
-                    Em Desenvolvimento
+                    Em desenvolvimento
                   </Badge>
                 </div>
                 <CardTitle className="text-base mt-4">{item.title}</CardTitle>
@@ -126,10 +120,10 @@ export default async function ContratosPage() {
       </div>
 
       {/* Proximas funcionalidades */}
-      <div className="rounded-xl border border-border/60 bg-muted/30 p-6">
+      <div className="rounded-lg border border-border/60 bg-muted/30 p-6">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="h-4 w-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Próximas Funcionalidades</h2>
+          <h2 className="text-sm font-semibold text-foreground">Próximas funcionalidades</h2>
         </div>
         <ul className="grid gap-2 sm:grid-cols-2">
           {proximasFuncionalidades.map((item) => {

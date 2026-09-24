@@ -1,94 +1,85 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { PageHeader } from "@/components/ui/page-header"
 import { PedidoForm } from "@/components/pedido-form"
 import { listarColaboradoresComGerente } from "@/app/actions/colaboradores"
 import { getSession } from "@/lib/session"
-import { AlertCircle, LogIn } from "lucide-react"
+import { AlertCircle, LogIn, ShieldAlert } from "lucide-react"
+
+const PERFIS_QUE_CRIAM = ["Supervisor", "Adm", "Gerente", "Financeiro"]
+
+function Cabecalho({ descricao }: { descricao: string }) {
+  return <PageHeader eyebrow="Operação" title="Criar pedido" description={descricao} />
+}
 
 export default async function PedidosPage() {
   const session = await getSession()
 
   if (!session) {
     return (
-      <div className="container mx-auto py-8 px-4 lg:px-6 max-w-2xl">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold mb-1 text-foreground">Criar Pedido</h1>
-          <p className="text-sm text-muted-foreground">Crie pedidos de pagamento para colaboradores</p>
-        </div>
+      <div className="mx-auto w-full max-w-2xl px-4 py-8 lg:px-8">
+        <Cabecalho descricao="Lançamento de pedido de pagamento para prestadores da sua equipe." />
         <Alert>
-          <LogIn className="h-4 w-4" />
-          <AlertTitle>Login Necessário</AlertTitle>
-          <AlertDescription className="mt-2">
-            Voce precisa fazer login como <strong>Supervisor ou Gerente</strong> para criar pedidos de pagamento.
+          <LogIn />
+          <AlertTitle>Entre para criar pedidos</AlertTitle>
+          <AlertDescription>
+            Só Supervisor, Gerente, Financeiro e Adm criam pedidos de pagamento.
+            <Button asChild className="mt-3 flex w-fit">
+              <Link href="/login">Entrar</Link>
+            </Button>
           </AlertDescription>
-          <Button asChild className="mt-4">
-            <a href="/login">Fazer Login</a>
-          </Button>
         </Alert>
       </div>
     )
   }
 
-  if (!["Supervisor", "Adm", "Gerente", "Financeiro"].includes(session.tipoAcesso)) {
+  if (!PERFIS_QUE_CRIAM.includes(session.tipoAcesso)) {
     return (
-      <div className="container mx-auto py-8 px-4 lg:px-6 max-w-2xl">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold mb-1 text-foreground">Criar Pedido</h1>
-          <p className="text-sm text-muted-foreground">Crie pedidos de pagamento para colaboradores</p>
-        </div>
+      <div className="mx-auto w-full max-w-2xl px-4 py-8 lg:px-8">
+        <Cabecalho descricao="Lançamento de pedido de pagamento para prestadores da sua equipe." />
         <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Acesso Restrito</AlertTitle>
-          <AlertDescription className="mt-2">
-            Voce nao tem permissao para criar pedidos de pagamento.
-            <br />
-            Seu perfil atual: <strong>{session.tipoAcesso}</strong>
-          </AlertDescription>
-          <div className="flex gap-2 mt-4">
-            <Button asChild variant="outline">
-              <a href="/">Voltar ao Inicio</a>
+          <ShieldAlert />
+          <AlertTitle>Seu perfil não cria pedidos</AlertTitle>
+          <AlertDescription>
+            O perfil {session.tipoAcesso} não lança pedidos de pagamento. Quem lança é o supervisor ou o gerente da sua equipe.
+            <Button asChild variant="outline" className="mt-3 flex w-fit">
+              <Link href="/">Voltar ao início</Link>
             </Button>
-          </div>
+          </AlertDescription>
         </Alert>
       </div>
     )
   }
 
   const colaboradores = await listarColaboradoresComGerente()
+  const descricao = ["Gerente", "Financeiro", "Adm"].includes(session.tipoAcesso)
+    ? "Lançamento de pedido de pagamento para os prestadores das suas equipes."
+    : "Lançamento de pedido de pagamento para os prestadores da sua equipe."
 
   if (colaboradores.length === 0) {
     return (
-      <div className="container mx-auto py-8 px-4 lg:px-6 max-w-2xl">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold mb-1 text-foreground">Criar Pedido</h1>
-          <p className="text-sm text-muted-foreground">Crie pedidos de pagamento para colaboradores</p>
-        </div>
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Nenhum Colaborador Disponivel</AlertTitle>
-          <AlertDescription className="mt-2">
+      <div className="mx-auto w-full max-w-2xl px-4 py-8 lg:px-8">
+        <Cabecalho descricao={descricao} />
+        <Alert variant="warning">
+          <AlertCircle />
+          <AlertTitle>Nenhum prestador disponível para lançamento</AlertTitle>
+          <AlertDescription>
             {session.tipoAcesso === "Supervisor"
-              ? "Voce nao possui colaboradores na sua equipe."
-              : "Voce nao possui equipes vinculadas. Entre em contato com o administrador."}
+              ? "Sua equipe ainda não tem colaboradores cadastrados. Peça ao Adm ou Financeiro que vincule os prestadores à equipe em Gestão › Cadastros."
+              : "Você ainda não está vinculado a nenhuma equipe. Peça ao Adm ou Financeiro que faça o vínculo em Gestão › Cadastros › Equipes."}
+            <Button asChild variant="outline" className="mt-3 flex w-fit">
+              <Link href="/">Voltar ao início</Link>
+            </Button>
           </AlertDescription>
-          <Button asChild className="mt-4" variant="outline">
-            <a href="/">Voltar ao Inicio</a>
-          </Button>
         </Alert>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 lg:px-6 max-w-2xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Criar Pedido</h1>
-        <p className="text-sm text-muted-foreground">
-          {["Gerente", "Financeiro", "Adm"].includes(session.tipoAcesso)
-            ? "Crie pedidos de pagamento para colaboradores"
-            : "Crie pedidos de pagamento da sua equipe"}
-        </p>
-      </div>
+    <div className="mx-auto w-full max-w-2xl px-4 py-8 lg:px-8">
+      <Cabecalho descricao={descricao} />
       <PedidoForm colaboradores={colaboradores} tipoAcesso={session.tipoAcesso} />
     </div>
   )

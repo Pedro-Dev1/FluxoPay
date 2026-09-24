@@ -2,17 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
 /*
- * Identidade Fluxteme. Tema escuro é o padrão da marca (navy + ciano); o
- * claro usa os mesmos matizes, com o petróleo no lugar do ciano para manter
- * contraste AA sobre branco. Um acento só — o resto é neutro. Verde, âmbar e
- * vermelho aparecem apenas para estado.
+ * Fluxteme — tokens do design system (docs/DESIGN_SYSTEM.md).
+ * Cores oficiais do Manual de Marca v2.0, seção 05 (valores medidos):
+ *   Navy  #011832 · base estrutural (60%)
+ *   Teal  #00668A · destaque sobre fundo claro (10%)
+ *   Aqua  #00AEDE · destaque sobre fundo escuro (10%)
+ *   Cinza técnico #DFE3E6 · fios, tabelas, fundos (30%)
+ * Aqua nunca é texto sobre fundo claro (2,6:1) — no claro, o destaque é Teal.
+ * Todo par texto/fundo abaixo foi medido: mínimo 4,5:1.
  */
 @layer base {
   :root {
@@ -20,110 +18,141 @@
     --font-display: var(--font-jost);
     --font-mono: var(--font-jetbrains-mono);
 
-    /* Superfície */
-    --background: 0 0% 100%;           /* #FFFFFF */
-    --foreground: 211 71% 10%;         /* #07182A navy */
+    /* Marca — fixas, iguais nos dois temas */
+    --brand-navy: 212 96% 10%;          /* #011832 */
+    --brand-teal: 196 100% 27%;         /* #00668A */
+    --brand-aqua: 193 100% 44%;         /* #00AEDE */
+    --brand-cinza: 206 12% 89%;         /* #DFE3E6 */
+
+    /* Superfícies: background → surface (card) → elevated (popover/modal) */
+    --background: 200 20% 97%;          /* #F6F8F9 */
+    --foreground: 212 96% 10%;          /* navy */
     --card: 0 0% 100%;
-    --card-foreground: 211 71% 10%;
+    --card-foreground: 212 96% 10%;
+    --surface: 204 20% 95%;             /* #F0F3F5 — cabeçalho de tabela, hover */
+    --surface-elevated: 0 0% 100%;
     --popover: 0 0% 100%;
-    --popover-foreground: 211 71% 10%;
-    --surface: 210 37% 97%;            /* #F4F7FA — cabeçalho de tabela, hover */
-    --border: 208 28% 91%;             /* #E1E8EE — régua padrão, 1px */
-    --border-strong: 208 25% 85%;      /* #D0DAE3 — separação de seção */
-    --input: 208 25% 85%;
+    --popover-foreground: 212 96% 10%;
 
-    /* Texto — três níveis */
-    --text-secondary: 208 20% 36%;     /* #4A5E70 */
-    --text-tertiary: 208 17% 44%;      /* #5E7284 */
+    /* Fios — preferidos a sombra */
+    --border-subtle: 204 14% 93%;       /* #EBEEF0 */
+    --border: 206 12% 89%;              /* #DFE3E6 cinza técnico */
+    --border-strong: 208 14% 81%;       /* #C9D0D6 */
+    --input: 208 14% 81%;
 
-    /* Acento — petróleo Fluxteme (ciano escurecido para AA sobre branco) */
-    --primary: 195 93% 28%;            /* #05698B */
-    --primary-hover: 194 93% 23%;      /* #04566F */
+    /* Texto */
+    --text-secondary: 211 25% 32%;      /* #3D5166 · 8,2:1 */
+    --text-tertiary: 209 15% 42%;       /* #5A6B7B · 5,5:1 */
+
+    /* Destaque — Teal no claro */
+    --primary: 196 100% 27%;            /* #00668A · 6,4:1 */
+    --primary-hover: 195 100% 22%;      /* #00536F */
     --primary-foreground: 0 0% 100%;
-    --accent: 196 61% 94%;             /* #E6F4F9 — item ativo/seleção */
-    --accent-foreground: 195 93% 28%;
+    --accent: 197 39% 93%;              /* #E6F0F4 — seleção, item ativo */
+    --accent-foreground: 196 100% 27%;
 
-    --secondary: 210 37% 97%;
-    --secondary-foreground: 211 71% 10%;
-    --muted: 210 37% 97%;
-    --muted-foreground: 208 20% 36%;
+    --secondary: 204 20% 95%;
+    --secondary-foreground: 212 96% 10%;
+    --muted: 204 20% 95%;
+    --muted-foreground: 211 25% 32%;
 
-    /* Estado */
-    --success: 153 74% 27%;            /* #12784A */
-    --success-subtle: 150 45% 94%;
+    /* Estado — cor + ícone + texto, nunca só cor */
+    --success: 153 78% 27%;             /* #0F7A4A */
+    --success-subtle: 148 39% 94%;
     --success-foreground: 0 0% 100%;
-    --warning: 27 89% 35%;             /* #A8520A */
-    --warning-subtle: 36 90% 94%;
+    --warning: 28 92% 31%;              /* #9A4B06 */
+    --warning-subtle: 34 85% 95%;
     --warning-foreground: 0 0% 100%;
-    --danger: 4 76% 40%;               /* #B42318 */
-    --danger-subtle: 3 90% 96%;
+    --danger: 4 76% 40%;                /* #B42318 */
+    --danger-subtle: 6 83% 95%;
     --danger-foreground: 0 0% 100%;
-    --neutral-state: 208 20% 36%;
-    --neutral-state-subtle: 210 30% 95%;
+    --neutral-state: 211 25% 32%;
+    --neutral-state-subtle: 204 20% 94%;
 
     --destructive: 4 76% 40%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 195 93% 28%;
+    --ring: 196 100% 27%;
 
-    /* Forma — controle (botão/input/badge) vs. superfície (card/modal) */
-    --radius-control: 0.375rem;        /* 6px */
-    --radius: 0.5rem;                  /* 8px */
+    /* Sidebar — navy nos dois temas (base estrutural) */
+    --sidebar: 212 96% 10%;
+    --sidebar-foreground: 204 17% 94%;
+    --sidebar-muted: 209 20% 76%;       /* #B5C2CE · 9,8:1 */
+    --sidebar-group: 209 18% 52%;       /* #6F859A · 4,7:1 */
+    --sidebar-hover: 210 76% 16%;
+    --sidebar-active: 193 100% 44%;     /* barra aqua do item ativo */
+    --sidebar-border: 210 72% 17%;
 
-    /* Gráfico: um destaque + neutros */
-    --chart-1: 195 93% 28%;
-    --chart-2: 208 20% 36%;
-    --chart-3: 208 17% 60%;
-    --chart-4: 153 74% 27%;
-    --chart-5: 27 89% 35%;
+    /* Grade institucional — sempre discreta */
+    --grid-line: 212 96% 10% / 0.045;
+
+    /* Forma: controle 4px, superfície 6px. Nada vira "pill" além de contadores. */
+    --radius-control: 0.25rem;
+    --radius: 0.375rem;
+
+    /* Gráficos: um destaque + neutros */
+    --chart-1: 196 100% 27%;
+    --chart-2: 211 25% 32%;
+    --chart-3: 209 15% 62%;
+    --chart-4: 153 78% 27%;
+    --chart-5: 28 92% 31%;
   }
 
   .dark {
-    --background: 211 71% 10%;         /* #07182A navy */
-    --foreground: 203 45% 94%;         /* #EAF2F7 */
-    --card: 209 67% 13%;               /* #0B2238 */
-    --card-foreground: 203 45% 94%;
-    --popover: 209 66% 16%;            /* #0E2A44 */
-    --popover-foreground: 203 45% 94%;
-    --surface: 209 67% 13%;
-    --border: 209 62% 19%;             /* #12304D — régua fina da grade */
-    --border-strong: 210 59% 22%;      /* #173858 */
-    --input: 210 59% 22%;
+    --background: 212 96% 10%;          /* navy */
+    --foreground: 204 17% 94%;          /* #EEF1F3 · 15,7:1 */
+    --card: 210 83% 14%;                /* #062340 */
+    --card-foreground: 204 17% 94%;
+    --surface: 210 83% 14%;
+    --surface-elevated: 210 77% 17%;    /* #0A2C4E */
+    --popover: 210 77% 17%;
+    --popover-foreground: 204 17% 94%;
 
-    --text-secondary: 206 26% 73%;     /* #A9BDCC */
-    --text-tertiary: 207 17% 52%;      /* #6F8699 */
+    --border-subtle: 210 72% 17%;       /* #0C2B4A */
+    --border: 210 67% 22%;              /* #12375C */
+    --border-strong: 210 60% 27%;       /* #1C4670 */
+    --input: 210 60% 27%;
 
-    --primary: 195 67% 59%;            /* #4FB8DC ciano */
-    --primary-hover: 195 71% 66%;      /* #6CC7E6 */
-    --primary-foreground: 211 71% 10%; /* navy sobre ciano */
-    --accent: 200 75% 19%;             /* #0C3B53 */
-    --accent-foreground: 195 71% 66%;
+    --text-secondary: 209 19% 72%;      /* #A9B7C4 · 8,7:1 */
+    --text-tertiary: 210 17% 60%;       /* #8799AB · ≥4,5:1 até na superfície elevada */
 
-    --secondary: 209 66% 16%;
-    --secondary-foreground: 203 45% 94%;
-    --muted: 209 66% 16%;
-    --muted-foreground: 206 26% 73%;
+    /* Destaque — Aqua no escuro */
+    --primary: 193 100% 44%;            /* #00AEDE · 6,9:1 */
+    --primary-hover: 193 80% 55%;       /* #33C2E8 */
+    --primary-foreground: 212 96% 10%;  /* navy sobre aqua */
+    --accent: 202 92% 16%;              /* #03324D */
+    --accent-foreground: 193 80% 55%;
 
-    --success: 151 50% 53%;            /* #4CC38A */
-    --success-subtle: 155 45% 13%;
-    --success-foreground: 211 71% 10%;
-    --warning: 32 85% 62%;             /* #F0A34A */
-    --warning-subtle: 30 45% 14%;
-    --warning-foreground: 211 71% 10%;
-    --danger: 4 84% 68%;               /* #F2736B */
-    --danger-subtle: 4 45% 16%;
-    --danger-foreground: 211 71% 10%;
-    --neutral-state: 206 26% 73%;
-    --neutral-state-subtle: 209 66% 16%;
+    --secondary: 210 77% 17%;
+    --secondary-foreground: 204 17% 94%;
+    --muted: 210 77% 17%;
+    --muted-foreground: 209 19% 72%;
+
+    --success: 154 52% 51%;             /* #3FC38A */
+    --success-subtle: 165 69% 14%;
+    --success-foreground: 212 96% 10%;
+    --warning: 33 87% 62%;              /* #F2A64B */
+    --warning-subtle: 36 53% 15%;
+    --warning-foreground: 212 96% 10%;
+    --danger: 4 86% 70%;                /* #F47A71 */
+    --danger-subtle: 351 36% 18%;
+    --danger-foreground: 212 96% 10%;
+    --neutral-state: 209 19% 72%;
+    --neutral-state-subtle: 210 77% 17%;
 
     --destructive: 4 70% 50%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 195 67% 59%;
+    --ring: 193 100% 44%;
 
-    --chart-1: 195 67% 59%;
-    --chart-2: 206 26% 73%;
-    --chart-3: 207 17% 52%;
-    --chart-4: 151 50% 53%;
-    --chart-5: 32 85% 62%;
+    --sidebar: 212 96% 9%;
+    --sidebar-border: 210 67% 16%;
+
+    --grid-line: 206 12% 89% / 0.035;
+
+    --chart-1: 193 100% 44%;
+    --chart-2: 209 19% 72%;
+    --chart-3: 210 17% 50%;
+    --chart-4: 154 52% 51%;
+    --chart-5: 33 87% 62%;
   }
 }
 
@@ -131,19 +160,27 @@
   * {
     @apply border-border;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Títulos de página e seção na fonte da marca. */
+  /* Títulos na família de identidade. Tamanho e peso vêm das classes de
+     tipografia abaixo (type-title, type-subtitle, type-intertitle). */
   h1,
-  h2 {
+  h2,
+  h3 {
     font-family: var(--font-display), var(--font-sans), sans-serif;
   }
 
-  html {
-    scroll-behavior: smooth;
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -160,19 +197,87 @@
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
-
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-
   ::-webkit-scrollbar-thumb {
-    @apply bg-border-strong rounded-full;
+    @apply rounded-full bg-border-strong;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
-
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-text-tertiary;
+  }
+}
+
+/*
+ * Hierarquia tipográfica — Manual v2.0, seção 06, convertida para tela.
+ */
+@layer components {
+  /* Título de página · Jost 300 · −0,5% */
+  .type-title {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-weight: 300;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    letter-spacing: -0.005em;
+  }
+  /* Subtítulo · Jost 400 */
+  .type-subtitle {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  /* Intertítulo de seção · Jost 500 · +1% */
+  .type-intertitle {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.375rem;
+    letter-spacing: 0.01em;
+  }
+  /* Rótulo / eyebrow · JetBrains Mono 500 · caixa alta · +16% */
+  .type-eyebrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  /* Número de destaque · Jost 300, algarismos tabulares */
+  .type-metric {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-weight: 300;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Valor auditável (ID, protocolo, hash, timestamp técnico) */
+  .type-audit {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+  }
+
+  /* Grade institucional — só em áreas de entrada e cabeçalhos de painel */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--grid-line)) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--grid-line)) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }

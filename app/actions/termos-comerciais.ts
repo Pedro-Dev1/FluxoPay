@@ -211,12 +211,14 @@ export async function listarRespostasTermoComercial(termoId: string): Promise<Re
   })
 }
 
-function validarDados(dados: { versao: string; titulo: string; conteudo: string }) {
+type DadosTermo = { versao: string; titulo: string; conteudo: string }
+
+function validarDados(dados: DadosTermo): DadosTermo | { erro: string } {
   const versao = dados.versao.trim()
   const titulo = dados.titulo.trim()
   const conteudo = dados.conteudo.trim()
-  if (!versao || !titulo || !conteudo) return { erro: "Preencha versão, título e texto do termo" as const }
-  if (versao.length > 20) return { erro: "A versão pode ter no máximo 20 caracteres" as const }
+  if (!versao || !titulo || !conteudo) return { erro: "Preencha versão, título e texto do termo" }
+  if (versao.length > 20) return { erro: "A versão pode ter no máximo 20 caracteres" }
   return { versao, titulo, conteudo }
 }
 

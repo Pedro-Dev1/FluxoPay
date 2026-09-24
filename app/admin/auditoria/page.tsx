@@ -1,23 +1,10 @@
+import { ScrollText } from "lucide-react"
 import { listarAuditoria } from "@/app/actions/tenants"
 import { EmptyState } from "@/components/ui/empty-state"
 import { AdminErroCarregamento } from "@/components/admin-erro-carregamento"
 import { ehErroDeControleDoNext } from "@/lib/next-render-errors"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-
-// date-fns format() usa o timezone local do processo Node — na Vercel isso
-// é UTC, não horário de Brasília, e mostrava hora errada (3h à frente).
-// Intl.DateTimeFormat com timeZone explícito resolve sem depender do
-// timezone do servidor.
-function formatarDataHoraBr(iso: string): string {
-  return new Intl.DateTimeFormat("pt-BR", {
-    timeZone: "America/Sao_Paulo",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(iso))
-}
+import { AuditTimestamp } from "@/components/ui/audit"
 
 const ACAO_LABELS: Record<string, string> = {
   carteira_criada: "Carteira criada",
@@ -31,6 +18,11 @@ const ACAO_LABELS: Record<string, string> = {
   fatura_plataforma_paga: "Fatura paga",
   fatura_plataforma_falhou: "Falha ao emitir fatura",
   fatura_plataforma_cancelada: "Fatura cancelada",
+  termo_comercial_criado: "Termo comercial criado",
+  termo_comercial_editado: "Rascunho de termo editado",
+  termo_comercial_publicado: "Termo comercial publicado",
+  termo_comercial_arquivado: "Termo comercial arquivado",
+  termo_comercial_rascunho_excluido: "Rascunho de termo excluído",
 }
 
 function nomeRelacionado(rel: any): string {
@@ -39,6 +31,22 @@ function nomeRelacionado(rel: any): string {
   return item?.nome_completo || item?.nome || item?.email || "—"
 }
 
+/** Detalhes do evento como pares chave=valor, legíveis e verificáveis. */
+function Detalhes({ detalhes }: { detalhes: Record<string, unknown> | null }) {
+  if (!detalhes || Object.keys(detalhes).length === 0) return <span className="text-text-tertiary">—</span>
+  return (
+    <div className="flex flex-wrap gap-1">
+      {Object.entries(detalhes).map(([k, v]) => (
+        <span key={k} className="type-audit rounded-control bg-surface px-1.5 py-0.5 text-text-secondary">
+          {k}=<span className="text-foreground">{typeof v === "object" ? JSON.stringify(v) : String(v ?? "—")}</span>
+        </span>
+      ))}
+    </div>
+  )
+}
+
+// Trilha de auditoria da plataforma (DESIGN_SYSTEM.md §36): registro
+// append-only de ações privilegiadas, em ordem, com autor e instante exato.
 export default async function AdminAuditoriaPage() {
   let registros: any[]
   try {
@@ -50,35 +58,48 @@ export default async function AdminAuditoriaPage() {
   }
 
   if (registros.length === 0) {
-    return <EmptyState title="Nenhum registro ainda" description="Ações privilegiadas do sistema aparecem aqui." />
+    return (
+      <EmptyState
+        icon={ScrollText}
+        title="Nenhuma ação privilegiada registrada ainda"
+        description="Criação de carteira, promoção de Super Admin, faturamento e publicação de termos aparecem aqui, com autor e horário."
+      />
+    )
   }
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Quando</TableHead>
-            <TableHead>Quem</TableHead>
-            <TableHead>Ação</TableHead>
-            <TableHead>Carteira</TableHead>
-            <TableHead>Detalhes</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {registros.map((r: any) => (
-            <TableRow key={r.id}>
-              <TableCell className="whitespace-nowrap tabular-nums">{formatarDataHoraBr(r.created_at)}</TableCell>
-              <TableCell>{nomeRelacionado(r.colaborador)}</TableCell>
-              <TableCell>{ACAO_LABELS[r.acao] || r.acao}</TableCell>
-              <TableCell>{nomeRelacionado(r.tenant)}</TableCell>
-              <TableCell className="text-xs text-muted-foreground max-w-xs truncate">
-                {r.detalhes ? JSON.stringify(r.detalhes) : ""}
-              </TableCell>
+    <div className="space-y-3">
+      <p className="text-sm text-text-secondary">
+        <span className="font-medium tabular-nums text-foreground">{registros.length}</span> registros · horário de Brasília
+      </p>
+      <div className="overflow-hidden rounded-lg border border-border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Quando</TableHead>
+              <TableHead>Quem</TableHead>
+              <TableHead>Ação</TableHead>
+              <TableHead>Carteira</TableHead>
+              <TableHead>Detalhes</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {registros.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="align-top">
+                  <AuditTimestamp valor={r.created_at} />
+                </TableCell>
+                <TableCell className="max-w-[12rem] truncate align-top text-sm">{nomeRelacionado(r.colaborador)}</TableCell>
+                <TableCell className="align-top text-sm font-medium">{ACAO_LABELS[r.acao] || r.acao}</TableCell>
+                <TableCell className="max-w-[10rem] truncate align-top text-sm text-text-secondary">{nomeRelacionado(r.tenant)}</TableCell>
+                <TableCell className="max-w-md align-top">
+                  <Detalhes detalhes={r.detalhes} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }

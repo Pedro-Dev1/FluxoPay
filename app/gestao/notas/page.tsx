@@ -2,6 +2,7 @@ import { getUsuarioLogado } from "@/lib/auth-utils"
 import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase-server"
 import { NotasMesesList } from "@/components/notas-meses-list"
+import { PageHeader } from "@/components/ui/page-header"
 
 async function listarMesesComNotas() {
   const supabase = await getSupabaseServerClient()
@@ -69,13 +70,8 @@ export default async function NotasPage() {
   const meses = await listarMesesComNotas()
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Gerenciamento de Notas</h1>
-        <p className="text-sm text-muted-foreground">
-          Visualize e gerencie as notas fiscais organizadas por periodo
-        </p>
-      </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader eyebrow="Gestão" title="Notas fiscais por período" description="Notas fiscais recebidas, agrupadas por mês de competência." />
 
       <NotasMesesList meses={meses} />
     </div>

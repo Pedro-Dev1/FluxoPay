@@ -187,7 +187,7 @@ export function CorrecaoList({ pedidos }: CorrecaoListProps) {
             <div className="space-y-4 mb-4">
               {/* Salário Base (não editável) */}
               <div>
-                <Label>Salário Base</Label>
+                <Label>Salário base</Label>
                 <Input value={formatCurrency(colaboradorSalario)} disabled className="bg-muted" />
               </div>
 
@@ -314,7 +314,7 @@ export function CorrecaoList({ pedidos }: CorrecaoListProps) {
               {/* Motivo do Plantão */}
               {valoresAtuais.valor_plantao > 0 && (
                 <div>
-                  <Label htmlFor={`motivo-plantao-${pedido.id}`}>Motivo do Plantão</Label>
+                  <Label htmlFor={`motivo-plantao-${pedido.id}`}>Motivo do plantão</Label>
                   <Textarea
                     id={`motivo-plantao-${pedido.id}`}
                     value={valoresAtuais.motivo_plantao}
@@ -359,7 +359,7 @@ export function CorrecaoList({ pedidos }: CorrecaoListProps) {
               {/* Motivo da Comissão */}
               {valoresAtuais.comissao > 0 && (
                 <div>
-                  <Label htmlFor={`motivo-comissao-${pedido.id}`}>Motivo da Comissão</Label>
+                  <Label htmlFor={`motivo-comissao-${pedido.id}`}>Motivo da comissão</Label>
                   <Textarea
                     id={`motivo-comissao-${pedido.id}`}
                     value={valoresAtuais.motivo_comissao}
@@ -404,7 +404,7 @@ export function CorrecaoList({ pedidos }: CorrecaoListProps) {
               {/* Motivo do Desconto */}
               {valoresAtuais.valor_desconto > 0 && (
                 <div>
-                  <Label htmlFor={`motivo-desconto-${pedido.id}`}>Motivo do Desconto</Label>
+                  <Label htmlFor={`motivo-desconto-${pedido.id}`}>Motivo do desconto</Label>
                   <Textarea
                     id={`motivo-desconto-${pedido.id}`}
                     value={valoresAtuais.motivo_desconto}
@@ -428,7 +428,7 @@ export function CorrecaoList({ pedidos }: CorrecaoListProps) {
             <div className="p-4 bg-primary/5 rounded-md mb-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Valor Total:</span>
-                <span className="text-xl font-bold text-primary">{formatCurrency(valorTotal)}</span>
+                <span className="text-xl font-semibold text-primary">{formatCurrency(valorTotal)}</span>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
                 Salário: {formatCurrency(colaboradorSalario)} + HE: {formatCurrency(valorTotalHorasExtras)} + Condução:{" "}
@@ -446,13 +446,13 @@ export function CorrecaoList({ pedidos }: CorrecaoListProps) {
             <div className="flex gap-2">
               {!isEditando ? (
                 <Button onClick={() => handleEditar(pedido)} className="w-full">
-                  Corrigir Pedido
+                  Corrigir pedido
                 </Button>
               ) : (
                 <>
                   <Button onClick={() => handleSalvar(pedido.id)} disabled={loading} className="flex-1">
                     <Save className="w-4 h-4 mr-2" />
-                    Salvar e Reenviar
+                    Salvar e reenviar
                   </Button>
                   <Button onClick={() => setEditando(null)} disabled={loading} variant="outline" className="flex-1">
                     Cancelar

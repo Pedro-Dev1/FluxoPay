@@ -33,7 +33,7 @@ export default async function EquipeDetailPage({ params }: EquipeDetailPageProps
   ])
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="mx-auto w-full max-w-4xl px-4 py-8 lg:px-8">
       <EquipeDetailView
         equipe={equipe}
         membros={membros}

@@ -42,7 +42,7 @@ import type {
   TermoComercialResumo,
 } from "@/types/termo-comercial"
 
-const DATA_HORA = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" })
+const DATA_HORA = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" })
 const formatarDataHora = (iso: string | null) => (iso ? DATA_HORA.format(new Date(iso)) : "—")
 
 const SITUACAO_TERMO: Record<SituacaoTermo, { rotulo: string; classe: string }> = {

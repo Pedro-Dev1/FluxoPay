@@ -5,6 +5,7 @@ import { MarcarPagoList } from "@/components/marcar-pago-list"
 import { SolicitacoesProrrogacaoList } from "@/components/solicitacoes-prorrogacao-list"
 import { redirect } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function FinanceiroPage({
   searchParams,
@@ -56,11 +57,12 @@ export default async function FinanceiroPage({
   const defaultTab = params.tab || "pagar"
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Painel Financeiro</h1>
-        <p className="text-sm text-muted-foreground">Gerencie pagamentos, notas fiscais e prorrogações</p>
-      </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader
+        eyebrow="Financeiro"
+        title="Painel financeiro"
+        description="Notas recebidas, pagamentos a marcar e pedidos de prorrogação de prazo."
+      />
 
       <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="h-auto w-full justify-start rounded-none bg-transparent p-0 border-b border-border gap-6">

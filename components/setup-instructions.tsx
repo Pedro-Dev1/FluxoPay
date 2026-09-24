@@ -7,11 +7,11 @@ export function SetupInstructions() {
     <div className="space-y-4 p-6 max-w-3xl mx-auto">
       <Alert>
         <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Configuração Necessária</AlertTitle>
+        <AlertTitle>Configuração necessária</AlertTitle>
         <AlertDescription className="mt-2 space-y-3">
           <p>Para que o sistema funcione corretamente, você precisa desabilitar a confirmação de email no Supabase:</p>
           <ol className="list-decimal list-inside space-y-2 ml-2">
-            <li>Acesse o Dashboard do Supabase</li>
+            <li>Acesse o painel do Supabase</li>
             <li>
               Vá em <strong>Authentication → Settings</strong>
             </li>
@@ -30,7 +30,7 @@ export function SetupInstructions() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2"
               >
-                Abrir Dashboard do Supabase
+                Abrir painel do Supabase
                 <ExternalLink className="h-3 w-3" />
               </a>
             </Button>
@@ -40,7 +40,7 @@ export function SetupInstructions() {
 
       <Alert variant="default" className="border-success/30 bg-success-subtle">
         <CheckCircle2 className="h-4 w-4 text-success" />
-        <AlertTitle className="text-success">Alternativa Temporária</AlertTitle>
+        <AlertTitle className="text-success">Alternativa temporária</AlertTitle>
         <AlertDescription className="text-success mt-2">
           <p>Se você já criou usuários e eles não conseguem fazer login, você pode confirmá-los manualmente:</p>
           <ol className="list-decimal list-inside space-y-1 ml-2 mt-2">

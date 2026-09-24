@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { AtualizacoesAdminList } from "@/components/atualizacoes-admin-list"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function GerenciarAtualizacoesPage() {
   const session = await getSession()
@@ -10,11 +11,12 @@ export default async function GerenciarAtualizacoesPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 lg:px-6 max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Gerenciar atualizações</h1>
-        <p className="text-sm text-muted-foreground">Crie, agende e envie os avisos institucionais do Fluxteme.</p>
-      </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader
+        eyebrow="Plataforma"
+        title="Avisos"
+        description="Crie, agende e envie os avisos institucionais do Fluxteme."
+      />
       <AtualizacoesAdminList />
     </div>
   )

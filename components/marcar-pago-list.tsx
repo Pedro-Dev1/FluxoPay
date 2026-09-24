@@ -311,11 +311,11 @@ export function MarcarPagoList({ pedidos }: MarcarPagoListProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-surface hover:bg-surface border-border">
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary">Colaborador</TableHead>
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary hidden md:table-cell">Equipe</TableHead>
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary hidden sm:table-cell">Criado</TableHead>
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary">Tipo</TableHead>
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary text-right">Valor</TableHead>
+              <TableHead className="h-9 font-medium text-text-tertiary">Colaborador</TableHead>
+              <TableHead className="h-9 font-medium text-text-tertiary hidden md:table-cell">Equipe</TableHead>
+              <TableHead className="h-9 font-medium text-text-tertiary hidden sm:table-cell">Criado</TableHead>
+              <TableHead className="h-9 font-medium text-text-tertiary">Tipo</TableHead>
+              <TableHead className="h-9 font-medium text-text-tertiary text-right">Valor</TableHead>
               <TableHead className="h-9 w-10" />
             </TableRow>
           </TableHeader>

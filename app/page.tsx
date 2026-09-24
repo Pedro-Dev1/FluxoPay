@@ -16,6 +16,7 @@ import { DashboardClient } from "@/components/dashboard-client"
 import type { AcaoAgoraItem } from "@/components/dashboard-resumo"
 import { SystemControl } from "@/components/system-control"
 import { AtualizacaoBanner } from "@/components/atualizacao-banner"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function Home() {
   const session = await getSession()
@@ -90,11 +91,12 @@ export default async function Home() {
   const banner = await obterBannerDestaque().catch(() => null)
 
   return (
-    <div className="container mx-auto py-8 px-4 lg:px-6 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Visão geral de pagamentos e pedidos</p>
-      </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader
+        eyebrow="Visão geral"
+        title="Dashboard"
+        description="O que exige ação agora, o que mudou no período e onde cada pedido está."
+      />
 
       <AtualizacaoBanner atualizacao={banner} />
 

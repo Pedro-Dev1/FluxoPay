@@ -19,13 +19,14 @@ export default async function HistoricoCompletoPage() {
   const [pedidos, equipes] = await Promise.all([listarTodosPedidos(), listarEquipes()])
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
       <PageHeader
-        title="Histórico completo de pedidos"
+        eyebrow="Auditoria"
+        title="Histórico de pedidos"
         description={
           session.tipoAcesso === "Gerente"
-            ? "Visualize todos os pedidos das suas equipes"
-            : "Visualize todos os pedidos de pagamento do sistema"
+            ? "Todos os pedidos das suas equipes, com status, datas e responsáveis."
+            : "Todos os pedidos de pagamento da carteira, com status, datas e responsáveis."
         }
       />
 

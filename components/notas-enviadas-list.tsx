@@ -110,7 +110,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
     try {
       setApprovingId(pedidoId)
       await aprovarNotaFiscal(pedidoId)
-      toast.success("Nota marcada como recebida com sucesso!")
+      toast.success("Nota marcada como recebida.")
       router.refresh()
     } catch (error) {
       console.error("[v0] Erro ao aprovar nota:", error)
@@ -254,7 +254,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="space-y-1.5">
             <Label htmlFor="dataInicio" className="text-sm">
-              Data Início
+              Data inicial
             </Label>
             <Input
               id="dataInicio"
@@ -266,7 +266,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="dataFim" className="text-sm">
-              Data Fim
+              Data final
             </Label>
             <Input
               id="dataFim"
@@ -299,7 +299,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="todas">Todas</SelectItem>
-                <SelectItem value="sem-equipe">Sem Equipe</SelectItem>
+                <SelectItem value="sem-equipe">Sem equipe</SelectItem>
                 {equipes.map((equipe) => (
                   <SelectItem key={equipe.id} value={equipe.id}>
                     {equipe.nome}
@@ -383,7 +383,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                     </Badge>
                     {!isPaid && !canBeApproved && (
                       <Badge variant="destructive" className="text-xs px-2 py-0 bg-danger">
-                        Sem Nota Fiscal
+                        Sem nota fiscal
                       </Badge>
                     )}
                   </div>
@@ -447,14 +447,14 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                     <div className="flex justify-between items-end">
                       {!isReembolsoKm && (
                         <div>
-                          <div className="text-xs text-muted-foreground">Valor para Nota Fiscal</div>
+                          <div className="text-xs text-muted-foreground">Valor para nota fiscal</div>
                           <div className="text-sm font-semibold text-primary">
                             R$ {valorEsperadoNF.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                           </div>
                         </div>
                       )}
                       <div className={`text-right ${isReembolsoKm ? "w-full" : ""}`}>
-                        <div className="text-xs text-muted-foreground">Total do Pedido</div>
+                        <div className="text-xs text-muted-foreground">Total do pedido</div>
                         <div className="text-sm font-semibold">
                           R$ {pedido.valor_total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                         </div>
@@ -467,7 +467,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                       <div className="flex items-start gap-2">
                         <XCircle className="w-5 h-5 text-danger flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm font-semibold text-danger">Aguardando Nota Fiscal</p>
+                          <p className="text-sm font-semibold text-danger">Aguardando nota fiscal</p>
                           <p className="text-xs text-danger mt-1">
                             O colaborador ainda precisa emitir e anexar a nota fiscal. Este pedido não pode ser aprovado
                             até que a nota seja anexada.

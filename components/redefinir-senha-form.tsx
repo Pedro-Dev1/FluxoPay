@@ -67,11 +67,11 @@ export function RedefinirSenhaForm() {
   }
 
   return (
-    <Card className="border-border/50 shadow-sm">
+    <Card className="border-border/50">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Lock className="h-5 w-5 text-primary" />
-          Alterar Senha
+          Alterar senha
         </CardTitle>
         <CardDescription>Digite sua senha atual e escolha uma nova senha segura</CardDescription>
       </CardHeader>

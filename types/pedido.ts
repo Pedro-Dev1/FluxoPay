@@ -68,6 +68,7 @@ export interface PedidoPagamento {
       }[]
   colaborador?: {
     nome_completo: string
+    cnpj?: string
     salario: number
     tipo_acesso: string
     equipe_id?: string

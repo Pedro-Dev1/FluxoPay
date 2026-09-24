@@ -110,12 +110,12 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
 
   if (totalPendentes === 0 && semData.length === 0) {
     return (
-      <Card className="shadow-sm border-0 bg-gradient-to-br from-background to-muted/20">
+      <Card className="border-0">
         <CardContent className="py-12">
           <div className="text-center text-muted-foreground">
-            <CalendarDays className="w-16 h-16 mx-auto mb-4 opacity-20" />
-            <p className="text-lg font-medium">Tudo em dia!</p>
-            <p className="text-sm">Nenhum aniversário de contrato nos próximos 3 meses</p>
+            <CalendarDays className="mx-auto mb-3 h-8 w-8 text-text-tertiary" />
+            <p className="text-sm font-medium text-foreground">Nenhum aniversário de contrato nos próximos 3 meses</p>
+            <p className="text-sm">Os reajustes previstos em contrato aparecem aqui 90 dias antes da data.</p>
           </div>
         </CardContent>
       </Card>
@@ -124,19 +124,21 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
 
   if (totalPendentes === 0 && semData.length > 0) {
     return (
-      <Card className="shadow-sm border-0">
+      <Card className="border-0">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <CalendarDays className="w-5 h-5 text-primary" />
-            Aniversários de Contrato
+            Aniversários de contrato
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-warning-subtle text-warning">
+          <div className="flex items-center gap-3 p-4 rounded-lg bg-warning-subtle text-warning">
             <Users className="w-8 h-8 text-warning" />
             <div>
-              <p className="font-medium">{semData.length} colaborador(es) sem data cadastrada</p>
-              <p className="text-sm text-warning">Cadastre a data de aniversário de contrato</p>
+              <p className="font-medium text-foreground">
+                {semData.length} {semData.length === 1 ? "colaborador sem data de contrato" : "colaboradores sem data de contrato"}
+              </p>
+              <p className="text-sm text-text-secondary">Cadastre a data de aniversário de contrato em Cadastros › Colaboradores.</p>
             </div>
           </div>
         </CardContent>
@@ -146,12 +148,12 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
 
   return (
     <>
-      <Card className="shadow-sm border-0">
+      <Card className="border-0">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-semibold flex items-center gap-2">
               <CalendarDays className="w-5 h-5 text-primary" />
-              Aniversários de Contrato
+              Aniversários de contrato
             </CardTitle>
             {totalPendentes > 0 && (
               <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
@@ -162,23 +164,18 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
         </CardHeader>
         <CardContent className="space-y-5">
           {/* Cards de resumo */}
-          <div className="grid grid-cols-4 gap-2">
-            <div className={`rounded-xl p-3 text-center transition-all ${vencidos.length > 0 ? 'bg-danger text-danger-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
-              <p className="text-2xl font-bold">{vencidos.length}</p>
-              <p className="text-xs font-medium opacity-90">Vencidos</p>
-            </div>
-            <div className={`rounded-xl p-3 text-center transition-all ${criticos.length > 0 ? 'bg-warning text-warning-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
-              <p className="text-2xl font-bold">{criticos.length}</p>
-              <p className="text-xs font-medium opacity-90">{"< 1 mês"}</p>
-            </div>
-            <div className={`rounded-xl p-3 text-center transition-all ${atencao.length > 0 ? 'bg-warning text-warning-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
-              <p className="text-2xl font-bold">{atencao.length}</p>
-              <p className="text-xs font-medium opacity-90">{"< 2 meses"}</p>
-            </div>
-            <div className={`rounded-xl p-3 text-center transition-all ${normais.length > 0 ? 'bg-primary text-primary-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
-              <p className="text-2xl font-bold">{normais.length}</p>
-              <p className="text-xs font-medium opacity-90">{"< 3 meses"}</p>
-            </div>
+          <div className="grid grid-cols-4 gap-px overflow-hidden rounded-lg border border-border bg-border">
+            {[
+              { rotulo: "Vencidos", n: vencidos.length, tom: "text-danger" },
+              { rotulo: "Em até 1 mês", n: criticos.length, tom: "text-warning" },
+              { rotulo: "Em até 2 meses", n: atencao.length, tom: "text-warning" },
+              { rotulo: "Em até 3 meses", n: normais.length, tom: "text-foreground" },
+            ].map((f) => (
+              <div key={f.rotulo} className="bg-card p-3">
+                <p className={`font-display text-2xl font-light tabular-nums ${f.n > 0 ? f.tom : "text-text-tertiary"}`}>{f.n}</p>
+                <p className="type-eyebrow mt-0.5 text-[10px] text-text-tertiary">{f.rotulo}</p>
+              </div>
+            ))}
           </div>
 
           {/* Lista de aniversários */}
@@ -207,7 +204,7 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
               return (
                 <div
                   key={item.colaborador.id}
-                  className={`flex items-center justify-between p-3 rounded-xl border ${bgClass} transition-all`}
+                  className={`flex items-center justify-between p-3 rounded-lg border ${bgClass} transition-colors`}
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -230,7 +227,7 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
                   <Button
                     size="sm"
                     onClick={() => handleAplicarReajuste(item.colaborador)}
-                    className={isVencido ? "bg-danger hover:bg-danger/90 shadow-md" : ""}
+                    className={isVencido ? "bg-danger hover:bg-danger/90" : ""}
                     variant={isVencido ? "default" : "outline"}
                   >
                     <TrendingUp className="w-4 h-4 mr-1" />
@@ -243,7 +240,7 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
 
           {/* Alerta de colaboradores sem data */}
           {semData.length > 0 && (
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/30 text-muted-foreground text-sm">
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/30 text-muted-foreground text-sm">
               <AlertTriangle className="w-4 h-4" />
               <span>{semData.length} colaborador(es) sem data de aniversário cadastrada</span>
             </div>

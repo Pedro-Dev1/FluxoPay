@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { AdminNav } from "@/components/admin-nav"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession()
@@ -10,11 +11,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 lg:px-6 max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Painel Super Admin</h1>
-        <p className="text-sm text-muted-foreground">Carteiras, usuários e auditoria do Fluxteme.</p>
-      </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader
+        eyebrow="Plataforma"
+        title="Painel Super Admin"
+        description="Carteiras, usuários, faturamento, termos e trilha de auditoria de todas as carteiras."
+      />
       <AdminNav />
       <div className="mt-6">{children}</div>
     </div>

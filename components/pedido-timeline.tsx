@@ -39,33 +39,33 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
       return {
         stage: "correcao",
         message: pedido.correcao_solicitada_por === "financeiro" 
-          ? "Correção solicitada pelo Financeiro" 
-          : "Correção solicitada pelo Gerente",
-        description: "Seu pedido precisa de ajustes. Verifique as observações e reenvie.",
+          ? "Correção pedida pelo financeiro" 
+          : "Correção pedida pelo gerente",
+        description: "Ajuste o pedido conforme a observação registrada e reenvie para aprovação.",
       }
     }
     if (isRecusado) {
       return {
         stage: "recusado",
         message: pedido.aprovado_gerente === false 
-          ? "Recusado pelo Gerente" 
-          : "Recusado pelo Financeiro",
-        description: "Infelizmente seu pedido foi recusado.",
+          ? "Recusado pelo gerente" 
+          : "Recusado pelo financeiro",
+        description: "A observação de quem recusou está registrada no pedido. Se for o caso, lance um novo pedido.",
       }
     }
     if (isConcluido) {
       return { stage: "concluido", message: "Concluído", description: null }
     }
     if (pedido.status === "pendente_gerente") {
-      return { stage: "gerente", message: "Aguardando Gerente", description: null }
+      return { stage: "gerente", message: "Aguardando o gerente", description: null }
     }
     if (pedido.status === "pendente_financeiro") {
-      return { stage: "financeiro", message: "Aguardando Financeiro", description: null }
+      return { stage: "financeiro", message: "Aguardando o financeiro", description: null }
     }
     if (pedido.status === "aprovado" && !pedido.nota_emitida) {
-      return { stage: "anexar_nota", message: "Aprovado! Anexe sua nota fiscal", description: null }
+      return { stage: "anexar_nota", message: "Aprovado. Falta anexar a nota fiscal", description: null }
     }
-    return { stage: "unknown", message: "Status desconhecido", description: null }
+    return { stage: "unknown", message: "Etapa não reconhecida", description: null }
   }
 
   const stageInfo = getStageInfo()
@@ -74,14 +74,14 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
   const steps = [
     {
       id: "lancado",
-      label: "Pedido Lançado",
+      label: "Pedido lançado",
       dateTime: formatDateTime(pedido.created_at),
       completed: true,
       current: pedido.status === "pendente_gerente",
     },
     {
       id: "gerente",
-      label: pedido.aprovado_gerente ? "Aprovado pelo Gerente" : "Aguardando Gerente",
+      label: pedido.aprovado_gerente ? "Aprovado pelo gerente" : "Aguardando o gerente",
       dateTime: formatDateTime(pedido.data_aprovacao_gerente),
       completed: pedido.aprovado_gerente === true,
       current: pedido.status === "pendente_gerente",
@@ -89,7 +89,7 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
     },
     {
       id: "financeiro",
-      label: pedido.aprovado_financeiro ? "Aprovado pelo Financeiro" : "Aguardando Financeiro",
+      label: pedido.aprovado_financeiro ? "Aprovado pelo financeiro" : "Aguardando o financeiro",
       dateTime: formatDateTime(pedido.data_aprovacao_financeiro),
       completed: pedido.aprovado_financeiro === true,
       current: pedido.status === "pendente_financeiro",
@@ -97,7 +97,7 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
     },
     {
       id: "nota",
-      label: isConcluido ? "Concluído" : "Anexar Nota",
+      label: isConcluido ? "Concluído" : "Anexar nota fiscal",
       dateTime: formatDateTime(pedido.data_emissao_nota || pedido.data_nota_recebida),
       completed: isConcluido,
       current: pedido.status === "aprovado" && !pedido.nota_emitida,
@@ -108,14 +108,8 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
     <div className="w-full space-y-4">
       {/* Alert for Correction or Rejection */}
       {(isCorrecao || isRecusado) && (
-        <Alert variant={isRecusado ? "destructive" : "default"} className={cn(
-          isCorrecao && "border-warning/30 bg-warning-subtle text-warning"
-        )}>
-          {isCorrecao ? (
-            <AlertTriangle className="h-4 w-4 text-warning" />
-          ) : (
-            <XCircle className="h-4 w-4" />
-          )}
+        <Alert variant={isRecusado ? "destructive" : "warning"}>
+          {isCorrecao ? <AlertTriangle /> : <XCircle />}
           <AlertTitle>{stageInfo.message}</AlertTitle>
           {stageInfo.description && (
             <AlertDescription>{stageInfo.description}</AlertDescription>
@@ -127,12 +121,12 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
       {!isCorrecao && !isRecusado && (
         <div className="flex items-center justify-center">
           <div className={cn(
-            "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium",
+            "inline-flex items-center gap-1.5 rounded-control px-2 py-1 text-[13px] font-medium",
             isConcluido 
               ? "bg-success-subtle text-success"
               : stageInfo.stage === "anexar_nota"
-                ? "bg-accent text-primary"
-                : "bg-warning-subtle text-warning"
+                ? "bg-accent text-accent-foreground"
+                : "bg-neutral-state-subtle text-neutral-state"
           )}>
             {isConcluido ? (
               <Check className="h-4 w-4" />
@@ -150,12 +144,12 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
       <div className="hidden md:block pt-2">
         <div className="relative flex items-start justify-between">
           {/* Background Line */}
-          <div className="absolute top-5 left-[12.5%] right-[12.5%] h-1 bg-muted rounded-full" />
+          <div className="absolute left-[12.5%] right-[12.5%] top-[69px] h-0.5 bg-border" />
           
           {/* Progress Line */}
           <div 
             className={cn(
-              "absolute top-5 left-[12.5%] h-1 rounded-full transition-all duration-500",
+              "absolute left-[12.5%] top-[69px] h-0.5 transition-colors duration-200",
               isCorrecao || isRecusado ? "bg-destructive" : "bg-primary"
             )}
             style={{ 
@@ -169,12 +163,8 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
               <div className="mb-2 text-center h-12 flex flex-col justify-end">
                 {step.dateTime && (
                   <>
-                    <span className="text-xs font-medium text-foreground block">
-                      {step.dateTime.date}
-                    </span>
-                    <span className="text-xs text-muted-foreground block">
-                      {step.dateTime.time}
-                    </span>
+                    <span className="type-audit block text-foreground">{step.dateTime.date}</span>
+                    <span className="type-audit block text-text-tertiary">{step.dateTime.time}</span>
                   </>
                 )}
               </div>
@@ -182,22 +172,22 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
               {/* Circle */}
               <div
                 className={cn(
-                  "relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-3 transition-all duration-300 shadow-sm",
+                  "relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 transition-colors duration-150",
                   step.completed && !step.error
                     ? "border-primary bg-primary text-primary-foreground"
                     : step.error
                       ? "border-destructive bg-destructive text-destructive-foreground"
                       : step.current
-                        ? "border-primary bg-background ring-4 ring-primary/20"
-                        : "border-muted-foreground/30 bg-background"
+                        ? "border-primary bg-background ring-2 ring-primary/25"
+                        : "border-border-strong bg-card"
                 )}
               >
                 {step.completed && !step.error ? (
-                  <Check className="h-5 w-5" />
+                  <Check className="h-3.5 w-3.5" />
                 ) : step.error ? (
-                  <XCircle className="h-5 w-5" />
+                  <XCircle className="h-3.5 w-3.5" />
                 ) : step.current ? (
-                  <Clock className="h-5 w-5 text-primary animate-pulse" />
+                  <Clock className="h-3.5 w-3.5 text-primary" />
                 ) : (
                   <span className="text-xs font-medium text-muted-foreground">{index + 1}</span>
                 )}
@@ -213,8 +203,8 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
                       : step.error
                         ? "text-destructive"
                         : step.current
-                          ? "text-foreground font-semibold"
-                          : "text-muted-foreground"
+                          ? "text-foreground font-medium"
+                          : "text-text-tertiary"
                   )}
                 >
                   {step.label}
@@ -229,14 +219,14 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
       <div className="md:hidden">
         <div className="relative pl-10">
           {/* Vertical Line */}
-          <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-muted" />
+          <div className="absolute bottom-0 left-[1.2rem] top-0 w-px bg-border" />
           
           {steps.map((step, index) => (
             <div key={step.id} className="relative pb-6 last:pb-0">
               {/* Progress Line */}
               {step.completed && !step.error && index < steps.length - 1 && (
                 <div 
-                  className="absolute left-4 top-8 w-0.5 bg-primary"
+                  className="absolute left-[1.2rem] top-8 w-px bg-primary"
                   style={{ height: "calc(100% - 2rem)" }}
                 />
               )}
@@ -244,14 +234,14 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
               {/* Circle */}
               <div
                 className={cn(
-                  "absolute left-0 flex h-8 w-8 items-center justify-center rounded-full border-2 transition-all duration-300",
+                  "absolute left-1 flex h-7 w-7 items-center justify-center rounded-full border-2 transition-colors duration-150",
                   step.completed && !step.error
                     ? "border-primary bg-primary text-primary-foreground"
                     : step.error
                       ? "border-destructive bg-destructive text-destructive-foreground"
                       : step.current
-                        ? "border-primary bg-background ring-4 ring-primary/20"
-                        : "border-muted-foreground/30 bg-background"
+                        ? "border-primary bg-background ring-2 ring-primary/25"
+                        : "border-border-strong bg-card"
                 )}
               >
                 {step.completed && !step.error ? (
@@ -259,7 +249,7 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
                 ) : step.error ? (
                   <XCircle className="h-4 w-4" />
                 ) : step.current ? (
-                  <Clock className="h-4 w-4 text-primary animate-pulse" />
+                  <Clock className="h-4 w-4 text-primary" />
                 ) : (
                   <span className="text-xs font-medium text-muted-foreground">{index + 1}</span>
                 )}
@@ -275,14 +265,14 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
                       : step.error
                         ? "text-destructive"
                         : step.current
-                          ? "text-foreground font-semibold"
-                          : "text-muted-foreground"
+                          ? "text-foreground font-medium"
+                          : "text-text-tertiary"
                   )}
                 >
                   {step.label}
                 </span>
                 {step.dateTime && (
-                  <span className="text-xs text-muted-foreground">
+                  <span className="type-audit text-text-tertiary">
                     {step.dateTime.date} {step.dateTime.time}
                   </span>
                 )}

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { EmptyState } from "@/components/ui/empty-state"
-import { Check, X, AlertCircle, ChevronDown, ChevronUp, User } from "lucide-react"
+import { Check, CheckCircle2, X, AlertCircle, ChevronDown, ChevronUp, User } from "lucide-react"
 import { acaoGerente, acaoFinanceiro } from "@/app/actions/pedidos"
 import { useRouter } from "next/navigation"
 import { useMaskedCurrency } from "@/components/currency-display"
@@ -56,11 +56,12 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
         await acaoFinanceiro({ pedido_id: pedido.id, acao, observacao: obs, data_previsao_pagamento: dataPrevisaoPagamento })
       }
       toast.success(
-        acao === "aprovar" ? "Pedido aprovado" : acao === "recusar" ? "Pedido recusado" : "Correção solicitada",
+        acao === "aprovar" ? "Pagamento aprovado" : acao === "recusar" ? "Pedido recusado" : "Correção pedida",
+        { description: pedido.colaborador?.nome_completo },
       )
       router.refresh()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao processar ação. Tente novamente.")
+      toast.error(error instanceof Error ? error.message : "Não foi possível registrar a decisão. Verifique a conexão e tente de novo.")
     } finally {
       setProcessingId(null)
     }
@@ -82,11 +83,11 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
     const { pedido, acao } = dialogAlvo
 
     if (acao !== "aprovar" && !observacao.trim()) {
-      setDialogError("Por favor, adicione uma observação explicando o motivo")
+      setDialogError("Escreva o motivo. Ele fica registrado no pedido e é visto por quem lançou.")
       return
     }
     if (acao === "aprovar" && tipoAcesso === "Financeiro" && !dataPrevisao) {
-      setDialogError("Por favor, informe a data de previsão de pagamento")
+      setDialogError("Informe a data prevista de pagamento.")
       return
     }
 
@@ -95,11 +96,17 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
   }
 
   if (pedidos.length === 0) {
-    return <EmptyState title="Nenhum pedido pendente" description="Não há pedidos aguardando aprovação no momento." />
+    return (
+      <EmptyState
+        icon={CheckCircle2}
+        title="Nenhum pedido aguardando sua decisão"
+        description="Quando um pedido da sua alçada for lançado, ele aparece aqui com o valor e a composição."
+      />
+    )
   }
 
   const dialogTitulo =
-    dialogAlvo?.acao === "aprovar" ? "Aprovar pedido" : dialogAlvo?.acao === "corrigir" ? "Solicitar correção" : "Recusar pedido"
+    dialogAlvo?.acao === "aprovar" ? "Aprovar pagamento" : dialogAlvo?.acao === "corrigir" ? "Pedir correção" : "Recusar pedido"
 
   const DetalhesPedido = ({ pedido }: { pedido: PedidoPagamento }) => {
     return (
@@ -218,15 +225,13 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
             <Button
               variant={dialogAlvo?.acao === "recusar" ? "destructive" : "default"}
               onClick={confirmarDialog}
-              disabled={processingId === dialogAlvo?.pedido.id}
+              loading={processingId === dialogAlvo?.pedido.id}
             >
-              {processingId === dialogAlvo?.pedido.id
-                ? "Processando..."
-                : dialogAlvo?.acao === "aprovar"
-                  ? "Confirmar aprovação"
-                  : dialogAlvo?.acao === "recusar"
-                    ? "Confirmar recusa"
-                    : "Confirmar correção"}
+              {dialogAlvo?.acao === "aprovar"
+                ? "Aprovar pagamento"
+                : dialogAlvo?.acao === "recusar"
+                  ? "Recusar pedido"
+                  : "Pedir correção"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -241,12 +246,14 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
       <div className="border border-border rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-surface hover:bg-surface border-border">
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary">Colaborador</TableHead>
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary hidden md:table-cell">Criado</TableHead>
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary">Status</TableHead>
-              <TableHead className="h-9 text-xs font-medium text-text-tertiary text-right">Valor total</TableHead>
-              <TableHead className="h-9 w-10" />
+            <TableRow>
+              <TableHead>Colaborador</TableHead>
+              <TableHead className="hidden md:table-cell">Criado</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Valor total</TableHead>
+              <TableHead className="w-10">
+                <span className="sr-only">Ações</span>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -257,14 +264,22 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
               return (
                 <Fragment key={pedido.id}>
                   <TableRow
-                    className="group cursor-pointer h-11 border-border hover:bg-surface"
+                    className="group h-11 cursor-pointer"
                     onClick={() => setExpandedId(isExpanded ? null : pedido.id)}
+                    onKeyDown={(e) => {
+                      if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+                        e.preventDefault()
+                        setExpandedId(isExpanded ? null : pedido.id)
+                      }
+                    }}
+                    tabIndex={0}
+                    aria-expanded={isExpanded}
                   >
                     <TableCell className="py-2 text-sm font-medium text-foreground">
                       <div className="flex items-center gap-2">
                         {pedido.colaborador?.nome_completo || "N/A"}
                         {isReembolsoKm && (
-                          <span className="text-xs font-normal text-text-tertiary">· Reembolso KM</span>
+                          <span className="text-xs font-normal text-text-tertiary">· Reembolso de KM</span>
                         )}
                       </div>
                     </TableCell>
@@ -280,11 +295,13 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
                     <TableCell className="py-2">
                       <div className="flex items-center justify-end gap-1">
                         <div
-                          className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="flex items-center gap-1 transition-opacity duration-150 sm:opacity-60 sm:group-hover:opacity-100 sm:focus-within:opacity-100"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <button
-                            title="Aprovar"
+                            type="button"
+                            title="Aprovar pagamento"
+                            aria-label={`Aprovar pagamento de ${pedido.colaborador?.nome_completo ?? "colaborador"}`}
                             onClick={() => abrirDialog(pedido, "aprovar")}
                             disabled={processingId === pedido.id}
                             className="h-7 w-7 inline-flex items-center justify-center rounded-control text-success hover:bg-success-subtle disabled:opacity-50"
@@ -293,7 +310,9 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
                           </button>
                           {tipoAcesso !== "Financeiro" && (
                             <button
-                              title="Solicitar correção"
+                              type="button"
+                              title="Pedir correção"
+                              aria-label={`Pedir correção do pedido de ${pedido.colaborador?.nome_completo ?? "colaborador"}`}
                               onClick={() => abrirDialog(pedido, "corrigir")}
                               className="h-7 w-7 inline-flex items-center justify-center rounded-control text-warning hover:bg-warning-subtle"
                             >
@@ -301,7 +320,9 @@ export function AprovacoesList({ pedidos, tipoAcesso }: AprovacoesListProps) {
                             </button>
                           )}
                           <button
-                            title="Recusar"
+                            type="button"
+                            title="Recusar pedido"
+                            aria-label={`Recusar pedido de ${pedido.colaborador?.nome_completo ?? "colaborador"}`}
                             onClick={() => abrirDialog(pedido, "recusar")}
                             className="h-7 w-7 inline-flex items-center justify-center rounded-control text-danger hover:bg-danger-subtle"
                           >

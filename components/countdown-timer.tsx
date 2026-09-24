@@ -46,7 +46,7 @@ export function CountdownTimer({ dataLimite }: CountdownTimerProps) {
       <div className="flex items-center gap-2 p-3 rounded-lg bg-danger-subtle border border-danger/30">
         <AlertTriangle className="w-5 h-5 text-danger" />
         <div className="flex-1">
-          <p className="text-sm font-medium text-danger">Prazo Expirado</p>
+          <p className="text-sm font-medium text-danger">Prazo expirado</p>
           <p className="text-xs text-danger">O prazo para anexar a nota fiscal terminou</p>
         </div>
       </div>
@@ -70,7 +70,7 @@ export function CountdownTimer({ dataLimite }: CountdownTimerProps) {
         <p
           className={`text-sm font-medium ${isUrgent ? "text-warning" : "text-primary"}`}
         >
-          Tempo Restante para Anexar Nota
+          Tempo restante para anexar nota
         </p>
         <div
           className={`flex gap-2 text-xs font-mono ${isUrgent ? "text-warning" : "text-primary"}`}

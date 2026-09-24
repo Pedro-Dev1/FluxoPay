@@ -254,7 +254,7 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
       return
     }
     if (!addingMotivo.trim()) {
-      setAddingError("O motivo e obrigatorio")
+      setAddingError("Informe o motivo. Ele fica registrado no pedido.")
       return
     }
 
@@ -387,9 +387,9 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-1">
               <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground text-xs font-bold">1</span>
+                <span className="text-primary-foreground text-xs font-semibold">1</span>
               </div>
-              <Label className="text-sm font-semibold">Selecione o Colaborador</Label>
+              <Label className="text-sm font-semibold">Selecione o colaborador</Label>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-2">
@@ -430,7 +430,7 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
 
             {colaborador && (
               <div className="flex flex-wrap gap-2 mt-1">
-                <Badge variant="outline" className="text-xs">Salario: {fmt(salario)}</Badge>
+                <Badge variant="outline">Salário: {fmt(salario)}</Badge>
                 <Badge variant="outline" className="text-xs">Hora: {fmt(valorHoraNormal)}</Badge>
                 <Badge variant="outline" className="text-xs">Dia: {fmt(valorDiario)}</Badge>
                 <Badge variant="outline" className="text-xs">Pgto dia: {colaborador.dia_pagamento}</Badge>
@@ -443,8 +443,8 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="completo">Pagamento Completo</SelectItem>
-                  <SelectItem value="reembolso_km">Somente Reembolso KM</SelectItem>
+                  <SelectItem value="completo">Pagamento completo</SelectItem>
+                  <SelectItem value="reembolso_km">Somente reembolso KM</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -459,9 +459,9 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-1">
                 <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground text-xs font-bold">2</span>
+                  <span className="text-primary-foreground text-xs font-semibold">2</span>
                 </div>
-                <Label className="text-sm font-semibold">Adicionar Itens</Label>
+                <Label className="text-sm font-semibold">Adicionar itens</Label>
               </div>
 
               {/* Quick Type Buttons */}
@@ -475,7 +475,7 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
                       key={t}
                       type="button"
                       onClick={() => { setAddingTipo(t); setAddingQtd(""); setAddingValor(""); setAddingMotivo(""); setAddingError("") }}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                         isActive
                           ? `${cfg.bgCard} ${cfg.color} ring-2 ring-offset-1 ring-current`
                           : "bg-muted/50 text-muted-foreground border-transparent hover:bg-muted"
@@ -501,7 +501,7 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
                     {currentConfig.unidade !== "valor" && (
                       <div className="space-y-1">
                         <Label className="text-xs">
-                          Quantidade ({currentConfig.unidade === "dias" ? "dias uteis" : "horas"})
+                          Quantidade ({currentConfig.unidade === "dias" ? "dias úteis" : "horas"})
                         </Label>
                         <Input
                           type="number"
@@ -616,27 +616,27 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
           <CardContent className="pt-5 pb-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground text-xs font-bold">3</span>
+                <span className="text-primary-foreground text-xs font-semibold">3</span>
               </div>
-              <Label className="text-sm font-semibold">Resumo do Pedido</Label>
+              <Label className="text-sm font-semibold">Resumo do pedido</Label>
             </div>
 
             <div className="space-y-1.5">
               {tipoPedido === "completo" && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-1.5"><DollarSign className="h-3.5 w-3.5" />Salario Base</span>
+                  <span className="text-muted-foreground flex items-center gap-1.5"><DollarSign className="h-3.5 w-3.5" />Salário base</span>
                   <span className="font-medium">{fmt(resumo.salario)}</span>
                 </div>
               )}
               {resumo.horasExtras > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" />Horas Extras</span>
+                  <span className="text-muted-foreground flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" />Horas extras</span>
                   <span className="font-medium text-warning">+ {fmt(resumo.horasExtras)}</span>
                 </div>
               )}
               {resumo.plantao > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-1.5"><AlertCircle className="h-3.5 w-3.5" />Plantao</span>
+                  <span className="text-muted-foreground flex items-center gap-1.5"><AlertCircle className="h-3.5 w-3.5" />Plantão</span>
                   <span className="font-medium text-primary">+ {fmt(resumo.plantao)}</span>
                 </div>
               )}
@@ -666,8 +666,8 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
               )}
 
               <div className="border-t border-primary/30 pt-2 mt-2 flex justify-between">
-                <span className="font-bold text-base">Total Liquido</span>
-                <span className="font-bold text-lg text-primary">{fmt(resumo.totalLiquido)}</span>
+                <span className="font-semibold text-base">Total líquido</span>
+                <span className="font-semibold text-lg text-primary">{fmt(resumo.totalLiquido)}</span>
               </div>
             </div>
 

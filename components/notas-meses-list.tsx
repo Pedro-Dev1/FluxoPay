@@ -75,7 +75,7 @@ export function NotasMesesList({ meses }: NotasMesesListProps) {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {mesePorAno[ano].map((mes) => (
               <Link key={mes.key} href={`/gestao/notas/${mes.key}`} className="group">
-                <Card className="p-4 transition-all hover:shadow-md hover:border-foreground/20 group-hover:bg-muted/30">
+                <Card className="p-4 transition-colors hover:border-foreground/20 group-hover:bg-muted/30">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-warning-subtle text-warning border border-warning/30">

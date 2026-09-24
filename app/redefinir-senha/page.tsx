@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { RedefinirSenhaForm } from "@/components/redefinir-senha-form"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function RedefinirSenhaPage() {
   const session = await getSession()
@@ -10,17 +11,13 @@ export default async function RedefinirSenhaPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-2xl py-10 px-4">
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Redefinir Senha</h1>
-          <p className="text-muted-foreground mt-2">
-            Altere sua senha de acesso ao sistema. Por segurança, você precisará informar sua senha atual.
-          </p>
-        </div>
-
-        <RedefinirSenhaForm />
-      </div>
+    <div className="mx-auto w-full max-w-2xl px-4 py-8 lg:px-8">
+      <PageHeader
+        eyebrow="Sistema"
+        title="Redefinir senha"
+        description="Troque a senha de acesso. Por segurança, a senha atual é pedida antes."
+      />
+      <RedefinirSenhaForm />
     </div>
   )
 }

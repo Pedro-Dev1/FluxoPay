@@ -53,7 +53,7 @@ export function PedidoConfirmationDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Confirmar Pedido de Pagamento</DialogTitle>
+          <DialogTitle>Confirmar pedido de pagamento</DialogTitle>
           <DialogDescription>Revise os detalhes antes de enviar o pedido</DialogDescription>
         </DialogHeader>
 
@@ -61,7 +61,7 @@ export function PedidoConfirmationDialog({
           {/* Colaborador */}
           <div className="p-4 bg-accent border border-primary/30 rounded-lg">
             <p className="text-sm font-semibold text-primary mb-1">Colaborador</p>
-            <p className="text-lg font-bold text-primary">{colaboradorNome}</p>
+            <p className="text-lg font-semibold text-primary">{colaboradorNome}</p>
           </div>
 
           {pedido.tipo_pedido === "reembolso_km" ? (
@@ -70,7 +70,7 @@ export function PedidoConfirmationDialog({
                 <Car className="h-5 w-5 text-success" />
                 <span className="font-medium text-success">Reembolso KM</span>
               </div>
-              <span className="text-lg font-bold text-success">{fmt(pedido.valor_km)}</span>
+              <span className="text-lg font-semibold text-success">{fmt(pedido.valor_km)}</span>
             </div>
           ) : (
             <div className="space-y-3">
@@ -78,9 +78,9 @@ export function PedidoConfirmationDialog({
               <div className="flex items-center justify-between p-3 bg-success-subtle border border-success/30 rounded-lg">
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-5 w-5 text-success" />
-                  <span className="font-medium text-success">Salario Base</span>
+                  <span className="font-medium text-success">Salário base</span>
                 </div>
-                <span className="text-lg font-bold text-success">{fmt(salario)}</span>
+                <span className="text-lg font-semibold text-success">{fmt(salario)}</span>
               </div>
 
               {/* Horas Extras */}
@@ -88,7 +88,7 @@ export function PedidoConfirmationDialog({
                 <div className="p-3 bg-warning-subtle border border-warning/30 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
                     <Clock className="h-5 w-5 text-warning" />
-                    <span className="font-medium text-warning">Horas Extras</span>
+                    <span className="font-medium text-warning">Horas extras</span>
                   </div>
                   {pedido.horas_extras_50 > 0 && (
                     <p className="text-sm text-warning ml-7">
@@ -103,7 +103,7 @@ export function PedidoConfirmationDialog({
                   {pedido.motivo_horas_extras && (
                     <p className="text-xs text-warning ml-7 mt-1">Motivo: {pedido.motivo_horas_extras}</p>
                   )}
-                  <p className="text-lg font-bold text-warning ml-7 mt-1">Total: {fmt(valorTotalHe)}</p>
+                  <p className="text-lg font-semibold text-warning ml-7 mt-1">Total: {fmt(valorTotalHe)}</p>
                 </div>
               )}
 
@@ -114,7 +114,7 @@ export function PedidoConfirmationDialog({
                     <Car className="h-5 w-5 text-success" />
                     <span className="font-medium text-success">Quilometragem</span>
                   </div>
-                  <span className="text-lg font-bold text-success">{fmt(pedido.valor_km)}</span>
+                  <span className="text-lg font-semibold text-success">{fmt(pedido.valor_km)}</span>
                 </div>
               )}
 
@@ -125,7 +125,7 @@ export function PedidoConfirmationDialog({
                     <Bus className="h-5 w-5 text-primary" />
                     <span className="font-medium text-primary">Condução</span>
                   </div>
-                  <span className="text-lg font-bold text-primary">{fmt(pedido.conducao)}</span>
+                  <span className="text-lg font-semibold text-primary">{fmt(pedido.conducao)}</span>
                 </div>
               )}
 
@@ -135,9 +135,9 @@ export function PedidoConfirmationDialog({
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
                       <AlertCircle className="h-5 w-5 text-primary" />
-                      <span className="font-medium text-primary">Plantao</span>
+                      <span className="font-medium text-primary">Plantão</span>
                     </div>
-                    <span className="text-lg font-bold text-primary">{fmt(pedido.valor_plantao)}</span>
+                    <span className="text-lg font-semibold text-primary">{fmt(pedido.valor_plantao)}</span>
                   </div>
                   {pedido.motivo_plantao && <p className="text-sm text-primary ml-7">Motivo: {pedido.motivo_plantao}</p>}
                 </div>
@@ -151,7 +151,7 @@ export function PedidoConfirmationDialog({
                       <Award className="h-5 w-5 text-primary" />
                       <span className="font-medium text-primary">Comissão</span>
                     </div>
-                    <span className="text-lg font-bold text-primary">{fmt(pedido.comissao || 0)}</span>
+                    <span className="text-lg font-semibold text-primary">{fmt(pedido.comissao || 0)}</span>
                   </div>
                   {pedido.motivo_comissao && <p className="text-sm text-primary ml-7">Motivo: {pedido.motivo_comissao}</p>}
                 </div>
@@ -165,7 +165,7 @@ export function PedidoConfirmationDialog({
                       <Percent className="h-5 w-5 text-danger" />
                       <span className="font-medium text-danger">Desconto</span>
                     </div>
-                    <span className="text-lg font-bold text-danger">- {fmt(pedido.valor_desconto || 0)}</span>
+                    <span className="text-lg font-semibold text-danger">- {fmt(pedido.valor_desconto || 0)}</span>
                   </div>
                   {pedido.motivo_desconto && <p className="text-sm text-danger ml-7">Motivo: {pedido.motivo_desconto}</p>}
                 </div>
@@ -180,9 +180,9 @@ export function PedidoConfirmationDialog({
                 <div className="p-2 bg-success rounded-lg">
                   <DollarSign className="h-6 w-6 text-success-foreground" />
                 </div>
-                <span className="text-lg font-semibold text-success">Valor Total do Pedido</span>
+                <span className="text-lg font-semibold text-success">Valor total do pedido</span>
               </div>
-              <span className="text-3xl font-bold text-success">{fmt(valorTotal)}</span>
+              <span className="text-3xl font-semibold text-success">{fmt(valorTotal)}</span>
             </div>
           </div>
 

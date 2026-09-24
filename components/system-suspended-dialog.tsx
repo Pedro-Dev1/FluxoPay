@@ -26,7 +26,7 @@ export function SystemSuspendedDialog({ open, onOpenChange, reason }: SystemSusp
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-danger-subtle">
               <AlertTriangle className="h-6 w-6 text-danger" />
             </div>
-            <AlertDialogTitle className="text-xl">Sistema Suspenso</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl">Sistema suspenso</AlertDialogTitle>
           </div>
           <AlertDialogDescription className="pt-4 text-base">
             O sistema esta temporariamente suspenso. Nenhuma acao pode ser realizada no momento. Entre em contato com o administrador.

@@ -104,7 +104,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
 
       await atualizarColaborador(colaborador.id, updateData)
 
-      toast.success("Colaborador atualizado!")
+      toast.success("Colaborador atualizado.")
       onOpenChange(false)
       router.refresh()
     } catch (error) {
@@ -119,13 +119,13 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Editar Colaborador</DialogTitle>
+          <DialogTitle>Editar colaborador</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2 sm:col-span-2">
-              <Label htmlFor="edit_nome_completo">Nome Completo</Label>
+              <Label htmlFor="edit_nome_completo">Nome completo</Label>
               <Input
                 id="edit_nome_completo"
                 value={formData.nome_completo}
@@ -168,7 +168,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit_data_nascimento">Data de Nascimento</Label>
+              <Label htmlFor="edit_data_nascimento">Data de nascimento</Label>
               <Input
                 id="edit_data_nascimento"
                 type="date"
@@ -179,7 +179,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit_data_aniversario_contrato">Aniversário Contrato</Label>
+              <Label htmlFor="edit_data_aniversario_contrato">Aniversário do contrato</Label>
               <Input
                 id="edit_data_aniversario_contrato"
                 type="date"
@@ -189,7 +189,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit_tipo_acesso">Tipo de Acesso</Label>
+              <Label htmlFor="edit_tipo_acesso">Tipo de acesso</Label>
               <Select
                 value={formData.tipo_acesso}
                 onValueChange={(value) => setFormData({ ...formData, tipo_acesso: value as TipoAcesso })}
@@ -228,7 +228,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit_dia_pagamento">Dia de Pagamento</Label>
+              <Label htmlFor="edit_dia_pagamento">Dia de pagamento</Label>
               <Select
                 value={formData.dia_pagamento}
                 onValueChange={(value) => setFormData({ ...formData, dia_pagamento: value })}
@@ -244,7 +244,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit_salario">Salario Base (R$)</Label>
+              <Label htmlFor="edit_salario">Salário base (R$)</Label>
               <Input
                 id="edit_salario"
                 type="number"
@@ -258,7 +258,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
 
             {/* Centro de Custo */}
             <div className="space-y-2">
-              <Label htmlFor="edit_centro_custo">Centro de Custo</Label>
+              <Label htmlFor="edit_centro_custo">Centro de custo</Label>
               <Select
                 value={formData.centro_custo_id}
                 onValueChange={(value) => setFormData({ ...formData, centro_custo_id: value })}
@@ -279,7 +279,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
 
             {/* PIX */}
             <div className="space-y-2">
-              <Label htmlFor="edit_tipo_chave_pix">Tipo Chave PIX</Label>
+              <Label htmlFor="edit_tipo_chave_pix">Tipo de chave PIX</Label>
               <Select
                 value={formData.tipo_chave_pix || "none"}
                 onValueChange={(value) => setFormData({ ...formData, tipo_chave_pix: value === "none" ? "" : value })}
@@ -293,7 +293,7 @@ export function ColaboradorEditDialog({ colaborador, open, onOpenChange, usuario
                   <SelectItem value="cnpj">CNPJ</SelectItem>
                   <SelectItem value="email">E-mail</SelectItem>
                   <SelectItem value="telefone">Telefone</SelectItem>
-                  <SelectItem value="aleatoria">Chave Aleatoria</SelectItem>
+                  <SelectItem value="aleatoria">Chave aleatória</SelectItem>
                 </SelectContent>
               </Select>
             </div>

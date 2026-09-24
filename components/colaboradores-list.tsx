@@ -56,7 +56,7 @@ export function ColaboradoresList({ usuarioLogadoTipoAcesso }: ColaboradoresList
         ...dados.map((row) =>
           headers
             .map((header) => {
-              const value = row[header] || ""
+              const value = (row as Record<string, unknown>)[header] || ""
               // Escapar valores que contenham vírgulas ou aspas
               return `"${String(value).replace(/"/g, '""')}"`
             })
@@ -78,7 +78,7 @@ export function ColaboradoresList({ usuarioLogadoTipoAcesso }: ColaboradoresList
 
       toast({
         title: "Exportação concluída",
-        description: "Os dados foram exportados com sucesso!",
+        description: "Planilha de colaboradores exportada.",
       })
     } catch (error) {
       console.error("Erro ao exportar:", error)
@@ -104,7 +104,7 @@ export function ColaboradoresList({ usuarioLogadoTipoAcesso }: ColaboradoresList
       searchTerm === "" ||
       c.nome_completo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.cnpj.includes(searchTerm)
+      (c.cnpj ?? "").includes(searchTerm)
 
     return matchesEquipe && matchesSearch
   })
@@ -124,7 +124,7 @@ export function ColaboradoresList({ usuarioLogadoTipoAcesso }: ColaboradoresList
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Colaboradores Cadastrados</CardTitle>
+          <CardTitle>Colaboradores cadastrados</CardTitle>
           <CardDescription>Carregando...</CardDescription>
         </CardHeader>
       </Card>
@@ -136,7 +136,7 @@ export function ColaboradoresList({ usuarioLogadoTipoAcesso }: ColaboradoresList
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Colaboradores Cadastrados</CardTitle>
+            <CardTitle>Colaboradores cadastrados</CardTitle>
             <CardDescription>
               {colaboradoresFiltrados.length} de {colaboradores.length} colaborador
               {colaboradores.length !== 1 ? "es" : ""}

@@ -232,7 +232,7 @@ export async function redefinirSenha(senhaAtual: string, novaSenha: string) {
 
   return {
     success: true,
-    message: "Senha atualizada com sucesso!",
+    message: "Senha atualizada.",
   }
 }
 
@@ -367,5 +367,5 @@ export async function redefinirSenhaComToken(token: string, novaSenha: string) {
     return { success: false, error: "Erro ao redefinir senha. Tente novamente." }
   }
 
-  return { success: true, message: "Senha redefinida com sucesso!" }
+  return { success: true, message: "Senha redefinida." }
 }

@@ -13,6 +13,7 @@ import { listarHistoricoReajustes } from "@/app/actions/reajustes"
 import type { Colaborador } from "@/types/colaborador"
 import type { HistoricoReajuste } from "@/types/reajuste"
 import Link from "next/link"
+import { PageHeader } from "@/components/ui/page-header"
 
 export function ReajustesPageContent() {
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([])
@@ -90,26 +91,24 @@ export function ReajustesPageContent() {
   }
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-6xl">
-      <div className="flex items-center gap-4 mb-6">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <Button variant="ghost" size="sm" asChild className="mb-4 -ml-3">
         <Link href="/gestao">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
+          <ArrowLeft />
+          Voltar para gestão de pessoas
         </Link>
-        <div>
-          <h1 className="text-2xl font-semibold text-foreground">Aplicar Reajustes</h1>
-          <p className="text-sm text-muted-foreground">
-            Aplique reajustes salariais e consulte o histórico
-          </p>
-        </div>
-      </div>
+      </Button>
+      <PageHeader
+        eyebrow="Gestão"
+        title="Reajustes salariais"
+        description="Aplicação de reajuste e trilha de cada alteração de salário, com autor e data."
+      />
 
       <Tabs defaultValue="aplicar" className="w-full">
         <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">
           <TabsTrigger value="aplicar" className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
-            Aplicar Reajuste
+            Aplicar reajuste
           </TabsTrigger>
           <TabsTrigger value="historico" className="flex items-center gap-2">
             <History className="w-4 h-4" />
@@ -141,7 +140,7 @@ export function ReajustesPageContent() {
                     <TableHead>Email</TableHead>
                     <TableHead>CNPJ</TableHead>
                     <TableHead>Equipe</TableHead>
-                    <TableHead className="text-right">Salário Atual</TableHead>
+                    <TableHead className="text-right">Salário atual</TableHead>
                     <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -200,8 +199,8 @@ export function ReajustesPageContent() {
                     <TableHead>Data/Hora</TableHead>
                     <TableHead>Colaborador</TableHead>
                     <TableHead>Tipo</TableHead>
-                    <TableHead className="text-right">Salário Anterior</TableHead>
-                    <TableHead className="text-right">Novo Salário</TableHead>
+                    <TableHead className="text-right">Salário anterior</TableHead>
+                    <TableHead className="text-right">Novo salário</TableHead>
                     <TableHead>Motivo</TableHead>
                     <TableHead>Aplicado por</TableHead>
                   </TableRow>

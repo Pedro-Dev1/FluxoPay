@@ -5,6 +5,7 @@ import { NotasPeriodoList } from "@/components/notas-periodo-list"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
+import { PageHeader } from "@/components/ui/page-header"
 
 const MESES_NOMES = [
   "Janeiro",
@@ -90,22 +91,18 @@ export default async function NotasPeriodoPage({
   const mesNome = MESES_NOMES[mes - 1]
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-6xl">
-      <div className="mb-6">
-        <Link href="/notas">
-          <Button variant="ghost" size="sm" className="mb-4 -ml-2 text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar para meses
-          </Button>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <Button variant="ghost" size="sm" asChild className="mb-4 -ml-3">
+        <Link href="/gestao/notas">
+          <ArrowLeft />
+          Voltar para os meses
         </Link>
-
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">
-          {mesNome} {ano}
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          {notas.length} {notas.length === 1 ? "nota fiscal encontrada" : "notas fiscais encontradas"}
-        </p>
-      </div>
+      </Button>
+      <PageHeader
+        eyebrow="Notas fiscais"
+        title={`${mesNome} de ${ano}`}
+        description={`${notas.length} ${notas.length === 1 ? "nota fiscal no período" : "notas fiscais no período"}`}
+      />
 
       <NotasPeriodoList pedidos={notas} />
     </div>

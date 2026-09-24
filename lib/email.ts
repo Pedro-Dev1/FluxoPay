@@ -15,6 +15,11 @@ function getResendClient(): Resend | null {
 const FROM = process.env.RESEND_FROM_EMAIL || "Fluxteme <contato@fluxteme.com.br>"
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://fluxopay.connectvending.simpleqia.com"
 
+// Manual de Marca v2.0 · seção 09: e-mail transacional usa a assinatura
+// horizontal com 180 px de largura, sobre fundo claro. Seção 06: onde Jost e
+// Inter não estão disponíveis (e-mail), usar Arial/Helvetica; no lugar de
+// JetBrains Mono, Consolas/Courier New. Cores oficiais: navy #011832 para
+// texto, teal #00668A para ação e link (aqua não é usado sobre branco).
 function emailShell(opts: {
   preheader: string
   heading: string
@@ -23,19 +28,19 @@ function emailShell(opts: {
   cta?: { label: string; url: string } | null
 }) {
   const imagemHtml = opts.imagemUrl
-    ? `<img src="${opts.imagemUrl}" alt="" style="display:block; width:100%; max-width:416px; border-radius:8px; margin:0 0 20px 0;" />`
+    ? `<img src="${opts.imagemUrl}" alt="" style="display:block; width:100%; max-width:416px; border-radius:6px; margin:0 0 20px 0;" />`
     : ""
 
   const ctaHtml = opts.cta
     ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
                 <tr>
-                  <td style="border-radius:6px; background-color:#4FB8DC;">
-                    <a href="${opts.cta.url}" target="_blank" style="display:inline-block; padding:12px 24px; font-size:14px; font-weight:600; color:#07182A; text-decoration:none; border-radius:6px;">${opts.cta.label}</a>
+                  <td style="border-radius:4px; background-color:#00668A;">
+                    <a href="${opts.cta.url}" target="_blank" style="display:inline-block; padding:11px 22px; font-size:14px; font-weight:600; color:#FFFFFF; text-decoration:none; border-radius:4px;">${opts.cta.label}</a>
                   </td>
                 </tr>
               </table>
-              <p style="margin:20px 0 0 0; font-size:12px; line-height:18px; color:#5E7284;">Se o botão não funcionar, copie e cole este link no navegador:<br />
-                <a href="${opts.cta.url}" style="color:#05698B; word-break:break-all;">${opts.cta.url}</a>
+              <p style="margin:20px 0 0 0; font-size:12px; line-height:18px; color:#5A6B7B;">Se o botão não funcionar, copie e cole este link no navegador:<br />
+                <a href="${opts.cta.url}" style="color:#00668A; word-break:break-all;">${opts.cta.url}</a>
               </p>`
     : ""
 
@@ -46,28 +51,28 @@ function emailShell(opts: {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${opts.heading}</title>
 </head>
-<body style="margin:0; padding:0; background-color:#F4F7FA; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<body style="margin:0; padding:0; background-color:#F6F8F9; font-family:Arial,Helvetica,sans-serif;">
   <div style="display:none; max-height:0; overflow:hidden; opacity:0;">${opts.preheader}</div>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F4F7FA; padding:32px 16px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F6F8F9; padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px; width:100%; background-color:#FFFFFF; border-radius:8px; overflow:hidden; border:1px solid #E1E8EE;">
+        <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px; width:100%; background-color:#FFFFFF; border-radius:6px; overflow:hidden; border:1px solid #DFE3E6;">
           <tr>
-            <td style="padding:24px 32px; background-color:#07182A;">
-              <span style="display:inline-block; width:4px; height:18px; background-color:#EAF2F7; vertical-align:middle;"></span><span style="display:inline-block; width:10px; height:4px; background-color:#4FB8DC; vertical-align:middle; margin:0 14px 0 3px;"></span><span style="font-size:14px; font-weight:500; color:#EAF2F7; letter-spacing:0.4em; vertical-align:middle;">FLUXTEME</span>
+            <td style="padding:28px 32px 24px 32px; border-bottom:1px solid #DFE3E6;">
+              <img src="${APP_URL}/logo-claro.png" width="180" alt="FLUXTEME" style="display:block; width:180px; height:auto; border:0;" />
             </td>
           </tr>
           <tr>
             <td style="padding:32px;">
               ${imagemHtml}
-              <h1 style="margin:0 0 16px 0; font-size:20px; line-height:28px; font-weight:600; color:#07182A;">${opts.heading}</h1>
-              <div style="font-size:14px; line-height:22px; color:#4A5E70;">${opts.bodyHtml}</div>
+              <h1 style="margin:0 0 16px 0; font-size:20px; line-height:28px; font-weight:400; color:#011832;">${opts.heading}</h1>
+              <div style="font-size:14px; line-height:22px; color:#3D5166;">${opts.bodyHtml}</div>
               ${ctaHtml}
             </td>
           </tr>
           <tr>
-            <td style="padding:20px 32px; background-color:#F4F7FA; border-top:1px solid #E1E8EE;">
-              <p style="margin:0; font-size:12px; line-height:18px; color:#5E7284;">Fluxteme Tecnologia Desenvolvimento de Software LTDA · CNPJ 69.046.679/0001-56<br />Este é um e-mail automático, não é necessário responder.</p>
+            <td style="padding:20px 32px; background-color:#F6F8F9; border-top:1px solid #DFE3E6;">
+              <p style="margin:0; font-size:12px; line-height:18px; color:#5A6B7B;">Fluxteme Tecnologia Desenvolvimento de Software LTDA · CNPJ 69.046.679/0001-56<br />Mensagem automática. Dúvidas: <a href="mailto:contato@fluxteme.com.br" style="color:#00668A;">contato@fluxteme.com.br</a></p>
             </td>
           </tr>
         </table>
@@ -166,7 +171,7 @@ export async function enviarEmailAtualizacao(params: {
 }) {
   const bodyHtml = `
     <p style="margin:0 0 12px 0;">Olá, ${escapeHtml(params.nome)}.</p>
-    ${params.subtitulo ? `<p style="margin:0 0 12px 0; font-weight:600; color:#07182A;">${escapeHtml(params.subtitulo)}</p>` : ""}
+    ${params.subtitulo ? `<p style="margin:0 0 12px 0; font-weight:600; color:#011832;">${escapeHtml(params.subtitulo)}</p>` : ""}
     ${paragrafosHtml(params.descricao)}
   `
   const resend = getResendClient()
@@ -207,12 +212,12 @@ export async function enviarEmailFaturaPlataforma(params: {
   const bodyHtml = `
     <p style="margin:0 0 12px 0;">Olá.</p>
     <p style="margin:0 0 12px 0;">A fatura da ${escapeHtml(params.nomeCarteira)} referente a ${String(params.referenciaMes).padStart(2, "0")}/${params.referenciaAno} está disponível.</p>
-    <p style="margin:0 0 4px 0;"><strong style="color:#07182A;">Valor:</strong> ${escapeHtml(params.valorFormatado)}</p>
-    <p style="margin:0 0 12px 0;"><strong style="color:#07182A;">Vencimento:</strong> ${escapeHtml(params.dataVencimentoFormatada)}</p>
+    <p style="margin:0 0 4px 0;"><strong style="color:#011832;">Valor:</strong> ${escapeHtml(params.valorFormatado)}</p>
+    <p style="margin:0 0 12px 0;"><strong style="color:#011832;">Vencimento:</strong> ${escapeHtml(params.dataVencimentoFormatada)}</p>
     ${
       params.boletoLinha
-        ? `<p style="margin:0 0 4px 0; font-size:12px; color:#5E7284;">Linha digitável:</p>
-    <p style="margin:0; font-family:monospace; font-size:13px; word-break:break-all; color:#07182A;">${escapeHtml(params.boletoLinha)}</p>`
+        ? `<p style="margin:0 0 4px 0; font-size:12px; color:#5A6B7B;">Linha digitável:</p>
+    <p style="margin:0; font-family:Consolas,'Courier New',monospace; font-size:13px; word-break:break-all; color:#011832;">${escapeHtml(params.boletoLinha)}</p>`
         : ""
     }
   `

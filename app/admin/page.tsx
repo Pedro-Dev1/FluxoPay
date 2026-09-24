@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card"
 import { obterEstatisticasAdmin } from "@/app/actions/tenants"
 import { AdminErroCarregamento } from "@/components/admin-erro-carregamento"
 import { ehErroDeControleDoNext } from "@/lib/next-render-errors"
@@ -13,22 +12,26 @@ export default async function AdminOverviewPage() {
     return <AdminErroCarregamento mensagem={error instanceof Error ? error.message : undefined} />
   }
 
-  const cards = [
-    { label: "Carteiras", value: stats.totalCarteiras },
-    { label: "Colaboradores", value: stats.totalColaboradores },
-    { label: "Super Admins", value: stats.totalSuperAdmins },
-  ]
+  const mediaPorCarteira = stats.totalCarteiras > 0 ? stats.totalColaboradores / stats.totalCarteiras : 0
 
+  // Uma métrica primária (base de usuários) e duas de apoio, numa faixa só.
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
-      {cards.map((card) => (
-        <Card key={card.label}>
-          <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground">{card.label}</p>
-            <p className="text-3xl font-semibold text-foreground mt-1 tabular-nums">{card.value}</p>
-          </CardContent>
-        </Card>
-      ))}
+    <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-[2fr_1fr_1fr]">
+      <div className="bg-card p-5">
+        <p className="type-eyebrow text-text-tertiary">Colaboradores nas carteiras</p>
+        <p className="type-metric mt-2 text-foreground">{stats.totalColaboradores.toLocaleString("pt-BR")}</p>
+        <p className="mt-1 text-xs tabular-nums text-text-tertiary">
+          média de {mediaPorCarteira.toLocaleString("pt-BR", { maximumFractionDigits: 1 })} por carteira
+        </p>
+      </div>
+      <div className="bg-card p-5">
+        <p className="type-eyebrow text-text-tertiary">Carteiras</p>
+        <p className="mt-2 font-display text-2xl font-light tabular-nums text-foreground">{stats.totalCarteiras}</p>
+      </div>
+      <div className="bg-card p-5">
+        <p className="type-eyebrow text-text-tertiary">Super Admins</p>
+        <p className="mt-2 font-display text-2xl font-light tabular-nums text-foreground">{stats.totalSuperAdmins}</p>
+      </div>
     </div>
   )
 }

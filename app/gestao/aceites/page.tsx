@@ -14,7 +14,7 @@ export default async function AceitesPage() {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
       <AceitesTermosList />
     </div>
   )

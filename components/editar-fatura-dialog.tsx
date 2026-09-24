@@ -138,7 +138,7 @@ export function EditarFaturaDialog({
         setUploading(false)
 
         // Atualizar URL do PDF
-        await updateFaturaPdf(fatura.id, pdfUrl)
+        await updateFaturaPdf(fatura.id, pdfUrl ?? "")
       }
 
       // Atualizar fatura
@@ -178,7 +178,7 @@ export function EditarFaturaDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Editar Fatura</DialogTitle>
+          <DialogTitle>Editar fatura</DialogTitle>
           <DialogDescription>
             Atualize as informações da fatura e os colaboradores com acesso.
           </DialogDescription>
@@ -237,7 +237,7 @@ export function EditarFaturaDialog({
               </div>
 
               <div className="space-y-2">
-                <Label>PDF da Fatura</Label>
+                <Label>PDF da fatura</Label>
                 {fatura.arquivo_pdf_url && !pdfFile && (
                   <div className="flex items-center gap-3 p-3 border rounded-lg bg-muted/50 mb-2">
                     <FileText className="h-8 w-8 text-danger" />

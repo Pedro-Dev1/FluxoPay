@@ -163,15 +163,16 @@ export function EquipeDetailView({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Link href="/cadastros/equipes">
-          <Button variant="ghost" size="icon" className="h-9 w-9">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
+      <div className="flex items-start gap-3">
+        <Button variant="ghost" size="icon" asChild className="-ml-2 mt-6 shrink-0">
+          <Link href="/cadastros/equipes" aria-label="Voltar para equipes">
+            <ArrowLeft />
+          </Link>
+        </Button>
         <div className="flex-1 min-w-0">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground truncate">{equipe.nome}</h1>
-          <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+          <p className="type-eyebrow mb-2 text-primary">Equipe</p>
+          <h1 className="type-title truncate text-foreground">{equipe.nome}</h1>
+          <div className="mt-1.5 flex flex-wrap items-center gap-3 text-sm text-text-secondary">
             {equipe.supervisor && (
               <span className="flex items-center gap-1.5">
                 <UserCheck className="h-3.5 w-3.5" />
@@ -186,9 +187,9 @@ export function EquipeDetailView({
             )}
           </div>
         </div>
-        <Button variant="outline" size="sm" className="gap-2" onClick={() => setEditDialogOpen(true)}>
-          <Settings className="h-4 w-4" />
-          <span className="hidden sm:inline">Configurar</span>
+        <Button variant="outline" className="mt-6" onClick={() => setEditDialogOpen(true)}>
+          <Settings />
+          <span className="hidden sm:inline">Configurar equipe</span>
         </Button>
       </div>
 
@@ -263,7 +264,7 @@ export function EquipeDetailView({
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
         <DialogContent className="sm:max-w-md max-h-[80vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>Adicionar Membro</DialogTitle>
+            <DialogTitle>Adicionar membro</DialogTitle>
           </DialogHeader>
           <div className="space-y-3 flex-1 overflow-hidden flex flex-col">
             <Input
@@ -303,11 +304,11 @@ export function EquipeDetailView({
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Configurar Equipe</DialogTitle>
+            <DialogTitle>Configurar equipe</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="edit-nome">Nome da Equipe</Label>
+              <Label htmlFor="edit-nome">Nome da equipe</Label>
               <Input
                 id="edit-nome"
                 value={editNome}

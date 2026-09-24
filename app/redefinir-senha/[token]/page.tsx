@@ -13,7 +13,7 @@ export default async function RedefinirSenhaTokenPage({ params }: { params: Prom
       {valido ? (
         <>
           <div className="mb-5">
-            <h1 className="text-base font-semibold text-foreground">Criar nova senha</h1>
+            <h1 className="type-subtitle text-foreground">Criar nova senha</h1>
             <p className="text-text-secondary text-sm mt-0.5">Escolha uma nova senha para acessar sua conta.</p>
           </div>
           <RedefinirSenhaTokenForm token={token} />

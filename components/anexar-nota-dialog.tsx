@@ -76,7 +76,7 @@ export function AnexarNotaDialog({
         return
       }
 
-      toast.success("Nota fiscal anexada com sucesso! O financeiro foi notificado.")
+      toast.success("Nota fiscal anexada. O financeiro foi notificado.")
       onOpenChange(false)
       router.refresh()
     } catch (error) {
@@ -104,7 +104,7 @@ export function AnexarNotaDialog({
                   {uploadandoPdf
                     ? "Enviando PDF..."
                     : arquivoPdf
-                      ? `${arquivoPdf.name} ✓`
+                      ? arquivoPdf.name
                       : "Clique para selecionar o arquivo PDF"}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">

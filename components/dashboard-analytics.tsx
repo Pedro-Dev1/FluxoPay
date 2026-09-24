@@ -2,13 +2,14 @@
 
 import { Fragment, useState, useMemo, useEffect } from "react"
 import type { PedidoPagamento } from "@/types/pedido"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Section } from "@/components/ui/section"
+import { EmptyState } from "@/components/ui/empty-state"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useMaskedCurrency } from "@/components/currency-display"
 import { SimplePager } from "@/components/ui/simple-pager"
-import { Download, ChevronDown, ChevronUp, Receipt } from "lucide-react"
+import { Download, ChevronDown, ChevronUp } from "lucide-react"
 
 interface DashboardAnalyticsProps {
   // Já filtrado por quem chama (DashboardClient) — este componente só ordena, pagina e exibe.
@@ -110,14 +111,14 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
       "Centro de Custo",
       "Tipo",
       "Status",
-      "Salario Base",
+      "Salário base",
       "HE 50% (h)",
       "HE 100% (h)",
       "Valor Horas Extras",
       "Reembolso KM",
-      "Plantao",
-      "Conducao",
-      "Comissao",
+      "Plantão",
+      "Condução",
+      "Comissão",
       "Desconto",
       "Valor Total",
       "Criado por",
@@ -140,7 +141,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
       const nome = colab?.nome_completo || ""
       const equipeNome = (colab as any)?.equipe?.nome || ""
       const ccNome = (colab as any)?.centro_custo ? `${(colab as any).centro_custo.numero} - ${(colab as any).centro_custo.nome}` : ""
-      const tipo = p.tipo_pedido === "reembolso_km" ? "Reembolso KM" : "Completo"
+      const tipo = p.tipo_pedido === "reembolso_km" ? "Reembolso de KM" : "Completo"
       const salarioBase = p.tipo_pedido === "reembolso_km" ? 0 : (p.salario_base ?? colab?.salario ?? 0)
       const he50h = p.horas_extras_50 || 0
       const he100h = p.horas_extras_100 || 0
@@ -174,7 +175,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
 <?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
-  <Worksheet ss:Name="Relatorio">
+  <Worksheet ss:Name="Relatório">
     <Table>${xmlRows}</Table>
   </Worksheet>
 </Workbook>`
@@ -191,62 +192,76 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
   return (
     <div className="space-y-6">
       {/* Filters + Table */}
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <Receipt className="h-4 w-4" />
-              Todos os Pedidos ({filteredPedidos.length})
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={exportExcel}>
-                <Download className="h-4 w-4 mr-1" />
-                Excel
-              </Button>
+      <Section
+        title="Todos os pedidos"
+        description={`${filteredPedidos.length} ${filteredPedidos.length === 1 ? "pedido" : "pedidos"} no filtro atual`}
+        action={
+          <Button variant="outline" size="sm" onClick={exportExcel} disabled={filteredPedidos.length === 0}>
+            <Download />
+            Exportar planilha
+          </Button>
+        }
+      >
+          {filteredPedidos.length === 0 ? (
+            <div className="rounded-lg border border-border bg-card">
+              <EmptyState
+                compact
+                title="Nenhum pedido no período"
+                description="Amplie o período ou limpe os filtros acima. Pedidos lançados aparecem aqui assim que são criados."
+              />
             </div>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-0">
-          {/* Table */}
-          <div className="rounded-lg border overflow-hidden">
+          ) : (
+          <>
+          <div className="overflow-hidden rounded-lg border border-border bg-card">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-muted/30 hover:bg-muted/30">
+                  <TableRow>
                     <TableHead
-                      className="cursor-pointer hover:text-foreground text-xs"
-                      onClick={() => handleSort("created_at")}
+                      aria-sort={sortField === "created_at" ? (sortAsc ? "ascending" : "descending") : "none"}
                     >
-                      Data <SortIcon field="created_at" />
+                      <button type="button" onClick={() => handleSort("created_at")} className="inline-flex items-center uppercase hover:text-foreground">
+                        Data <SortIcon field="created_at" />
+                      </button>
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer hover:text-foreground text-xs"
-                      onClick={() => handleSort("nome")}
+                      aria-sort={sortField === "nome" ? (sortAsc ? "ascending" : "descending") : "none"}
                     >
-                      Colaborador <SortIcon field="nome" />
+                      <button type="button" onClick={() => handleSort("nome")} className="inline-flex items-center uppercase hover:text-foreground">
+                        Colaborador <SortIcon field="nome" />
+                      </button>
                     </TableHead>
-                    <TableHead className="text-xs hidden lg:table-cell">Equipe</TableHead>
-                    <TableHead className="text-xs">Tipo</TableHead>
+                    <TableHead className="hidden lg:table-cell">Equipe</TableHead>
+                    <TableHead>Tipo</TableHead>
                     <TableHead
-                      className="cursor-pointer hover:text-foreground text-xs"
-                      onClick={() => handleSort("status")}
+                      aria-sort={sortField === "status" ? (sortAsc ? "ascending" : "descending") : "none"}
                     >
-                      Status <SortIcon field="status" />
+                      <button type="button" onClick={() => handleSort("status")} className="inline-flex items-center uppercase hover:text-foreground">
+                        Status <SortIcon field="status" />
+                      </button>
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer hover:text-foreground text-xs text-right"
-                      onClick={() => handleSort("valor_total")}
+                      aria-sort={sortField === "valor_total" ? (sortAsc ? "ascending" : "descending") : "none"}
+                      className="text-right"
                     >
-                      Valor Total <SortIcon field="valor_total" />
+                      <button type="button" onClick={() => handleSort("valor_total")} className="inline-flex items-center uppercase hover:text-foreground">
+                        Valor total <SortIcon field="valor_total" />
+                      </button>
                     </TableHead>
-                    <TableHead className="text-xs w-8"></TableHead>
+                    <TableHead className="w-8">
+                      <span className="sr-only">Detalhes</span>
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {pagedPedidos.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-8 text-muted-foreground text-sm">
-                        Nenhum pedido encontrado com os filtros selecionados
+                      <TableCell colSpan={7} className="p-0">
+                        <EmptyState
+                          compact
+                          title="Nenhum pedido com esses filtros"
+                          description="Amplie o período ou limpe os filtros acima para ver mais pedidos."
+                        />
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -254,15 +269,15 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                       const colab = p.colaborador || p.colaboradores
                       const nome = colab?.nome_completo || "N/A"
                       const isExpanded = expandedRow === p.id
-                      const tipo = p.tipo_pedido === "reembolso_km" ? "Reembolso KM" : "Completo"
+                      const tipo = p.tipo_pedido === "reembolso_km" ? "Reembolso de KM" : "Completo"
 
                       return (
                         <Fragment key={p.id}>
                           <TableRow
-                            className="cursor-pointer hover:bg-muted/30"
+                            className="cursor-pointer"
                             onClick={() => setExpandedRow(isExpanded ? null : p.id)}
                           >
-                            <TableCell className="text-xs font-mono">{formatDateBR(p.created_at)}</TableCell>
+                            <TableCell className="type-audit whitespace-nowrap text-text-secondary">{formatDateBR(p.created_at)}</TableCell>
                             <TableCell className="text-sm font-medium">{nome}</TableCell>
                             <TableCell className="hidden lg:table-cell text-xs text-muted-foreground">
                               {(colab as any)?.equipe?.nome || "-"}
@@ -277,7 +292,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                                 {STATUS_LABELS[p.status] || p.status}
                               </Badge>
                             </TableCell>
-                            <TableCell className="text-right text-sm font-semibold">
+                            <TableCell className="text-right text-sm font-medium tabular-nums whitespace-nowrap">
                               {formatValue(p.valor_total)}
                             </TableCell>
                             <TableCell>
@@ -290,11 +305,11 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                           </TableRow>
                           {isExpanded && (
                             <TableRow key={`${p.id}-detail`}>
-                              <TableCell colSpan={7} className="bg-muted/20 px-6 py-3">
+                              <TableCell colSpan={7} className="bg-surface px-6 py-4">
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                                   {p.tipo_pedido !== "reembolso_km" && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Salário Base</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Salário base</span>
                                       <span className="font-medium">
                                         {formatValue(p.salario_base ?? colab?.salario ?? 0)}
                                       </span>
@@ -302,7 +317,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                                   )}
                                   {((p.horas_extras_50 || 0) > 0 || (p.horas_extras_100 || 0) > 0) && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Horas Extras</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Horas extras</span>
                                       <span className="font-medium">
                                         {p.horas_extras_50 || 0}h (50%) + {p.horas_extras_100 || 0}h (100%)
                                       </span>
@@ -313,13 +328,13 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                                   )}
                                   {(p.valor_km || 0) > 0 && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Reembolso KM</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Reembolso de KM</span>
                                       <span className="font-medium">{formatValue(p.valor_km)}</span>
                                     </div>
                                   )}
                                   {(p.valor_plantao || 0) > 0 && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Plantão</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Plantão</span>
                                       <span className="font-medium">{formatValue(p.valor_plantao)}</span>
                                       {p.motivo_plantao && (
                                         <span className="text-xs text-muted-foreground block">{p.motivo_plantao}</span>
@@ -328,13 +343,13 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                                   )}
                                   {(p.conducao || 0) > 0 && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Condução</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Condução</span>
                                       <span className="font-medium">{formatValue(p.conducao)}</span>
                                     </div>
                                   )}
                                   {(p.comissao || 0) > 0 && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Comissão</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Comissão</span>
                                       <span className="font-medium">{formatValue(p.comissao || 0)}</span>
                                       {p.motivo_comissao && (
                                         <span className="text-xs text-muted-foreground block">{p.motivo_comissao}</span>
@@ -343,7 +358,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                                   )}
                                   {(p.valor_desconto || 0) > 0 && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Desconto</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Desconto</span>
                                       <span className="font-medium text-danger">{formatValue(p.valor_desconto, true)}</span>
                                       {p.motivo_desconto && (
                                         <span className="text-xs text-muted-foreground block">{p.motivo_desconto}</span>
@@ -352,25 +367,25 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                                   )}
                                   {p.data_previsao_pagamento && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Previsão Pagamento</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Previsão de pagamento</span>
                                       <span className="font-medium">{formatDateBR(p.data_previsao_pagamento)}</span>
                                     </div>
                                   )}
                                   {(p.colaborador as any)?.equipe?.nome && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Equipe</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Equipe</span>
                                       <span className="font-medium">{(p.colaborador as any).equipe.nome}</span>
                                     </div>
                                   )}
                                   {(p.colaborador as any)?.centro_custo && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Centro de Custo</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Centro de custo</span>
                                       <span className="font-medium">{(p.colaborador as any).centro_custo.numero} - {(p.colaborador as any).centro_custo.nome}</span>
                                     </div>
                                   )}
                                   {p.criado_por && (
                                     <div>
-                                      <span className="text-muted-foreground text-xs block">Criado por</span>
+                                      <span className="type-eyebrow block text-text-tertiary">Criado por</span>
                                       <span className="font-medium">{p.criado_por.nome_completo}</span>
                                     </div>
                                   )}
@@ -394,8 +409,9 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
             onPageChange={setPage}
             onPageSizeChange={setPageSize}
           />
-        </CardContent>
-      </Card>
+          </>
+          )}
+      </Section>
     </div>
   )
 }

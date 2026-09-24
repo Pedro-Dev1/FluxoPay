@@ -60,7 +60,7 @@ export function PasswordConfirmDialog({
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="senha">Senha de Confirmação</Label>
+            <Label htmlFor="senha">Senha de confirmação</Label>
             <Input
               id="senha"
               type="password"

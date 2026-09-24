@@ -53,7 +53,7 @@ export default function EsqueciSenhaPage() {
       ) : (
         <>
           <div className="mb-5">
-            <h1 className="text-base font-semibold text-foreground">Esqueci minha senha</h1>
+            <h1 className="type-subtitle text-foreground">Esqueci minha senha</h1>
             <p className="text-text-secondary text-sm mt-0.5">
               Informe seu e-mail cadastrado e enviaremos um link para redefinir sua senha.
             </p>

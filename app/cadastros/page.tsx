@@ -38,8 +38,8 @@ export default async function CadastrosPage() {
   ]
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-5xl">
-      <PageHeader title="Cadastros" description="Gerencie colaboradores, equipes e centros de custo do sistema" />
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader eyebrow="Gestão" title="Cadastros" description="Colaboradores, equipes e centros de custo da carteira." />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {cadastros.map((item) => {

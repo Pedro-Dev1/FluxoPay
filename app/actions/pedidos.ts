@@ -85,7 +85,7 @@ export async function criarPedido(data: NovoPedido) {
   // Gerente e Financeiro pulam aprovacao do gerente
   const statusInicial = ["Gerente", "Financeiro"].includes(ctx.tipoAcesso) ? "pendente_financeiro" : "pendente_gerente"
 
-  const dadosPedido =
+  const dadosPedido: Record<string, unknown> =
     data.tipo_pedido === "reembolso_km"
       ? {
           colaborador_id: data.colaborador_id,
@@ -1067,7 +1067,7 @@ export async function solicitarProrrogacaoPrazo(pedidoId: string, motivo: string
   revalidatePath("/meus-pagamentos")
   revalidatePath("/financeiro")
 
-  return { success: true, message: "Solicitação enviada ao financeiro com sucesso!" }
+  return { success: true, message: "Pedido de prorrogação enviado ao financeiro." }
 }
 
 export async function listarSolicitacoesProrrogacao() {
@@ -1178,6 +1178,14 @@ export async function listarTodosPedidos(filtros?: {
       criado_por:colaboradores!criado_por_colaborador_id (
         nome_completo,
         tipo_acesso
+      ),
+      aprovado_por_gerente:colaboradores!aprovado_por_gerente_id (
+        id,
+        nome_completo
+      ),
+      aprovado_por_financeiro:colaboradores!aprovado_por_financeiro_id (
+        id,
+        nome_completo
       ),
       notas_fiscais (
         id,

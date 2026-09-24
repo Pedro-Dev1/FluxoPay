@@ -23,13 +23,14 @@ export default async function AprovacoesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-7xl">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
       <PageHeader
+        eyebrow="Operação"
         title="Aprovações pendentes"
         description={
           usuario.tipo_acesso === "Gerente"
-            ? "Aprove, recuse ou solicite correções nos pedidos de pagamento"
-            : "Aprove ou recuse os pedidos já aprovados pelo gerente"
+            ? "Pedidos da sua equipe aguardando decisão: aprovar, recusar ou pedir correção."
+            : "Pedidos já aprovados pelo gerente aguardando a decisão do financeiro."
         }
       />
 

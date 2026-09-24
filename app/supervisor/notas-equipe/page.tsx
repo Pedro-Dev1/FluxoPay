@@ -2,6 +2,7 @@ import { listarPedidosPorSupervisor } from "@/app/actions/pedidos"
 import { getUsuarioLogado } from "@/lib/auth-utils"
 import { NotasEnviadasList } from "@/components/notas-enviadas-list"
 import { redirect } from "next/navigation"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function SupervisorNotasEquipePage() {
   const usuario = await getUsuarioLogado()
@@ -22,13 +23,8 @@ export default async function SupervisorNotasEquipePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-3 text-balance">Notas da Minha Equipe</h1>
-        <p className="text-lg text-muted-foreground">
-          Acompanhe as notas fiscais e pagamentos dos colaboradores da sua equipe
-        </p>
-      </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader eyebrow="Operação" title="Notas da equipe" description="Notas fiscais e pagamentos dos colaboradores da sua equipe." />
 
       <NotasEnviadasList pedidos={pedidos} canApprove={false} />
     </div>

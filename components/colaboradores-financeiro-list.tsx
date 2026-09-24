@@ -71,7 +71,7 @@ export function ColaboradoresFinanceiroList() {
         <Button asChild variant="outline">
           <Link href="/gestao/reajustes">
             <History className="w-4 h-4 mr-2" />
-            Ver Histórico
+            Ver histórico
           </Link>
         </Button>
       </div>
@@ -111,7 +111,7 @@ export function ColaboradoresFinanceiroList() {
                   <TableCell className="text-right">
                     <Button onClick={() => handleReajusteClick(colaborador)} size="sm">
                       <TrendingUp className="w-4 h-4 mr-2" />
-                      Aplicar Reajuste
+                      Aplicar reajuste
                     </Button>
                   </TableCell>
                 </TableRow>

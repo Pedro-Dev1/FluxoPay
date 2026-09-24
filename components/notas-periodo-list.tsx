@@ -59,7 +59,7 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
         return (
           <Badge variant="default" className="bg-primary text-xs">
             <CheckCircle className="w-3 h-3 mr-1" />
-            Nota Recebida
+            Nota recebida
           </Badge>
         )
       case "pago":
@@ -193,15 +193,15 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
                     <>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs bg-muted/30 p-2 rounded">
                         <div>
-                          <span className="text-muted-foreground block">Salario</span>
+                          <span className="text-muted-foreground block">Salário</span>
                           <span className="font-semibold">{formatValue(pedido.salario_base ?? pedido.colaborador?.salario ?? 0)}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground block">Horas Extras</span>
+                          <span className="text-muted-foreground block">Horas extras</span>
                           <span className="font-semibold">{formatValue(pedido.horas_extras || 0)}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground block">Plantao</span>
+                          <span className="text-muted-foreground block">Plantão</span>
                           <span className="font-semibold">{formatValue(pedido.valor_plantao || 0)}</span>
                         </div>
                         <div>
@@ -241,12 +241,12 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
                     <div className="flex justify-between items-end">
                       {!isReembolsoKm && (
                         <div>
-                          <div className="text-xs text-muted-foreground">Valor para Nota Fiscal</div>
+                          <div className="text-xs text-muted-foreground">Valor para nota fiscal</div>
                           <div className="text-sm font-semibold text-primary">{formatValue(valorNF)}</div>
                         </div>
                       )}
                       <div className={`text-right ${isReembolsoKm ? "w-full" : ""}`}>
-                        <div className="text-xs text-muted-foreground">Total do Pedido</div>
+                        <div className="text-xs text-muted-foreground">Total do pedido</div>
                         <div className="text-sm font-semibold">{formatValue(pedido.valor_total)}</div>
                       </div>
                     </div>

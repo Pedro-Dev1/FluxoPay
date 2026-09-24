@@ -165,7 +165,7 @@ export function NovaFaturaDialog({ colaboradores, criadorId, onFaturaCreated }: 
         
         onFaturaCreated(faturaParaCallback)
         
-        toast({ title: "Fatura criada com sucesso!", variant: "default" })
+        toast({ title: "Fatura criada.", variant: "default" })
         setOpen(false)
         resetForm()
       } else {
@@ -196,12 +196,12 @@ export function NovaFaturaDialog({ colaboradores, criadorId, onFaturaCreated }: 
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Nova Fatura
+          Nova fatura
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Nova Fatura</DialogTitle>
+          <DialogTitle>Nova fatura</DialogTitle>
           <DialogDescription>
             Crie uma nova fatura e selecione quais colaboradores podem visualizá-la.
           </DialogDescription>

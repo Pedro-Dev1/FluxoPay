@@ -80,7 +80,7 @@ export default function PrivacidadePage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border-strong">
-                  <th className="text-left py-2.5 px-3 text-foreground font-medium">Base Legal</th>
+                  <th className="text-left py-2.5 px-3 text-foreground font-medium">Base legal</th>
                   <th className="text-left py-2.5 px-3 text-foreground font-medium">Artigo LGPD</th>
                   <th className="text-left py-2.5 px-3 text-foreground font-medium">Aplicação</th>
                 </tr>
@@ -144,8 +144,8 @@ export default function PrivacidadePage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border-strong">
-                  <th className="text-left py-2.5 px-3 text-foreground font-medium">Tipo de Dado</th>
-                  <th className="text-left py-2.5 px-3 text-foreground font-medium">Prazo de Retenção</th>
+                  <th className="text-left py-2.5 px-3 text-foreground font-medium">Tipo de dado</th>
+                  <th className="text-left py-2.5 px-3 text-foreground font-medium">Prazo de retenção</th>
                 </tr>
               </thead>
               <tbody className="text-text-secondary">
@@ -194,7 +194,7 @@ export default function PrivacidadePage() {
           </p>
           <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-1 mb-4">
             <li>
-              <strong className="text-foreground">Confirmação e Acesso</strong> - confirmar existência e obter cópia
+              <strong className="text-foreground">Confirmação e acesso</strong> - confirmar existência e obter cópia
               dos dados
             </li>
             <li>

@@ -93,7 +93,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
       }
 
       console.log("[v0] Upload concluído:", result.url)
-      setPdfUrls((prev) => ({ ...prev, [pedidoId]: result.url }))
+      if (result.url) setPdfUrls((prev) => ({ ...prev, [pedidoId]: result.url as string }))
     } catch (error) {
       console.error("[v0] Erro ao fazer upload:", error)
       toast.error(error instanceof Error ? error.message : "Erro ao fazer upload do PDF")
@@ -247,13 +247,13 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                     {aguardandoProrrogacao && (
                       <span className="px-2 py-1 text-xs font-medium bg-warning-subtle text-warning rounded-full flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        Aguardando Prorrogação
+                        Aguardando prorrogação
                       </span>
                     )}
                     {prorrogacaoNegada && (
                       <span className="px-2 py-1 text-xs font-medium bg-danger-subtle text-danger rounded-full flex items-center gap-1">
                         <XCircle className="w-3 h-3" />
-                        Prorrogação Negada
+                        Prorrogação negada
                       </span>
                     )}
                   </div>
@@ -315,12 +315,12 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                             <p className="text-sm text-muted-foreground font-medium mb-1">
                               Quilometragem (Reembolso)
                             </p>
-                            <p className="text-3xl font-bold text-foreground">
+                            <p className="text-3xl font-semibold text-foreground">
                               {formatValue(pedido.valor_km)}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs text-muted-foreground mb-1">Total do Pedido</p>
+                            <p className="text-xs text-muted-foreground mb-1">Total do pedido</p>
                             <p className="text-lg font-semibold text-foreground">
                               {formatValue(pedido.valor_total)}
                             </p>
@@ -332,14 +332,14 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                         <div className="flex items-end justify-between">
                           <div className="flex-1">
                             <p className="text-sm text-muted-foreground font-medium mb-1">
-                              Valor para Nota Fiscal
+                              Valor para nota fiscal
                             </p>
-                            <p className="text-3xl font-bold text-foreground">
+                            <p className="text-3xl font-semibold text-foreground">
                               {formatValue(valorParaEmitir)}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs text-muted-foreground mb-1">Total do Pedido</p>
+                            <p className="text-xs text-muted-foreground mb-1">Total do pedido</p>
                             <p className="text-lg font-semibold text-foreground">
                               {formatValue(pedido.valor_total)}
                             </p>
@@ -367,7 +367,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                         onClick={() => openPdfSafely(pedido.nota_fiscal_url)}
                       >
                         <ExternalLink className="w-4 h-4 mr-2" />
-                        Ver Nota Fiscal
+                        Ver nota fiscal
                       </Button>
                     )}
                   </div>
@@ -386,7 +386,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                         <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
                           <DollarSign className="w-5 h-5 text-primary mt-0.5" />
                           <div>
-                            <p className="text-sm text-muted-foreground">Salário Base</p>
+                            <p className="text-sm text-muted-foreground">Salário base</p>
                             <p className="font-semibold">{formatValue(pedido.salario_base ?? colaborador?.salario ?? 0)}</p>
                           </div>
                         </div>
@@ -394,7 +394,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                         <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
                           <Clock className="w-5 h-5 text-primary mt-0.5" />
                           <div>
-                            <p className="text-sm text-muted-foreground">Horas Extras</p>
+                            <p className="text-sm text-muted-foreground">Horas extras</p>
                             <p className="font-semibold">{formatValue(pedido.horas_extras)}</p>
                           </div>
                         </div>
@@ -430,7 +430,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                         <div className="flex items-start gap-3 p-3 rounded-lg bg-danger-subtle border border-danger/30">
                           <Percent className="w-5 h-5 text-danger mt-0.5" />
                           <div className="flex-1">
-                            <p className="text-sm font-medium text-danger">Desconto Aplicado</p>
+                            <p className="text-sm font-medium text-danger">Desconto aplicado</p>
                             <p className="font-semibold text-danger">
                               - {formatValue(pedido.valor_desconto)}
                             </p>
@@ -454,7 +454,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                           <Clock className="w-5 h-5 text-warning mt-0.5" />
                           <div className="flex-1">
                             <p className="font-semibold text-warning mb-2">
-                              Solicitação de Prorrogação em Análise
+                              Solicitação de prorrogação em análise
                             </p>
                             <p className="text-sm text-warning mb-3">
                               Sua solicitação de prorrogação de prazo foi enviada ao financeiro e está aguardando
@@ -480,7 +480,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                         <div className="flex items-start gap-3">
                           <XCircle className="w-5 h-5 text-danger mt-0.5" />
                           <div className="flex-1">
-                            <p className="font-semibold text-danger mb-2">Prorrogação Negada</p>
+                            <p className="font-semibold text-danger mb-2">Prorrogação negada</p>
                             <p className="text-sm text-danger mb-3">
                               Sua solicitação de prorrogação foi negada pelo financeiro.
                             </p>
@@ -508,12 +508,12 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                           <FileText className="w-5 h-5 text-muted-foreground mt-0.5" />
                           <div className="flex-1">
                             <p className="font-semibold text-foreground mb-1">
-                              Valor para Emitir Nota
+                              Valor para emitir nota
                             </p>
                             <p className="text-xs text-muted-foreground mb-2">
                               (Salário Base + Horas Extras + Condução + Plantão - Desconto)
                             </p>
-                            <p className="text-2xl font-bold text-foreground">
+                            <p className="text-2xl font-semibold text-foreground">
                               {formatValue(valorParaEmitir)}
                             </p>
                           </div>
@@ -524,7 +524,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                             <div className="flex items-center gap-2 p-3 rounded-lg bg-success-subtle border border-success/30">
                               <CheckCircle className="w-5 h-5 text-success" />
                               <div className="flex-1">
-                                <p className="font-medium text-success">Nota Emitida</p>
+                                <p className="font-medium text-success">Nota emitida</p>
                                 <p className="text-xs text-success">
                                   {pedido.data_emissao_nota &&
                                     new Date(pedido.data_emissao_nota).toLocaleDateString("pt-BR")}
@@ -538,7 +538,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                                 onClick={() => openPdfSafely(pedido.nota_fiscal_url)}
                               >
                                 <ExternalLink className="w-4 h-4 mr-2" />
-                                Ver Nota Fiscal
+                                Ver nota fiscal
                               </Button>
                             )}
                           </div>
@@ -572,7 +572,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                                   className="w-full bg-warning hover:bg-warning/90 text-warning-foreground"
                                 >
                                   <Clock className="w-4 h-4 mr-2" />
-                                  Solicitar Nova Data
+                                  Solicitar nova data
                                 </Button>
                               </div>
                             ) : (
@@ -588,7 +588,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                                   className="w-full bg-success hover:bg-success/90 text-success-foreground"
                                 >
                                   <Upload className="w-4 h-4 mr-2" />
-                                  Anexar Nota Fiscal
+                                  Anexar nota fiscal
                                 </Button>
                                 <p className="text-xs text-center text-success">
                                   * A nota será validada automaticamente
@@ -605,7 +605,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-success-subtle border border-success/30">
                           <CheckCircle className="w-5 h-5 text-success" />
                           <div className="flex-1">
-                            <p className="font-medium text-success">Nota Fiscal Enviada</p>
+                            <p className="font-medium text-success">Nota fiscal enviada</p>
                             <p className="text-xs text-success">
                               {pedido.data_emissao_nota &&
                                 new Date(pedido.data_emissao_nota).toLocaleDateString("pt-BR")}
@@ -618,13 +618,13 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                           onClick={() => openPdfSafely(pedido.nota_fiscal_url)}
                         >
                           <ExternalLink className="w-4 h-4 mr-2" />
-                          Ver Nota Fiscal
+                          Ver nota fiscal
                         </Button>
                         {(pedido.status === "pago" || pedido.status === "nota_recebida") && (
                           <div className="p-3 rounded-lg bg-accent border border-primary/30">
                             <div className="flex items-center gap-2">
                               <CheckCircle className="w-5 h-5 text-primary" />
-                              <p className="font-medium text-primary">Pagamento Aprovado</p>
+                              <p className="font-medium text-primary">Pagamento aprovado</p>
                             </div>
                           </div>
                         )}
@@ -635,7 +635,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                       <div className="flex items-center gap-3 p-3 rounded-lg bg-accent border border-primary/30">
                         <Calendar className="w-5 h-5 text-primary" />
                         <div>
-                          <p className="text-sm font-medium text-primary">Previsão de Pagamento</p>
+                          <p className="text-sm font-medium text-primary">Previsão de pagamento</p>
                           <p className="font-semibold text-primary">
                             {pedido.data_previsao_pagamento.includes("T")
                               ? new Date(pedido.data_previsao_pagamento).toLocaleDateString("pt-BR")
@@ -647,8 +647,8 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
 
                     <div className="pt-4 border-t">
                       <div className="flex items-center justify-between">
-                        <span className="text-lg font-semibold">Valor Total</span>
-                        <span className="text-2xl font-bold text-primary">{formatValue(pedido.valor_total)}</span>
+                        <span className="text-lg font-semibold">Valor total</span>
+                        <span className="text-2xl font-semibold text-primary">{formatValue(pedido.valor_total)}</span>
                       </div>
                     </div>
                   </>
@@ -678,7 +678,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
           <Dialog open={prorrogacaoDialogOpen} onOpenChange={setProrrogacaoDialogOpen}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Solicitar Nova Data</DialogTitle>
+                <DialogTitle>Solicitar nova data</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div>

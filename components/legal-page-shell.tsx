@@ -58,7 +58,7 @@ export function LegalPageShell({
               <Icon className="h-5 w-5 text-primary" />
             </div>
           )}
-          <h1 className="text-2xl font-semibold text-foreground mb-1.5">{title}</h1>
+          <h1 className="type-title mb-1.5 text-foreground">{title}</h1>
           <p className="text-text-secondary text-sm">{subtitle}</p>
           {meta && <div className="flex items-center justify-center gap-2 text-text-tertiary text-xs mt-3">{meta}</div>}
         </div>

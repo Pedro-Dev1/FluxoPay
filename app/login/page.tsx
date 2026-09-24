@@ -33,7 +33,7 @@ export default function LoginPage() {
   return (
     <AuthShell>
       <div className="mb-5">
-        <h1 className="text-base font-semibold text-foreground">Acesse sua conta</h1>
+        <h1 className="type-subtitle text-foreground">Acesse sua conta</h1>
         <p className="text-text-secondary text-sm mt-0.5">Área restrita a usuários autorizados</p>
       </div>
 

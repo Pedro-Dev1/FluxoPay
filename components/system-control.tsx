@@ -111,7 +111,7 @@ export function SystemControl() {
                 </div>
               )}
               <div>
-                <CardTitle className="text-lg">Controle do Sistema</CardTitle>
+                <CardTitle className="text-lg">Controle do sistema</CardTitle>
                 <CardDescription>
                   Gerencie o status de funcionamento do Fluxteme
                 </CardDescription>
@@ -159,7 +159,7 @@ export function SystemControl() {
                 onClick={() => setShowSuspendDialog(true)}
               >
                 <PowerOff className="h-4 w-4 mr-2" />
-                Suspender Sistema
+                Suspender sistema
               </Button>
             ) : (
               <Button 
@@ -169,7 +169,7 @@ export function SystemControl() {
                 onClick={() => setShowReactivateDialog(true)}
               >
                 <Power className="h-4 w-4 mr-2" />
-                Reativar Sistema
+                Reativar sistema
               </Button>
             )}
           </div>
@@ -182,7 +182,7 @@ export function SystemControl() {
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2 text-danger">
               <AlertTriangle className="h-5 w-5" />
-              Suspender Sistema
+              Suspender sistema
             </AlertDialogTitle>
             <AlertDialogDescription>
               Ao suspender o sistema, todos os usuários (exceto administradores) verão uma mensagem de manutenção e não poderão acessar as funcionalidades.
@@ -218,7 +218,7 @@ export function SystemControl() {
               ) : (
                 <>
                   <PowerOff className="h-4 w-4 mr-2" />
-                  Confirmar Suspensão
+                  Confirmar suspensão
                 </>
               )}
             </AlertDialogAction>
@@ -232,7 +232,7 @@ export function SystemControl() {
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2 text-success">
               <Power className="h-5 w-5" />
-              Reativar Sistema
+              Reativar sistema
             </AlertDialogTitle>
             <AlertDialogDescription>
               Ao reativar o sistema, todos os usuários poderão acessar novamente as funcionalidades normalmente.
@@ -254,7 +254,7 @@ export function SystemControl() {
               ) : (
                 <>
                   <Power className="h-4 w-4 mr-2" />
-                  Confirmar Reativação
+                  Confirmar reativação
                 </>
               )}
             </AlertDialogAction>

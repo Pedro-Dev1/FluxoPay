@@ -44,7 +44,7 @@ export function ReajusteDialog({ open, onOpenChange, colaborador, onSuccess }: R
         colaborador_id: colaborador.id,
         tipo_reajuste: tipoReajuste,
         valor_reajuste: Number.parseFloat(valorReajuste),
-        motivo: motivo || undefined,
+        motivo: motivo || "",
       })
 
       const formatCurrency = (v: number) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v)
@@ -66,7 +66,7 @@ export function ReajusteDialog({ open, onOpenChange, colaborador, onSuccess }: R
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Aplicar Reajuste Salarial</DialogTitle>
+          <DialogTitle>Aplicar reajuste salarial</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -87,7 +87,7 @@ export function ReajusteDialog({ open, onOpenChange, colaborador, onSuccess }: R
           </div>
 
           <div className="space-y-3">
-            <Label>Tipo de Reajuste</Label>
+            <Label>Tipo de reajuste</Label>
             <RadioGroup value={tipoReajuste} onValueChange={(v) => setTipoReajuste(v as "porcentagem" | "valor")}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="porcentagem" id="porcentagem" />
@@ -100,7 +100,7 @@ export function ReajusteDialog({ open, onOpenChange, colaborador, onSuccess }: R
                 <RadioGroupItem value="valor" id="valor" />
                 <Label htmlFor="valor" className="flex items-center gap-2 cursor-pointer">
                   <DollarSign className="w-4 h-4" />
-                  Valor Fixo
+                  Valor fixo
                 </Label>
               </div>
             </RadioGroup>
@@ -122,7 +122,7 @@ export function ReajusteDialog({ open, onOpenChange, colaborador, onSuccess }: R
           {valorReajuste && (
             <div className="p-4 bg-muted rounded-lg">
               <p className="text-sm text-muted-foreground">Novo Salário:</p>
-              <p className="text-2xl font-bold text-success">
+              <p className="text-2xl font-semibold text-success">
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",

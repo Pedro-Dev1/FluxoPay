@@ -24,12 +24,31 @@ module.exports = {
       },
       colors: {
         border: "hsl(var(--border))",
+        "border-subtle": "hsl(var(--border-subtle))",
         "border-strong": "hsl(var(--border-strong))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        surface: "hsl(var(--surface))",
+        surface: {
+          DEFAULT: "hsl(var(--surface))",
+          elevated: "hsl(var(--surface-elevated))",
+        },
+        brand: {
+          navy: "hsl(var(--brand-navy))",
+          teal: "hsl(var(--brand-teal))",
+          aqua: "hsl(var(--brand-aqua))",
+          cinza: "hsl(var(--brand-cinza))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          muted: "hsl(var(--sidebar-muted))",
+          group: "hsl(var(--sidebar-group))",
+          hover: "hsl(var(--sidebar-hover))",
+          active: "hsl(var(--sidebar-active))",
+          border: "hsl(var(--sidebar-border))",
+        },
         "text-secondary": "hsl(var(--text-secondary))",
         "text-tertiary": "hsl(var(--text-tertiary))",
         primary: {
@@ -96,6 +115,13 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+      },
+      boxShadow: {
+        // Sombra só no que flutua: popover, dropdown, modal, drawer.
+        float: "0 8px 24px -6px hsl(212 96% 10% / 0.18), 0 2px 6px -2px hsl(212 96% 10% / 0.10)",
+      },
+      transitionDuration: {
+        DEFAULT: "150ms",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",

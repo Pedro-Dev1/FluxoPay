@@ -1,19 +1,20 @@
 "use client"
 
-import { Fragment, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import type { PedidoPagamento } from "@/types/pedido"
 import type { Equipe } from "@/types/equipe"
-import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { EmptyState } from "@/components/ui/empty-state"
-import { Search, X, ChevronDown, ChevronUp, Download, FileText } from "lucide-react"
+import { AuditTimestamp } from "@/components/ui/audit"
+import { ChevronRight, History, Search, X } from "lucide-react"
 import { SimplePager } from "@/components/ui/simple-pager"
 import { useMaskedCurrency } from "@/components/currency-display"
-import { PedidoComposicao } from "./pedido-composicao"
+import { PedidoDrawer } from "@/components/pedido-drawer"
 
 interface HistoricoCompletoListProps {
   pedidos: PedidoPagamento[]
@@ -36,8 +37,7 @@ const STATUS_OPTIONS = [
 
 export function HistoricoCompletoList({ pedidos, equipes }: HistoricoCompletoListProps) {
   const { formatValue } = useMaskedCurrency()
-  const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [showFilters, setShowFilters] = useState(false)
+  const [selecionado, setSelecionado] = useState<PedidoPagamento | null>(null)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(25)
 
@@ -84,42 +84,45 @@ export function HistoricoCompletoList({ pedidos, equipes }: HistoricoCompletoLis
     pendentes: pedidos.filter((p) => p.status.includes("pendente")).length,
   }
 
+  if (pedidos.length === 0) {
+    return (
+      <EmptyState
+        icon={History}
+        title="Nenhum pedido registrado ainda"
+        description="Quando supervisores e gerentes lançarem pedidos de pagamento, cada um aparece aqui com sua trilha completa."
+      />
+    )
+  }
+
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="p-4">
-          <p className="text-xs text-text-tertiary mb-1">Total de pedidos</p>
-          <p className="text-xl font-semibold tabular-nums text-foreground">{stats.total}</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-xs text-text-tertiary mb-1">Valor total</p>
-          <p className="text-xl font-semibold tabular-nums text-foreground">{formatValue(stats.valorTotal)}</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-xs text-text-tertiary mb-1">Aprovados</p>
-          <p className="text-xl font-semibold tabular-nums text-success">{stats.aprovados}</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-xs text-text-tertiary mb-1">Pendentes</p>
-          <p className="text-xl font-semibold tabular-nums text-warning">{stats.pendentes}</p>
-        </Card>
+      {/* Uma métrica primária (valor) e três de apoio, na mesma faixa */}
+      <div className="grid overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-[2fr_1fr_1fr_1fr] gap-px">
+        <div className="bg-card p-5">
+          <p className="type-eyebrow text-text-tertiary">Valor total lançado</p>
+          <p className="type-metric mt-2 text-foreground">{formatValue(stats.valorTotal)}</p>
+          <p className="mt-1 text-xs tabular-nums text-text-tertiary">
+            em {stats.total} {stats.total === 1 ? "pedido" : "pedidos"}
+          </p>
+        </div>
+        <Indicador rotulo="Pedidos" valor={stats.total} />
+        <Indicador rotulo="Aprovados" valor={stats.aprovados} tom="text-success" />
+        <Indicador rotulo="Aguardando decisão" valor={stats.pendentes} tom={stats.pendentes > 0 ? "text-warning" : undefined} />
       </div>
 
-      <div>
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <Button variant="outline" size="sm" className="h-8 rounded-control" onClick={() => setShowFilters(!showFilters)}>
-            <Search className="h-3.5 w-3.5 mr-1.5" />
-            {busca ? `Colaborador: ${busca}` : "Colaborador"}
-          </Button>
+      <div className="flex flex-wrap items-end gap-3 border-b border-border pb-4">
+        <div className="w-full space-y-1.5 sm:w-64">
+          <Label htmlFor="h-busca">Colaborador</Label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
+            <Input id="h-busca" placeholder="Nome do colaborador" value={busca} onChange={(e) => setBusca(e.target.value)} className="pl-9" />
+          </div>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Equipe</Label>
           <Select value={equipeFiltro} onValueChange={setEquipeFiltro}>
-            <SelectTrigger className="h-8 w-auto rounded-control text-xs gap-1.5 border-border">
-              <SelectValue>
-                {equipeFiltro === "todas"
-                  ? "Equipe: todas"
-                  : equipeFiltro === "sem-equipe"
-                    ? "Equipe: sem equipe"
-                    : `Equipe: ${equipes.find((e) => e.id === equipeFiltro)?.nome || ""}`}
-              </SelectValue>
+            <SelectTrigger className="w-48">
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="todas">Todas</SelectItem>
@@ -131,11 +134,12 @@ export function HistoricoCompletoList({ pedidos, equipes }: HistoricoCompletoLis
               ))}
             </SelectContent>
           </Select>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Status</Label>
           <Select value={statusFiltro} onValueChange={setStatusFiltro}>
-            <SelectTrigger className="h-8 w-auto rounded-control text-xs gap-1.5 border-border">
-              <SelectValue>
-                {"Status: " + (STATUS_OPTIONS.find((s) => s.value === statusFiltro)?.label || "Todos")}
-              </SelectValue>
+            <SelectTrigger className="w-52">
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {STATUS_OPTIONS.map((s) => (
@@ -145,171 +149,118 @@ export function HistoricoCompletoList({ pedidos, equipes }: HistoricoCompletoLis
               ))}
             </SelectContent>
           </Select>
-          {filtrosAtivos && (
-            <Button variant="ghost" size="sm" className="h-8 text-xs text-text-tertiary" onClick={limparFiltros}>
-              <X className="h-3.5 w-3.5 mr-1" />
-              Limpar
-            </Button>
-          )}
         </div>
-
-        {showFilters && (
-          <div className="mb-4 pb-4 border-b border-border">
-            <label className="text-xs font-medium text-text-secondary mb-1 block">Buscar colaborador</label>
-            <Input
-              placeholder="Nome do colaborador..."
-              value={busca}
-              onChange={(e) => setBusca(e.target.value)}
-              className="h-9 max-w-sm"
-              autoFocus
-            />
-          </div>
-        )}
-
-        {pedidosFiltrados.length === 0 ? (
-          <EmptyState title="Nenhum pedido encontrado" description="Ajuste os filtros para ver outros resultados." />
-        ) : (
-          <>
-            <p className="text-sm text-text-secondary mb-3">
-              <span className="font-medium text-foreground tabular-nums">{pedidosFiltrados.length}</span>{" "}
-              {pedidosFiltrados.length === 1 ? "pedido encontrado" : "pedidos encontrados"} ·{" "}
-              <span className="font-medium text-foreground tabular-nums">{formatValue(totalFiltrado)}</span>
-            </p>
-
-            <div className="border border-border rounded-lg overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-surface hover:bg-surface border-border">
-                    <TableHead className="h-9 text-xs font-medium text-text-tertiary">Colaborador</TableHead>
-                    <TableHead className="h-9 text-xs font-medium text-text-tertiary hidden md:table-cell">Criado por</TableHead>
-                    <TableHead className="h-9 text-xs font-medium text-text-tertiary hidden sm:table-cell">Criado</TableHead>
-                    <TableHead className="h-9 text-xs font-medium text-text-tertiary">Status</TableHead>
-                    <TableHead className="h-9 text-xs font-medium text-text-tertiary text-right">Valor total</TableHead>
-                    <TableHead className="h-9 w-10" />
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {pedidosPaginados.map((pedido) => {
-                    const isExpanded = expandedId === pedido.id
-                    const colaboradorNome = pedido.colaborador?.nome_completo || "N/A"
-                    const criadoPor = pedido.criado_por?.nome_completo || "N/A"
-                    const notaFiscal = Array.isArray(pedido.notas_fiscais) ? pedido.notas_fiscais[0] : pedido.notas_fiscais || null
-
-                    return (
-                      <Fragment key={pedido.id}>
-                        <TableRow
-                          className="group cursor-pointer h-11 border-border hover:bg-surface"
-                          onClick={() => setExpandedId(isExpanded ? null : pedido.id)}
-                        >
-                          <TableCell className="py-2 text-sm font-medium text-foreground">{colaboradorNome}</TableCell>
-                          <TableCell className="py-2 text-sm text-text-tertiary hidden md:table-cell">{criadoPor}</TableCell>
-                          <TableCell className="py-2 text-sm text-text-tertiary tabular-nums hidden sm:table-cell">
-                            {new Date(pedido.created_at).toLocaleDateString("pt-BR")}
-                          </TableCell>
-                          <TableCell className="py-2">
-                            <StatusBadge status={pedido.status} />
-                          </TableCell>
-                          <TableCell className="py-2 text-sm font-medium text-right tabular-nums text-foreground">
-                            {formatValue(pedido.valor_total)}
-                          </TableCell>
-                          <TableCell className="py-2">
-                            <div className="flex items-center justify-end">
-                              {isExpanded ? (
-                                <ChevronUp className="h-4 w-4 text-text-tertiary" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4 text-text-tertiary" />
-                              )}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                        {isExpanded && (
-                          <TableRow className="border-border">
-                            <TableCell colSpan={6} className="bg-surface px-4 py-3">
-                              <PedidoComposicao pedido={pedido} />
-
-                              {pedido.observacao_gerente && (
-                                <div className="mt-3 mb-2">
-                                  <p className="text-xs text-text-tertiary">Observação do gerente</p>
-                                  <p className="text-sm text-text-secondary">{pedido.observacao_gerente}</p>
-                                </div>
-                              )}
-                              {pedido.observacao_financeiro && (
-                                <div className="mt-3 mb-2">
-                                  <p className="text-xs text-text-tertiary">Observação do financeiro</p>
-                                  <p className="text-sm text-text-secondary">{pedido.observacao_financeiro}</p>
-                                </div>
-                              )}
-
-                              {notaFiscal && (
-                                <div className="pt-2 mt-2 border-t border-border">
-                                  <div className="flex items-center gap-1.5 mb-1">
-                                    <FileText className="w-3.5 h-3.5 text-text-tertiary" />
-                                    <p className="text-xs text-text-tertiary">
-                                      Nota fiscal {notaFiscal.numero_nfse ? `nº ${notaFiscal.numero_nfse}` : ""} ·{" "}
-                                      {formatValue(notaFiscal.valor_servico ?? 0)}
-                                    </p>
-                                  </div>
-                                  <div className="flex gap-3">
-                                    {notaFiscal.arquivo_xml_url && (
-                                      <a
-                                        href={notaFiscal.arquivo_xml_url}
-                                        download
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"
-                                      >
-                                        <Download className="h-3.5 w-3.5" />
-                                        XML
-                                      </a>
-                                    )}
-                                    {notaFiscal.arquivo_pdf_url && (
-                                      <a
-                                        href={notaFiscal.arquivo_pdf_url}
-                                        download
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"
-                                      >
-                                        <Download className="h-3.5 w-3.5" />
-                                        PDF
-                                      </a>
-                                    )}
-                                  </div>
-                                </div>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </Fragment>
-                    )
-                  })}
-                </TableBody>
-                <TableFooter>
-                  <TableRow className="border-border">
-                    <TableCell colSpan={4} className="text-xs font-medium text-text-tertiary py-2 hidden sm:table-cell">
-                      Total
-                    </TableCell>
-                    <TableCell colSpan={2} className="text-xs font-medium text-text-tertiary py-2 sm:hidden">
-                      Total
-                    </TableCell>
-                    <TableCell className="text-right text-sm font-semibold tabular-nums py-2" colSpan={2}>
-                      {formatValue(totalFiltrado)}
-                    </TableCell>
-                  </TableRow>
-                </TableFooter>
-              </Table>
-            </div>
-
-            <SimplePager
-              page={page}
-              pageSize={pageSize}
-              totalItems={pedidosFiltrados.length}
-              onPageChange={setPage}
-              onPageSizeChange={setPageSize}
-            />
-          </>
+        {filtrosAtivos && (
+          <Button variant="ghost" onClick={limparFiltros}>
+            <X />
+            Limpar filtros
+          </Button>
         )}
       </div>
+
+      {pedidosFiltrados.length === 0 ? (
+        <EmptyState
+          compact
+          title="Nenhum pedido com esses filtros"
+          description="Troque a equipe, o status ou a busca por colaborador."
+          action={
+            <Button variant="outline" onClick={limparFiltros}>
+              Limpar filtros
+            </Button>
+          }
+        />
+      ) : (
+        <div>
+          <p className="mb-3 text-sm text-text-secondary">
+            <span className="font-medium tabular-nums text-foreground">{pedidosFiltrados.length}</span>{" "}
+            {pedidosFiltrados.length === 1 ? "pedido" : "pedidos"} ·{" "}
+            <span className="font-medium tabular-nums text-foreground">{formatValue(totalFiltrado)}</span>
+            <span className="text-text-tertiary"> · selecione uma linha para ver evidências e trilha</span>
+          </p>
+
+          <div className="overflow-hidden rounded-lg border border-border bg-card">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Colaborador</TableHead>
+                  <TableHead className="hidden md:table-cell">Lançado por</TableHead>
+                  <TableHead className="hidden sm:table-cell">Lançado em</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Valor total</TableHead>
+                  <TableHead className="w-8">
+                    <span className="sr-only">Abrir</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {pedidosPaginados.map((pedido) => (
+                  <TableRow
+                    key={pedido.id}
+                    className="group cursor-pointer"
+                    onClick={() => setSelecionado(pedido)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        setSelecionado(pedido)
+                      }
+                    }}
+                    tabIndex={0}
+                    aria-label={`Ver trilha do pedido de ${pedido.colaborador?.nome_completo ?? "colaborador"}`}
+                  >
+                    <TableCell className="max-w-[16rem] truncate text-sm font-medium text-foreground">
+                      {pedido.colaborador?.nome_completo || "Não identificado"}
+                    </TableCell>
+                    <TableCell className="hidden max-w-[12rem] truncate text-sm text-text-secondary md:table-cell">
+                      {pedido.criado_por?.nome_completo || "—"}
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <AuditTimestamp valor={pedido.created_at} className="text-text-secondary" />
+                    </TableCell>
+                    <TableCell>
+                      <StatusBadge status={pedido.status} />
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap text-right text-sm font-medium tabular-nums text-foreground">
+                      {formatValue(pedido.valor_total)}
+                    </TableCell>
+                    <TableCell>
+                      <ChevronRight className="h-4 w-4 text-text-tertiary transition-colors group-hover:text-foreground" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell colSpan={4} className="py-2 type-eyebrow text-text-tertiary">
+                    Total do filtro
+                  </TableCell>
+                  <TableCell colSpan={2} className="whitespace-nowrap py-2 text-right text-sm font-semibold tabular-nums">
+                    {formatValue(totalFiltrado)}
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </div>
+
+          <SimplePager
+            page={page}
+            pageSize={pageSize}
+            totalItems={pedidosFiltrados.length}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+          />
+        </div>
+      )}
+
+      <PedidoDrawer pedido={selecionado} onOpenChange={(aberto) => !aberto && setSelecionado(null)} />
+    </div>
+  )
+}
+
+function Indicador({ rotulo, valor, tom }: { rotulo: string; valor: number; tom?: string }) {
+  return (
+    <div className="bg-card p-5">
+      <p className="type-eyebrow text-text-tertiary">{rotulo}</p>
+      <p className={`mt-2 text-2xl font-light tabular-nums font-display ${tom ?? "text-foreground"}`}>{valor}</p>
     </div>
   )
 }

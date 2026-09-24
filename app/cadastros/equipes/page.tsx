@@ -32,7 +32,7 @@ export default async function EquipesPage() {
   })
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-5xl">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
       <EquipesList equipes={equipes} membrosCount={membrosCount} />
     </div>
   )

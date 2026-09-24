@@ -68,7 +68,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
         centro_custo_id: formData.centro_custo_id === "0" ? null : formData.centro_custo_id,
       })
 
-      toast.success("Colaborador cadastrado com sucesso!")
+      toast.success("Colaborador cadastrado.")
 
       setFormData({
         nome_completo: "",
@@ -97,13 +97,13 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Novo Colaborador</CardTitle>
+        <CardTitle>Novo colaborador</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2 sm:col-span-2">
-              <Label htmlFor="nome_completo">Nome Completo</Label>
+              <Label htmlFor="nome_completo">Nome completo</Label>
               <Input
                 id="nome_completo"
                 placeholder="Joao da Silva"
@@ -150,7 +150,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="data_nascimento">Data de Nascimento</Label>
+              <Label htmlFor="data_nascimento">Data de nascimento</Label>
               <Input
                 id="data_nascimento"
                 type="date"
@@ -161,7 +161,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="data_aniversario_contrato">Data Aniversário Contrato</Label>
+              <Label htmlFor="data_aniversario_contrato">Data de aniversário do contrato</Label>
               <Input
                 id="data_aniversario_contrato"
                 type="date"
@@ -172,7 +172,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="tipo_acesso">Tipo de Acesso</Label>
+              <Label htmlFor="tipo_acesso">Tipo de acesso</Label>
               <Select
                 value={formData.tipo_acesso}
                 onValueChange={(value) => setFormData({ ...formData, tipo_acesso: value as TipoAcesso })}
@@ -211,7 +211,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="dia_pagamento">Dia de Pagamento</Label>
+              <Label htmlFor="dia_pagamento">Dia de pagamento</Label>
               <Select
                 value={formData.dia_pagamento}
                 onValueChange={(value) => setFormData({ ...formData, dia_pagamento: value })}
@@ -227,7 +227,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="salario">Salario Base (R$)</Label>
+              <Label htmlFor="salario">Salário base (R$)</Label>
               <Input
                 id="salario"
                 type="number"
@@ -242,7 +242,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
 
             {/* Centro de Custo */}
             <div className="space-y-2">
-              <Label htmlFor="centro_custo">Centro de Custo</Label>
+              <Label htmlFor="centro_custo">Centro de custo</Label>
               <Select
                 value={formData.centro_custo_id}
                 onValueChange={(value) => setFormData({ ...formData, centro_custo_id: value })}
@@ -263,7 +263,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
 
             {/* PIX */}
             <div className="space-y-2">
-              <Label htmlFor="tipo_chave_pix">Tipo Chave PIX</Label>
+              <Label htmlFor="tipo_chave_pix">Tipo de chave PIX</Label>
               <Select
                 value={formData.tipo_chave_pix || "none"}
                 onValueChange={(value) => setFormData({ ...formData, tipo_chave_pix: value === "none" ? "" : value })}
@@ -277,7 +277,7 @@ export function ColaboradorForm({ usuarioLogadoTipoAcesso }: ColaboradorFormProp
                   <SelectItem value="cnpj">CNPJ</SelectItem>
                   <SelectItem value="email">E-mail</SelectItem>
                   <SelectItem value="telefone">Telefone</SelectItem>
-                  <SelectItem value="aleatoria">Chave Aleatoria</SelectItem>
+                  <SelectItem value="aleatoria">Chave aleatória</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { AlertCircle, FileText, User, Calendar, DollarSign } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function AcompanhamentoPage() {
   const session = await getSession()
@@ -31,13 +32,12 @@ export default async function AcompanhamentoPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Acompanhamento de Pedidos</h1>
-          <p className="text-muted-foreground">
-            Monitore colaboradores que ainda não emitiram ou anexaram a nota fiscal após aprovação
-          </p>
-        </div>
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+        <PageHeader
+          eyebrow="Operação"
+          title="Acompanhamento de notas"
+          description="Pedidos aprovados cujo prestador ainda não anexou a nota fiscal, com o prazo de cada um."
+        />
 
         {pedidosPendentes.length === 0 ? (
           <Card>
@@ -55,7 +55,7 @@ export default async function AcompanhamentoPage() {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-destructive" />
-                  <CardTitle className="text-destructive">Notas Fiscais Pendentes</CardTitle>
+                  <CardTitle className="text-destructive">Notas fiscais pendentes</CardTitle>
                 </div>
                 <CardDescription>
                   {pedidosPendentes.length}{" "}

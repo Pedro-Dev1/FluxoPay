@@ -5,6 +5,8 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { FileText, TrendingUp, ChevronRight, FileCheck } from "lucide-react"
 import { createClient } from "@/lib/supabase-server"
 import { AniversariosContratoDashboard } from "@/components/aniversarios-contrato-dashboard"
+import type { Colaborador } from "@/types/colaborador"
+import { PageHeader } from "@/components/ui/page-header"
 
 export default async function GestaoPage() {
   const usuario = await getUsuarioLogado()
@@ -50,17 +52,12 @@ export default async function GestaoPage() {
   ]
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8 max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Gestão de Pessoas</h1>
-        <p className="text-sm text-muted-foreground">
-          Gerencie notas fiscais e aplique reajustes salariais
-        </p>
-      </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader eyebrow="Gestão" title="Gestão de pessoas" description="Aniversários de contrato, notas fiscais e reajustes salariais dos prestadores." />
 
       {/* Dashboard de Aniversários de Contrato */}
       <div className="mb-8">
-        <AniversariosContratoDashboard colaboradores={colaboradores || []} />
+        <AniversariosContratoDashboard colaboradores={(colaboradores || []) as Colaborador[]} />
       </div>
 
       {/* Cards de navegação */}
@@ -69,7 +66,7 @@ export default async function GestaoPage() {
           const Icon = item.icon
           return (
             <Link key={item.href} href={item.href} className="group">
-              <Card className="h-full transition-all hover:shadow-md hover:border-foreground/20 group-hover:bg-muted/30">
+              <Card className="h-full transition-colors hover:border-foreground/20 group-hover:bg-muted/30">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">
                     <div className={`p-3 rounded-lg border ${item.color}`}>

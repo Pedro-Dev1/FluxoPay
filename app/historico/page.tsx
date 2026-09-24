@@ -28,8 +28,8 @@ export default async function HistoricoPage() {
   const pedidosCorrecao = await listarPedidosParaCorrecao()
 
   return (
-    <div className="container mx-auto px-4 lg:px-6 py-8">
-      <PageHeader title="Meus pedidos" description="Acompanhe o status de todos os pedidos de pagamento que você criou" />
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
+      <PageHeader eyebrow="Operação" title="Meus pedidos" description="Pedidos de pagamento que você lançou, com a etapa atual de cada um." />
 
       <Tabs defaultValue="historico" className="w-full">
         <TabsList className="h-auto w-full justify-start rounded-none bg-transparent p-0 border-b border-border gap-6">

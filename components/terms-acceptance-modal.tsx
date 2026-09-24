@@ -16,7 +16,6 @@ import { Label } from "@/components/ui/label"
 import { acceptTerms, declineTerms } from "@/app/actions/terms"
 import { CURRENT_TERMS_VERSION } from "@/types/terms"
 import { logout } from "@/app/actions/auth"
-import { FileText, Shield, AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
 
 interface TermsAcceptanceModalProps {
@@ -54,12 +53,12 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
 
   const handleAccept = async () => {
     if (!hasCheckedTerms) {
-      toast.error("Você precisa marcar que leu e concorda com os termos")
+      toast.error("Marque que leu e concorda com os termos para continuar.")
       return
     }
 
     if (!userId) {
-      toast.error("Erro: usuário não identificado")
+      toast.error("Não foi possível identificar sua conta. Entre de novo.")
       return
     }
 
@@ -67,14 +66,14 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
     try {
       const result = await acceptTerms(userId)
       if (result.success) {
-        toast.success("Termos aceitos com sucesso!")
+        toast.success("Termos de uso aceitos.")
         onAccept?.()
         router.refresh()
       } else {
-        toast.error(result.error || "Erro ao aceitar termos")
+        toast.error(result.error || "Não foi possível registrar o aceite. Tente de novo.")
       }
     } catch (error) {
-      toast.error("Erro ao processar aceite dos termos")
+      toast.error("Não foi possível registrar o aceite. Verifique a conexão e tente de novo.")
     } finally {
       setIsSubmitting(false)
     }
@@ -86,10 +85,10 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
       if (userId) {
         await declineTerms(userId)
       }
-      toast.info("Você será desconectado pois não aceitou os termos de uso")
+      toast.info("Recusa registrada. Você foi desconectado.")
       await logout()
     } catch (error) {
-      toast.error("Erro ao processar recusa")
+      toast.error("Não foi possível registrar a recusa. Tente de novo.")
       setIsSubmitting(false)
     }
   }
@@ -99,11 +98,8 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
       <Dialog open={isOpen}>
         <DialogContent className="sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
           <DialogHeader>
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-              <AlertTriangle className="h-6 w-6 text-destructive" />
-            </div>
-            <DialogTitle className="text-center">Recusar Termos de Uso</DialogTitle>
-            <DialogDescription className="text-center">
+            <DialogTitle>Recusar termos de uso</DialogTitle>
+            <DialogDescription>
               Ao recusar os termos de uso, você será desconectado do sistema e não poderá acessar o Fluxteme até aceitar os termos.
             </DialogDescription>
           </DialogHeader>
@@ -122,7 +118,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
               disabled={isSubmitting}
               className="w-full sm:w-auto"
             >
-              {isSubmitting ? "Processando..." : "Confirmar Recusa"}
+              {isSubmitting ? "Registrando..." : "Recusar e sair"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -138,16 +134,11 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         {/* Header fixo */}
-        <DialogHeader className="px-4 sm:px-6 pt-5 pb-3 border-b shrink-0">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-            <FileText className="h-5 w-5 text-primary" />
-          </div>
-          <DialogTitle className="text-center text-lg sm:text-xl">Termos de Uso do Fluxteme</DialogTitle>
-          <DialogDescription className="text-center text-xs sm:text-sm">
-            {userName && <span className="font-medium">{userName}, </span>}
-            Por favor, leia atentamente os termos antes de continuar.
-            <br />
-            <span className="text-xs text-muted-foreground">Versão {CURRENT_TERMS_VERSION}</span>
+        <DialogHeader className="shrink-0 space-y-2 border-b border-border px-4 pb-4 pt-5 sm:px-6">
+          <p className="type-eyebrow text-primary">Termos de uso · versão {CURRENT_TERMS_VERSION}</p>
+          <DialogTitle>Termos de uso do Fluxteme</DialogTitle>
+          <DialogDescription>
+            {userName ? `${userName}, leia` : "Leia"} os termos antes de continuar. O aceite fica registrado com data, IP e dispositivo.
           </DialogDescription>
         </DialogHeader>
 
@@ -160,10 +151,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
         >
           <div className="space-y-4 py-4 pr-2 text-sm">
             <section>
-              <h3 className="mb-2 font-semibold flex items-center gap-2">
-                <Shield className="h-4 w-4 text-primary" />
-                1. Aceitação dos Termos
-              </h3>
+              <h3 className="type-intertitle mb-2 text-foreground">1. Aceitação dos termos</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Ao acessar e utilizar o sistema Fluxteme, você concorda em cumprir e estar vinculado a estes
                 Termos de Uso. Se você não concordar com qualquer parte destes termos, não deverá utilizar
@@ -172,7 +160,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">2. Descrição do Serviço</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">2. Descrição do serviço</h3>
               <p className="text-muted-foreground leading-relaxed">
                 O Fluxteme é um sistema de gestão de pagamentos para colaboradores, permitindo o controle
                 de pedidos, notas fiscais, aprovações e pagamentos. O sistema é disponibilizado pela empresa
@@ -181,7 +169,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">3. Cadastro e Credenciais</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">3. Cadastro e credenciais</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Você é responsável por manter a confidencialidade de suas credenciais de acesso (email e senha).
                 Qualquer atividade realizada com suas credenciais será de sua responsabilidade. Você deve
@@ -190,7 +178,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">4. Uso Adequado</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">4. Uso adequado</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Você concorda em utilizar o sistema apenas para fins legítimos relacionados às suas atividades
                 profissionais. É expressamente proibido:
@@ -205,7 +193,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">5. Privacidade e Dados</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">5. Privacidade e dados</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Seus dados pessoais serão tratados de acordo com a Lei Geral de Proteção de Dados (LGPD).
                 Coletamos apenas os dados necessários para a operação do sistema, incluindo:
@@ -219,7 +207,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">6. Propriedade Intelectual</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">6. Propriedade intelectual</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Todo o conteúdo do sistema, incluindo mas não limitado a textos, gráficos, logos, ícones,
                 imagens e software, é protegido por direitos autorais e outras leis de propriedade intelectual.
@@ -227,7 +215,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">7. Limitação de Responsabilidade</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">7. Limitação de responsabilidade</h3>
               <p className="text-muted-foreground leading-relaxed">
                 O sistema é fornecido &quot;como está&quot;. Não garantimos que o serviço será ininterrupto ou
                 livre de erros. Não nos responsabilizamos por danos indiretos, incidentais ou consequenciais
@@ -236,7 +224,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">8. Modificações dos Termos</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">8. Modificações dos termos</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Reservamo-nos o direito de modificar estes termos a qualquer momento. Alterações significativas
                 serão comunicadas através do sistema. O uso continuado após as modificações constitui aceitação
@@ -245,7 +233,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">9. Encerramento</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">9. Encerramento</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Seu acesso ao sistema pode ser suspenso ou encerrado a qualquer momento, com ou sem aviso prévio,
                 por violação destes termos ou por determinação da empresa contratante.
@@ -253,7 +241,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </section>
 
             <section>
-              <h3 className="mb-2 font-semibold">10. Disposições Gerais</h3>
+              <h3 className="type-intertitle mb-2 text-foreground">10. Disposições gerais</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Estes termos constituem o acordo integral entre você e o Fluxteme. A invalidade de qualquer
                 disposição não afetará a validade das demais. O não exercício de qualquer direito não implica
@@ -261,19 +249,17 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
               </p>
             </section>
 
-            <div className="mt-6 rounded-lg bg-muted p-4">
-              <p className="text-xs text-muted-foreground text-center">
-                Última atualização: Janeiro de 2025 | Versão {CURRENT_TERMS_VERSION}
-              </p>
-            </div>
+            <p className="type-audit border-t border-border pt-4 text-text-tertiary">
+              Última atualização: janeiro de 2025 · versão {CURRENT_TERMS_VERSION}
+            </p>
           </div>
         </div>
 
         {/* Footer fixo — checkbox + botões sempre visíveis */}
-        <div className="shrink-0 border-t bg-background px-4 sm:px-6 pb-4 pt-3 space-y-3">
+        <div className="shrink-0 space-y-3 border-t border-border bg-popover px-4 pb-4 pt-3 sm:px-6">
           {!hasScrolledToBottom && (
             <p className="text-center text-xs text-muted-foreground">
-              Role até o final para habilitar a opção de aceite
+              Role até o final para habilitar o aceite
             </p>
           )}
 
@@ -308,7 +294,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
               disabled={!hasCheckedTerms || isSubmitting}
               className="w-full sm:w-auto"
             >
-              {isSubmitting ? "Processando..." : "Aceitar Termos"}
+              {isSubmitting ? "Registrando..." : "Aceitar termos de uso"}
             </Button>
           </div>
         </div>

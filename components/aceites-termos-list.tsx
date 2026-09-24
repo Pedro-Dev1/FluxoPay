@@ -25,6 +25,7 @@ import {
 } from "@/app/actions/terms"
 import { CURRENT_TERMS_VERSION, type TermsAcceptanceWithUser } from "@/types/terms"
 import { Search, FileCheck, FileX, Users, Clock, Monitor, Smartphone } from "lucide-react"
+import { PageHeader } from "@/components/ui/page-header"
 
 export function AceitesTermosList() {
   const [acceptances, setAcceptances] = useState<TermsAcceptanceWithUser[]>([])
@@ -92,66 +93,41 @@ export function AceitesTermosList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Aceites de Termos de Uso</h1>
-        <p className="text-muted-foreground">
-          Gerencie e acompanhe os aceites dos termos de uso pelos colaboradores
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Auditoria"
+        title="Aceites de termos de uso"
+        description="Quem aceitou, recusou ou ainda não respondeu a versão vigente, com data, IP e dispositivo."
+        className="mb-0"
+      />
 
-      {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalUsers}</div>
-            <p className="text-xs text-muted-foreground">Usuários ativos no sistema</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Termos Aceitos</CardTitle>
-            <FileCheck className="h-4 w-4 text-success" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-success">{stats.acceptedCurrentVersion}</div>
-            <p className="text-xs text-muted-foreground">Versao {CURRENT_TERMS_VERSION}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pendentes</CardTitle>
-            <Clock className="h-4 w-4 text-warning" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-warning">{stats.pendingAcceptance}</div>
-            <p className="text-xs text-muted-foreground">Ainda não aceitaram</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Recusados</CardTitle>
-            <FileX className="h-4 w-4 text-destructive" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">{stats.declinedCurrentVersion}</div>
-            <p className="text-xs text-muted-foreground">Recusaram os termos</p>
-          </CardContent>
-        </Card>
+      <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-[2fr_1fr_1fr]">
+        <div className="bg-card p-5">
+          <p className="type-eyebrow text-text-tertiary">Aceitaram a versão {CURRENT_TERMS_VERSION}</p>
+          <p className="mt-2 flex items-baseline gap-2">
+            <span className="type-metric text-foreground">{stats.acceptedCurrentVersion}</span>
+            <span className="text-sm tabular-nums text-text-secondary">de {stats.totalUsers} usuários ativos</span>
+          </p>
+        </div>
+        <div className="bg-card p-5">
+          <p className="type-eyebrow text-text-tertiary">Pendentes</p>
+          <p className={`mt-2 font-display text-2xl font-light tabular-nums ${stats.pendingAcceptance > 0 ? "text-warning" : "text-foreground"}`}>
+            {stats.pendingAcceptance}
+          </p>
+        </div>
+        <div className="bg-card p-5">
+          <p className="type-eyebrow text-text-tertiary">Recusaram</p>
+          <p className={`mt-2 font-display text-2xl font-light tabular-nums ${stats.declinedCurrentVersion > 0 ? "text-danger" : "text-foreground"}`}>
+            {stats.declinedCurrentVersion}
+          </p>
+        </div>
       </div>
 
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>Histórico de Aceites</CardTitle>
+          <CardTitle>Respostas registradas</CardTitle>
           <CardDescription>
-            Lista detalhada de todos os aceites e recusas registrados
+            Cada aceite e recusa, com data, IP e dispositivo de origem.
           </CardDescription>
         </CardHeader>
         <CardContent>

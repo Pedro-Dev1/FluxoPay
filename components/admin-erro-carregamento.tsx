@@ -1,13 +1,11 @@
-import { AlertCircle } from "lucide-react"
+import { ErrorState } from "@/components/ui/error-state"
 
+// Mantido como atalho das páginas do painel Super Admin; o visual é o
+// ErrorState padrão do design system.
 export function AdminErroCarregamento({ mensagem }: { mensagem?: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center border border-danger/30 bg-danger-subtle rounded-lg">
-      <AlertCircle className="h-8 w-8 text-danger mb-3" />
-      <p className="text-sm font-medium text-foreground mb-1">Não foi possível carregar esta página</p>
-      <p className="text-sm text-text-tertiary max-w-md">
-        {mensagem || "Ocorreu um erro ao buscar os dados. Recarregue a página ou tente novamente em instantes."}
-      </p>
-    </div>
+    <ErrorState
+      description={mensagem || "A consulta aos dados falhou. Recarregue a página; se persistir, verifique o log do servidor."}
+    />
   )
 }

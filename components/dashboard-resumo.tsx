@@ -179,15 +179,15 @@ export function DashboardResumo({
     <div className="space-y-4">
       {/* Bloco 1: requer ação agora */}
       {totalAcaoAgora > 0 && (
-        <Card className="border-amber-200 bg-amber-50/60 shadow-none">
+        <Card className="border-warning/30 bg-warning-subtle shadow-none">
           <div className="p-5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <p className="text-sm font-medium text-amber-900">
+              <p className="text-sm font-medium text-warning">
                 <span className="text-2xl font-semibold tabular-nums mr-2">{totalAcaoAgora}</span>
                 {acaoAgoraLabel}
               </p>
               {acaoAgoraMaisAntigo && (
-                <p className="text-xs text-amber-800">
+                <p className="text-xs text-warning">
                   Mais antigo: <span className="font-medium">{acaoAgoraMaisAntigo.nome}</span> ·{" "}
                   {acaoAgoraMaisAntigo.tipo} · há {diasAtras(acaoAgoraMaisAntigo.createdAt)}{" "}
                   {diasAtras(acaoAgoraMaisAntigo.createdAt) === 1 ? "dia" : "dias"}
@@ -201,7 +201,7 @@ export function DashboardResumo({
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="inline-flex items-center gap-1.5 rounded-md border border-amber-300 bg-white px-3 py-1.5 text-xs font-medium text-amber-900 hover:bg-amber-100 transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-warning/30 bg-card px-3 py-1.5 text-xs font-medium text-warning hover:bg-warning-subtle transition-colors"
                   >
                     <span className="tabular-nums font-semibold">{item.count}</span>
                     {item.label}
@@ -225,7 +225,7 @@ export function DashboardResumo({
               {comparacaoMensal.deltaPct !== null ? (
                 <span
                   className={`inline-flex items-center gap-0.5 text-sm font-medium tabular-nums ${
-                    comparacaoMensal.deltaPct >= 0 ? "text-emerald-700" : "text-red-700"
+                    comparacaoMensal.deltaPct >= 0 ? "text-success" : "text-danger"
                   }`}
                 >
                   {comparacaoMensal.deltaPct >= 0 ? (
@@ -247,37 +247,43 @@ export function DashboardResumo({
               <div className="mt-4 -ml-2">
                 <ResponsiveContainer width="100%" height={200}>
                   <LineChart data={evolucaoMensal} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="0" vertical={false} stroke="#e7e2d9" />
-                    <XAxis dataKey="label" fontSize={11} tickLine={false} axisLine={false} stroke="#78716c" />
+                    <CartesianGrid strokeDasharray="0" vertical={false} stroke="hsl(var(--border))" />
+                    <XAxis dataKey="label" fontSize={11} tickLine={false} axisLine={false} stroke="hsl(var(--text-tertiary))" />
                     <YAxis hide />
                     <Tooltip
                       formatter={((value: number, name: string) => [
                         tooltipValor(value),
                         name === "solicitado" ? "Solicitado" : name === "aprovado" ? "Aprovado" : "Pago",
                       ]) as any}
-                      contentStyle={{ borderRadius: "6px", border: "1px solid #e7e2d9", fontSize: "12px" }}
+                      contentStyle={{
+                        borderRadius: "6px",
+                        border: "1px solid hsl(var(--border))",
+                        background: "hsl(var(--popover))",
+                        color: "hsl(var(--popover-foreground))",
+                        fontSize: "12px",
+                      }}
                     />
                     <Line
                       type="monotone"
                       dataKey="solicitado"
-                      stroke="#a8a29e"
+                      stroke="hsl(var(--text-tertiary))"
                       strokeWidth={1.5}
                       strokeDasharray="4 3"
                       dot={false}
                     />
-                    <Line type="monotone" dataKey="aprovado" stroke="#78716c" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="pago" stroke="#1e3a5f" strokeWidth={2.5} dot={false} />
+                    <Line type="monotone" dataKey="aprovado" stroke="hsl(var(--text-secondary))" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="pago" stroke="hsl(var(--primary))" strokeWidth={2.5} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
                 <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1 pl-1">
                   <span className="inline-flex items-center gap-1.5">
-                    <span className="h-0.5 w-3 bg-[#a8a29e] inline-block" /> Solicitado
+                    <span className="h-0.5 w-3 bg-text-tertiary inline-block" /> Solicitado
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <span className="h-0.5 w-3 bg-[#78716c] inline-block" /> Aprovado
+                    <span className="h-0.5 w-3 bg-text-secondary inline-block" /> Aprovado
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <span className="h-0.5 w-3 bg-[#1e3a5f] inline-block" /> Pago
+                    <span className="h-0.5 w-3 bg-primary inline-block" /> Pago
                   </span>
                 </div>
               </div>
@@ -356,7 +362,7 @@ function SequenciaLinha({
   valor: number
   tone: "neutral" | "success" | "danger"
 }) {
-  const cor = tone === "success" ? "text-emerald-700" : tone === "danger" ? "text-red-700" : "text-foreground"
+  const cor = tone === "success" ? "text-success" : tone === "danger" ? "text-danger" : "text-foreground"
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="text-muted-foreground">{label}</span>

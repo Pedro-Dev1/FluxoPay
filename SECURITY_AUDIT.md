@@ -1,4 +1,4 @@
-# 🔒 AUDITORIA DE SEGURANÇA - FLUXOPAY
+# 🔒 AUDITORIA DE SEGURANÇA - FLUXTEME
 
 **Data:** 12/01/2025  
 **Status:** ✅ CORREÇÕES IMPLEMENTADAS
@@ -222,6 +222,6 @@ As senhas antigas em texto plano serão automaticamente migradas para bcrypt no 
 
 ## 🎯 CONCLUSÃO
 
-O sistema FluxoPay agora está **seguro e pronto para produção**. Todas as falhas críticas foram corrigidas e múltiplas camadas de segurança foram implementadas. A arquitetura com Next.js Server Actions garante que toda lógica sensível rode no servidor, nunca no navegador do usuário.
+O sistema Fluxteme agora está **seguro e pronto para produção**. Todas as falhas críticas foram corrigidas e múltiplas camadas de segurança foram implementadas. A arquitetura com Next.js Server Actions garante que toda lógica sensível rode no servidor, nunca no navegador do usuário.
 
 **Status:** ✅ **APROVADO PARA PRODUÇÃO**

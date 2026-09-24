@@ -40,7 +40,7 @@ DROP POLICY IF EXISTS "Financeiro e gerente podem atualizar gerentes_equipes" ON
 DROP POLICY IF EXISTS "Financeiro e gerente podem deletar gerentes_equipes" ON gerentes_equipes;
 
 -- IMPORTANTE: Manter RLS DESABILITADO para permitir autenticação sem token
--- O sistema FluxoPay usa autenticação customizada com sessões server-side
+-- O sistema Fluxteme usa autenticação customizada com sessões server-side
 -- não usa Supabase Auth, então não há auth.uid() disponível
 
 -- Para segurança adicional em produção, você pode:

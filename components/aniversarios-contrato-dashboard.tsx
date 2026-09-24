@@ -132,11 +132,11 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-amber-50 text-amber-800">
-            <Users className="w-8 h-8 text-amber-500" />
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-warning-subtle text-warning">
+            <Users className="w-8 h-8 text-warning" />
             <div>
               <p className="font-medium">{semData.length} colaborador(es) sem data cadastrada</p>
-              <p className="text-sm text-amber-600">Cadastre a data de aniversário de contrato</p>
+              <p className="text-sm text-warning">Cadastre a data de aniversário de contrato</p>
             </div>
           </div>
         </CardContent>
@@ -163,19 +163,19 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
         <CardContent className="space-y-5">
           {/* Cards de resumo */}
           <div className="grid grid-cols-4 gap-2">
-            <div className={`rounded-xl p-3 text-center transition-all ${vencidos.length > 0 ? 'bg-red-500 text-white shadow-lg shadow-red-200' : 'bg-muted/40 text-muted-foreground'}`}>
+            <div className={`rounded-xl p-3 text-center transition-all ${vencidos.length > 0 ? 'bg-danger text-danger-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
               <p className="text-2xl font-bold">{vencidos.length}</p>
               <p className="text-xs font-medium opacity-90">Vencidos</p>
             </div>
-            <div className={`rounded-xl p-3 text-center transition-all ${criticos.length > 0 ? 'bg-orange-500 text-white shadow-lg shadow-orange-200' : 'bg-muted/40 text-muted-foreground'}`}>
+            <div className={`rounded-xl p-3 text-center transition-all ${criticos.length > 0 ? 'bg-warning text-warning-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
               <p className="text-2xl font-bold">{criticos.length}</p>
               <p className="text-xs font-medium opacity-90">{"< 1 mês"}</p>
             </div>
-            <div className={`rounded-xl p-3 text-center transition-all ${atencao.length > 0 ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-200' : 'bg-muted/40 text-muted-foreground'}`}>
+            <div className={`rounded-xl p-3 text-center transition-all ${atencao.length > 0 ? 'bg-warning text-warning-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
               <p className="text-2xl font-bold">{atencao.length}</p>
               <p className="text-xs font-medium opacity-90">{"< 2 meses"}</p>
             </div>
-            <div className={`rounded-xl p-3 text-center transition-all ${normais.length > 0 ? 'bg-blue-500 text-white shadow-lg shadow-blue-200' : 'bg-muted/40 text-muted-foreground'}`}>
+            <div className={`rounded-xl p-3 text-center transition-all ${normais.length > 0 ? 'bg-primary text-primary-foreground shadow-lg' : 'bg-muted/40 text-muted-foreground'}`}>
               <p className="text-2xl font-bold">{normais.length}</p>
               <p className="text-xs font-medium opacity-90">{"< 3 meses"}</p>
             </div>
@@ -188,20 +188,20 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
               const isCritico = item.urgencia === "critico"
               const isAtencao = item.urgencia === "atencao"
               
-              let bgClass = "bg-blue-50/50 border-blue-100 hover:bg-blue-50"
-              let badgeClass = "bg-blue-100 text-blue-700"
+              let bgClass = "bg-accent border-primary/30 hover:bg-accent"
+              let badgeClass = "bg-accent text-primary"
               let diasText = `${item.diasRestantes} dias`
               
               if (isVencido) {
-                bgClass = "bg-red-50 border-red-200 hover:bg-red-100/50"
-                badgeClass = "bg-red-500 text-white"
+                bgClass = "bg-danger-subtle border-danger/30 hover:bg-danger-subtle"
+                badgeClass = "bg-danger text-danger-foreground"
                 diasText = `Vencido há ${Math.abs(item.diasRestantes)} dia${Math.abs(item.diasRestantes) > 1 ? 's' : ''}`
               } else if (isCritico) {
-                bgClass = "bg-orange-50/50 border-orange-100 hover:bg-orange-50"
-                badgeClass = "bg-orange-500 text-white"
+                bgClass = "bg-warning-subtle border-warning/30 hover:bg-warning-subtle"
+                badgeClass = "bg-warning text-warning-foreground"
               } else if (isAtencao) {
-                bgClass = "bg-yellow-50/50 border-yellow-100 hover:bg-yellow-50"
-                badgeClass = "bg-yellow-500 text-white"
+                bgClass = "bg-warning-subtle border-warning/30 hover:bg-warning-subtle"
+                badgeClass = "bg-warning text-warning-foreground"
               }
 
               return (
@@ -230,7 +230,7 @@ export function AniversariosContratoDashboard({ colaboradores, onReajusteAplicad
                   <Button
                     size="sm"
                     onClick={() => handleAplicarReajuste(item.colaborador)}
-                    className={isVencido ? "bg-red-600 hover:bg-red-700 shadow-md" : ""}
+                    className={isVencido ? "bg-danger hover:bg-danger/90 shadow-md" : ""}
                     variant={isVencido ? "default" : "outline"}
                   >
                     <TrendingUp className="w-4 h-4 mr-1" />

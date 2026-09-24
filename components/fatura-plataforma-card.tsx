@@ -29,7 +29,7 @@ function formatarData(data: string | null): string {
   return new Date(`${data}T00:00:00`).toLocaleDateString("pt-BR")
 }
 
-// Visão somente-leitura da fatura mensal que a própria FluxoPay emite pra
+// Visão somente-leitura da fatura mensal que a própria Fluxteme emite pra
 // esta carteira — não usa a tabela `faturas` (documentos que o Adm sobe pro
 // time ver); lê direto de `faturas_plataforma`, mesma fonte do painel Super
 // Admin. Faturas com status "falhou" não mostram erro interno aqui — isso é
@@ -42,7 +42,7 @@ export function FaturaPlataformaCard({ faturas }: { faturas: FaturaPlataforma[] 
       <CardContent className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <Receipt className="h-4 w-4 text-primary" />
-          <h2 className="text-sm font-medium text-foreground">Mensalidade FluxoPay</h2>
+          <h2 className="text-sm font-medium text-foreground">Mensalidade Fluxteme</h2>
         </div>
 
         <div className="space-y-2">

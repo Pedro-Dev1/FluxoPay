@@ -104,7 +104,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             </div>
             <DialogTitle className="text-center">Recusar Termos de Uso</DialogTitle>
             <DialogDescription className="text-center">
-              Ao recusar os termos de uso, você será desconectado do sistema e não poderá acessar o FluxoPay até aceitar os termos.
+              Ao recusar os termos de uso, você será desconectado do sistema e não poderá acessar o Fluxteme até aceitar os termos.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex flex-col gap-2 sm:flex-row">
@@ -142,7 +142,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
           <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
             <FileText className="h-5 w-5 text-primary" />
           </div>
-          <DialogTitle className="text-center text-lg sm:text-xl">Termos de Uso do FluxoPay</DialogTitle>
+          <DialogTitle className="text-center text-lg sm:text-xl">Termos de Uso do Fluxteme</DialogTitle>
           <DialogDescription className="text-center text-xs sm:text-sm">
             {userName && <span className="font-medium">{userName}, </span>}
             Por favor, leia atentamente os termos antes de continuar.
@@ -165,7 +165,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
                 1. Aceitação dos Termos
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Ao acessar e utilizar o sistema FluxoPay, você concorda em cumprir e estar vinculado a estes
+                Ao acessar e utilizar o sistema Fluxteme, você concorda em cumprir e estar vinculado a estes
                 Termos de Uso. Se você não concordar com qualquer parte destes termos, não deverá utilizar
                 o sistema.
               </p>
@@ -174,7 +174,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             <section>
               <h3 className="mb-2 font-semibold">2. Descrição do Serviço</h3>
               <p className="text-muted-foreground leading-relaxed">
-                O FluxoPay é um sistema de gestão de pagamentos para colaboradores, permitindo o controle
+                O Fluxteme é um sistema de gestão de pagamentos para colaboradores, permitindo o controle
                 de pedidos, notas fiscais, aprovações e pagamentos. O sistema é disponibilizado pela empresa
                 contratante para uso exclusivo de seus colaboradores autorizados.
               </p>
@@ -255,7 +255,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
             <section>
               <h3 className="mb-2 font-semibold">10. Disposições Gerais</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Estes termos constituem o acordo integral entre você e o FluxoPay. A invalidade de qualquer
+                Estes termos constituem o acordo integral entre você e o Fluxteme. A invalidade de qualquer
                 disposição não afetará a validade das demais. O não exercício de qualquer direito não implica
                 renúncia ao mesmo.
               </p>
@@ -289,7 +289,7 @@ export function TermsAcceptanceModal({ isOpen, onAccept, userName, userId }: Ter
               htmlFor="accept-terms"
               className={`text-sm leading-relaxed cursor-pointer ${!hasScrolledToBottom ? 'text-muted-foreground' : ''}`}
             >
-              Li e concordo com os Termos de Uso do FluxoPay. Entendo que meus dados serão processados conforme
+              Li e concordo com os Termos de Uso do Fluxteme. Entendo que meus dados serão processados conforme
               descrito acima e que devo utilizar o sistema de forma responsável.
             </Label>
           </div>

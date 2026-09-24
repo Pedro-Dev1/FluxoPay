@@ -13,7 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="container mx-auto py-8 px-4 lg:px-6 max-w-5xl">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold mb-1 text-foreground">Painel Super Admin</h1>
-        <p className="text-sm text-muted-foreground">Carteiras, usuários e auditoria do FluxoPay.</p>
+        <p className="text-sm text-muted-foreground">Carteiras, usuários e auditoria do Fluxteme.</p>
       </div>
       <AdminNav />
       <div className="mt-6">{children}</div>

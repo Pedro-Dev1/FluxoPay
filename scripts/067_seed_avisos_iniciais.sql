@@ -13,7 +13,7 @@ insert into atualizacoes (
 (
   'Você sabia que é possível desativar usuários?',
   null,
-  'Permita que usuários que ainda não utilizam o FluxoPay sejam desativados temporariamente. Assim, eles deixam de fazer parte da base ativa e você evita cobranças de usuários que ainda não começaram a utilizar a plataforma.',
+  'Permita que usuários que ainda não utilizam o Fluxteme sejam desativados temporariamente. Assim, eles deixam de fazer parte da base ativa e você evita cobranças de usuários que ainda não começaram a utilizar a plataforma.',
   'AVISO',
   'Gerenciar usuários',
   '/cadastros/colaboradores',
@@ -24,9 +24,9 @@ insert into atualizacoes (
   (select id from colaboradores where email = 'simpleqia.oficial@gmail.com')
 ),
 (
-  'Agora o FluxoPay avisa quando o pedido for aprovado',
+  'Agora o Fluxteme avisa quando o pedido for aprovado',
   null,
-  'Agora o FluxoPay envia alertas automáticos para os prestadores assim que um pedido é aprovado. Assim, o prestador sabe que já pode acessar o pedido e anexar a nota fiscal.',
+  'Agora o Fluxteme envia alertas automáticos para os prestadores assim que um pedido é aprovado. Assim, o prestador sabe que já pode acessar o pedido e anexar a nota fiscal.',
   'NOVA FUNCIONALIDADE',
   'Ver pedidos',
   '/meus-pagamentos',
@@ -39,7 +39,7 @@ insert into atualizacoes (
 (
   'Você é um aprovador? Mantenha seu e-mail atualizado',
   null,
-  'Deixe seu e-mail atualizado no FluxoPay e receba notificações quando houver pedidos aguardando sua aprovação. Assim, você não perde solicitações importantes e consegue acompanhar os pedidos que dependem da sua aprovação.',
+  'Deixe seu e-mail atualizado no Fluxteme e receba notificações quando houver pedidos aguardando sua aprovação. Assim, você não perde solicitações importantes e consegue acompanhar os pedidos que dependem da sua aprovação.',
   'AÇÃO NECESSÁRIA',
   'Atualizar meu e-mail',
   '/cadastros/colaboradores',
@@ -50,9 +50,9 @@ insert into atualizacoes (
   (select id from colaboradores where email = 'simpleqia.oficial@gmail.com')
 ),
 (
-  'Agora o FluxoPay envia seu boleto automaticamente',
+  'Agora o Fluxteme envia seu boleto automaticamente',
   null,
-  'No dia do fechamento, o FluxoPay gera e envia automaticamente o boleto da sua cobrança. Você também pode acompanhar e pagar diretamente pela plataforma através do módulo financeiro.',
+  'No dia do fechamento, o Fluxteme gera e envia automaticamente o boleto da sua cobrança. Você também pode acompanhar e pagar diretamente pela plataforma através do módulo financeiro.',
   'FINANCEIRO',
   'Acessar financeiro',
   '/financeiro',

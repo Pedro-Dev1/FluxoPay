@@ -13,14 +13,14 @@ const faqCategories = [
     icon: Key,
     questions: [
       {
-        question: "Como recebo meu acesso ao FluxoPay?",
+        question: "Como recebo meu acesso ao Fluxteme?",
         answer:
-          "O acesso é provisionado pelo administrador da empresa contratante. Após o cadastro, você recebe um e-mail com credenciais temporárias e deve alterar a senha no primeiro login. Caso não receba, verifique o spam ou contate simpleqia.oficial@gmail.com.",
+          "O acesso é provisionado pelo administrador da empresa contratante. Após o cadastro, você recebe um e-mail com credenciais temporárias e deve alterar a senha no primeiro login. Caso não receba, verifique o spam ou contate contato@fluxteme.com.br.",
       },
       {
         question: "Como recupero minha senha?",
         answer:
-          "Clique em 'Esqueci minha senha' na tela de login e informe seu e-mail cadastrado. Você receberá um link de redefinição válido por 30 minutos. Se não chegar, contate simpleqia.oficial@gmail.com com seu nome e empresa.",
+          "Clique em 'Esqueci minha senha' na tela de login e informe seu e-mail cadastrado. Você receberá um link de redefinição válido por 30 minutos. Se não chegar, contate contato@fluxteme.com.br com seu nome e empresa.",
       },
       {
         question: "Por que minha conta foi bloqueada?",
@@ -28,9 +28,9 @@ const faqCategories = [
           "Por segurança, a conta é bloqueada após 5 tentativas incorretas consecutivas. O desbloqueio automático ocorre após 15 minutos. Para desbloqueio imediato, contate o suporte informando seu e-mail e empresa.",
       },
       {
-        question: "Posso usar o FluxoPay no celular?",
+        question: "Posso usar o Fluxteme no celular?",
         answer:
-          "Sim. O FluxoPay é responsivo e funciona em qualquer navegador moderno (Chrome, Firefox, Safari). Recomendamos ativar a trava de tela no dispositivo e evitar redes Wi-Fi públicas sem VPN.",
+          "Sim. O Fluxteme é responsivo e funciona em qualquer navegador moderno (Chrome, Firefox, Safari). Recomendamos ativar a trava de tela no dispositivo e evitar redes Wi-Fi públicas sem VPN.",
       },
     ],
   },
@@ -40,9 +40,9 @@ const faqCategories = [
     icon: CreditCard,
     questions: [
       {
-        question: "O que o FluxoPay gerencia exatamente?",
+        question: "O que o Fluxteme gerencia exatamente?",
         answer:
-          "O FluxoPay é uma plataforma SaaS de gestão de prestadores de serviço com foco em controle de fluxo de validação, registro de contratos, status de aprovação e controle de pagamentos. Ciclo completo: cadastro, validação documental, aprovação multinível, ordem de pagamento, quitação e arquivamento.",
+          "O Fluxteme é uma plataforma SaaS de gestão de prestadores de serviço com foco em controle de fluxo de validação, registro de contratos, status de aprovação e controle de pagamentos. Ciclo completo: cadastro, validação documental, aprovação multinível, ordem de pagamento, quitação e arquivamento.",
       },
       {
         question: "Como funciona o fluxo de aprovação?",
@@ -50,9 +50,9 @@ const faqCategories = [
           "O fluxo é configurado pelo administrador da empresa: (1) Cadastro do prestador com dados e documentos; (2) Triagem e validação documental; (3) Aprovação gerencial conforme hierarquia; (4) Liberação da ordem de pagamento. Cada etapa registra responsável, data e justificativa.",
       },
       {
-        question: "Os dados de pagamento ficam armazenados no FluxoPay?",
+        question: "Os dados de pagamento ficam armazenados no Fluxteme?",
         answer:
-          "O FluxoPay registra os dados necessários para controle e auditoria (valores, datas, responsáveis, comprovantes). Dados bancários sensíveis são trafegados via canais criptografados com acesso restrito. A empresa não acessa dados financeiros fora do escopo operacional contratado.",
+          "O Fluxteme registra os dados necessários para controle e auditoria (valores, datas, responsáveis, comprovantes). Dados bancários sensíveis são trafegados via canais criptografados com acesso restrito. A empresa não acessa dados financeiros fora do escopo operacional contratado.",
       },
       {
         question: "Como exportar relatórios de pagamento?",
@@ -74,12 +74,12 @@ const faqCategories = [
       {
         question: "Como reportar uma suspeita de incidente de segurança?",
         answer:
-          "Notifique imediatamente via simpleqia.oficial@gmail.com. Descreva o ocorrido, horário e funcionalidade envolvida. Nunca compartilhe sua senha com ninguém, nem com o suporte. SLA de resposta de 4 horas para incidentes críticos.",
+          "Notifique imediatamente via contato@fluxteme.com.br. Descreva o ocorrido, horário e funcionalidade envolvida. Nunca compartilhe sua senha com ninguém, nem com o suporte. SLA de resposta de 4 horas para incidentes críticos.",
       },
       {
         question: "O sistema registra minhas ações?",
         answer:
-          "Sim. Por razões de segurança e auditoria, o FluxoPay registra logs de acesso, ações realizadas, alterações de dados e tentativas de login. Esses registros são acessíveis apenas pelo time de TI e gestores autorizados, conforme a Política de Privacidade.",
+          "Sim. Por razões de segurança e auditoria, o Fluxteme registra logs de acesso, ações realizadas, alterações de dados e tentativas de login. Esses registros são acessíveis apenas pelo time de TI e gestores autorizados, conforme a Política de Privacidade.",
       },
     ],
   },
@@ -91,12 +91,12 @@ const faqCategories = [
       {
         question: "Quais são os canais de suporte?",
         answer:
-          "E-mail: simpleqia.oficial@gmail.com (resposta em até 24h úteis). Para incidentes críticos de produção: SLA de 4 horas corridas, 7 dias por semana. Sempre informe empresa, e-mail de acesso e descrição detalhada do problema.",
+          "E-mail: contato@fluxteme.com.br (resposta em até 24h úteis). Para incidentes críticos de produção: SLA de 4 horas corridas, 7 dias por semana. Sempre informe empresa, e-mail de acesso e descrição detalhada do problema.",
       },
       {
         question: "Como solicitar criação ou remoção de usuários?",
         answer:
-          "O administrador da empresa pode gerenciar usuários no painel de configurações. Para operações em lote, contate simpleqia.oficial@gmail.com com nome completo, e-mail e nível de acesso desejado. Prazo de até 1 dia útil.",
+          "O administrador da empresa pode gerenciar usuários no painel de configurações. Para operações em lote, contate contato@fluxteme.com.br com nome completo, e-mail e nível de acesso desejado. Prazo de até 1 dia útil.",
       },
     ],
   },
@@ -128,7 +128,7 @@ export default function FAQPage() {
     <LegalPageShell
       activeHref="/faq"
       title="Central de Ajuda"
-      subtitle="Encontre respostas para suas dúvidas sobre o FluxoPay"
+      subtitle="Encontre respostas para suas dúvidas sobre o Fluxteme"
     >
       <div className="relative max-w-lg mx-auto mb-6">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary" />
@@ -223,11 +223,11 @@ export default function FAQPage() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
-            href="mailto:simpleqia.oficial@gmail.com"
+            href="mailto:contato@fluxteme.com.br"
             className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-control text-sm font-medium hover:bg-primary-hover transition-colors"
           >
             <Mail className="h-4 w-4" />
-            simpleqia.oficial@gmail.com
+            contato@fluxteme.com.br
           </a>
         </div>
       </div>

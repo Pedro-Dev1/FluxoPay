@@ -148,13 +148,13 @@ export function EquipeDetailView({
   const tipoAcessoColor = (tipo: string) => {
     switch (tipo) {
       case "Supervisor":
-        return "bg-blue-100 text-blue-800"
+        return "bg-accent text-primary"
       case "Gerente":
-        return "bg-violet-100 text-violet-800"
+        return "bg-accent text-primary"
       case "Financeiro":
-        return "bg-emerald-100 text-emerald-800"
+        return "bg-success-subtle text-success"
       case "Adm":
-        return "bg-amber-100 text-amber-800"
+        return "bg-warning-subtle text-warning"
       default:
         return "bg-secondary text-secondary-foreground"
     }

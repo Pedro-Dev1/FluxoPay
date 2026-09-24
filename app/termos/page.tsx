@@ -7,7 +7,7 @@ export default function TermosPage() {
       icon={FileText}
       activeHref="/termos"
       title="Termos de Uso"
-      subtitle="FluxoPay - Plataforma de Gestão de Prestadores de Serviço"
+      subtitle="Fluxteme - Plataforma de Gestão de Prestadores de Serviço"
       meta={
         <>
           <Calendar className="h-3.5 w-3.5" />
@@ -18,23 +18,23 @@ export default function TermosPage() {
       <div className="bg-card border border-border rounded-lg p-6 space-y-8">
         <div className="bg-accent border border-primary/20 rounded-control p-4">
           <p className="text-primary text-sm italic text-center">
-            "Declaro que li, compreendi e concordo com os Termos de Uso e a Política de Privacidade do FluxoPay."
+            "Declaro que li, compreendi e concordo com os Termos de Uso e a Política de Privacidade do Fluxteme."
           </p>
         </div>
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">1. Identificação</h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            O FluxoPay é uma plataforma digital operada por FELIPE NOGUEIRA SILVA SERVIÇOS COMÉRCIO E LOCAÇÃO,
-            inscrita no CNPJ sob o nº 26.344.386/0001-42, com nome fantasia KAFERRI TEC SERVIÇOS, com sede em
-            Osasco/SP, responsável pelo desenvolvimento, manutenção e gestão da plataforma.
+            O Fluxteme é uma plataforma digital operada por FLUXTEME TECNOLOGIA DESENVOLVIMENTO DE SOFTWARE LTDA, inscrita no
+            CNPJ sob o nº 69.046.679/0001-56, com nome fantasia Fluxteme Tech, responsável pelo desenvolvimento,
+            manutenção e gestão da plataforma.
           </p>
         </section>
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">2. Aceite dos Termos</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            Ao acessar, utilizar ou se cadastrar na plataforma FluxoPay, o usuário declara que leu, compreendeu e
+            Ao acessar, utilizar ou se cadastrar na plataforma Fluxteme, o usuário declara que leu, compreendeu e
             concorda integralmente com estes Termos de Uso e com a Política de Privacidade aplicável. O aceite é
             condição indispensável para utilização do sistema.
           </p>
@@ -50,7 +50,7 @@ export default function TermosPage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">3. Objeto da Plataforma</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            O FluxoPay consiste em uma plataforma digital voltada à gestão e organização de processos financeiros
+            O Fluxteme consiste em uma plataforma digital voltada à gestão e organização de processos financeiros
             corporativos, permitindo, entre outras funcionalidades:
           </p>
           <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-1 mb-4">
@@ -63,7 +63,7 @@ export default function TermosPage() {
           <div className="bg-accent border border-primary/20 rounded-control p-4 flex items-start gap-3">
             <Info className="h-4 w-4 text-primary mt-0.5 shrink-0" />
             <p className="text-primary text-sm">
-              O FluxoPay não realiza movimentações financeiras, não sendo instituição financeira, banco,
+              O Fluxteme não realiza movimentações financeiras, não sendo instituição financeira, banco,
               intermediadora de pagamentos ou responsável por execuções de transferências, limitando-se à gestão e
               organização de informações.
             </p>
@@ -113,7 +113,7 @@ export default function TermosPage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">6. Limitação de Responsabilidade</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            Na máxima extensão permitida pela legislação aplicável, o FluxoPay não se responsabiliza por:
+            Na máxima extensão permitida pela legislação aplicável, o Fluxteme não se responsabiliza por:
           </p>
           <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-1 mb-4">
             <li>Erros, inconsistências ou omissões nas informações inseridas pelos usuários</li>
@@ -134,7 +134,7 @@ export default function TermosPage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">7. Disponibilidade do Sistema</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            O FluxoPay poderá, a qualquer momento, realizar manutenções programadas ou emergenciais, implementar
+            O Fluxteme poderá, a qualquer momento, realizar manutenções programadas ou emergenciais, implementar
             atualizações, melhorias ou correções, e suspender temporariamente o acesso por motivos técnicos ou de
             segurança.
           </p>
@@ -147,7 +147,7 @@ export default function TermosPage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">8. Segurança da Informação</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            O FluxoPay adota medidas técnicas e organizacionais compatíveis com boas práticas de mercado para
+            O Fluxteme adota medidas técnicas e organizacionais compatíveis com boas práticas de mercado para
             proteção dos dados. Entretanto, o usuário reconhece que:
           </p>
           <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-1">
@@ -160,7 +160,7 @@ export default function TermosPage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">9. Suspensão e Encerramento</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            O FluxoPay poderá, a seu exclusivo critério, suspender, restringir ou encerrar o acesso do usuário, a
+            O Fluxteme poderá, a seu exclusivo critério, suspender, restringir ou encerrar o acesso do usuário, a
             qualquer momento e sem aviso prévio, em caso de:
           </p>
           <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-1">
@@ -174,7 +174,7 @@ export default function TermosPage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">10. Alterações dos Termos</h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            O FluxoPay poderá alterar estes Termos de Uso a qualquer momento. Em caso de atualização, a nova versão
+            O Fluxteme poderá alterar estes Termos de Uso a qualquer momento. Em caso de atualização, a nova versão
             será disponibilizada na plataforma e poderá ser exigido novo aceite do usuário. A continuidade do uso
             poderá ser condicionada à aceitação dos novos termos.
           </p>
@@ -185,7 +185,7 @@ export default function TermosPage() {
           <p className="text-text-secondary text-sm leading-relaxed">
             O tratamento de dados pessoais será realizado em conformidade com a legislação aplicável, especialmente
             a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018), conforme descrito na Política de
-            Privacidade do FluxoPay.
+            Privacidade do Fluxteme.
           </p>
         </section>
 
@@ -204,9 +204,9 @@ export default function TermosPage() {
             Para dúvidas ou esclarecimentos sobre estes Termos de Uso:
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="mailto:simpleqia.oficial@gmail.com" className="flex items-center gap-2 text-primary hover:underline text-sm">
+            <a href="mailto:contato@fluxteme.com.br" className="flex items-center gap-2 text-primary hover:underline text-sm">
               <Mail className="h-4 w-4" />
-              simpleqia.oficial@gmail.com
+              contato@fluxteme.com.br
             </a>
           </div>
         </section>

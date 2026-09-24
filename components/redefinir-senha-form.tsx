@@ -122,7 +122,7 @@ export function RedefinirSenhaForm() {
               </button>
             </div>
             {novaSenha && novaSenha.length < 6 && (
-              <p className="text-xs text-amber-600">Senha deve ter no mínimo 6 caracteres</p>
+              <p className="text-xs text-warning">Senha deve ter no mínimo 6 caracteres</p>
             )}
           </div>
 
@@ -148,7 +148,7 @@ export function RedefinirSenhaForm() {
               </button>
             </div>
             {confirmarSenha && novaSenha !== confirmarSenha && (
-              <p className="text-xs text-red-600">As senhas não coincidem</p>
+              <p className="text-xs text-danger">As senhas não coincidem</p>
             )}
           </div>
 

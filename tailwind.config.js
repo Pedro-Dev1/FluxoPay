@@ -17,6 +17,11 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+      },
       colors: {
         border: "hsl(var(--border))",
         "border-strong": "hsl(var(--border-strong))",
@@ -59,14 +64,17 @@ module.exports = {
         success: {
           DEFAULT: "hsl(var(--success))",
           subtle: "hsl(var(--success-subtle))",
+          foreground: "hsl(var(--success-foreground))",
         },
         warning: {
           DEFAULT: "hsl(var(--warning))",
           subtle: "hsl(var(--warning-subtle))",
+          foreground: "hsl(var(--warning-foreground))",
         },
         danger: {
           DEFAULT: "hsl(var(--danger))",
           subtle: "hsl(var(--danger-subtle))",
+          foreground: "hsl(var(--danger-foreground))",
         },
         "neutral-state": {
           DEFAULT: "hsl(var(--neutral-state))",

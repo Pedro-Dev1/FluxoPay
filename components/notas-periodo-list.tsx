@@ -57,14 +57,14 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
     switch (status) {
       case "nota_recebida":
         return (
-          <Badge variant="default" className="bg-teal-600 text-xs">
+          <Badge variant="default" className="bg-primary text-xs">
             <CheckCircle className="w-3 h-3 mr-1" />
             Nota Recebida
           </Badge>
         )
       case "pago":
         return (
-          <Badge variant="default" className="bg-emerald-600 text-xs">
+          <Badge variant="default" className="bg-success text-xs">
             <CheckCircle className="w-3 h-3 mr-1" />
             Pago
           </Badge>
@@ -72,7 +72,7 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
       case "pendente_financeiro":
       case "aprovado":
         return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs">
+          <Badge variant="outline" className="bg-warning-subtle text-warning border-warning/30 text-xs">
             <Clock className="w-3 h-3 mr-1" />
             Pendente
           </Badge>
@@ -141,7 +141,7 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
                       <Calendar className="w-3 h-3" />
                       {new Date(pedido.created_at).toLocaleDateString("pt-BR")}
                     </span>
-                    <span className="flex items-center gap-1 font-medium text-blue-600">
+                    <span className="flex items-center gap-1 font-medium text-primary">
                       <Receipt className="w-3 h-3" />
                       NF: {formatValue(valorNF)}
                     </span>
@@ -210,23 +210,23 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 text-xs bg-teal-50 border border-teal-200 p-2 rounded">
+                      <div className="grid grid-cols-2 gap-2 text-xs bg-accent border border-primary/30 p-2 rounded">
                         <div>
-                          <span className="text-teal-700 block">Condução (fora da NF)</span>
-                          <span className="font-semibold text-teal-800">{formatValue(pedido.conducao || 0)}</span>
+                          <span className="text-primary block">Condução (fora da NF)</span>
+                          <span className="font-semibold text-primary">{formatValue(pedido.conducao || 0)}</span>
                         </div>
                         <div>
-                          <span className="text-teal-700 block">Quilometragem (fora da NF)</span>
-                          <span className="font-semibold text-teal-800">{formatValue(pedido.valor_km || 0)}</span>
+                          <span className="text-primary block">Quilometragem (fora da NF)</span>
+                          <span className="font-semibold text-primary">{formatValue(pedido.valor_km || 0)}</span>
                         </div>
                       </div>
                     </>
                   )}
 
                   {(pedido.valor_desconto || 0) > 0 && (
-                    <div className="bg-red-50 border border-red-200 rounded p-2">
+                    <div className="bg-danger-subtle border border-danger/30 rounded p-2">
                       <span className="text-xs text-muted-foreground block">Desconto</span>
-                      <span className="font-semibold text-red-600 text-sm">
+                      <span className="font-semibold text-danger text-sm">
                         -{formatValue(pedido.valor_desconto || 0)}
                       </span>
                       {pedido.motivo_desconto && (
@@ -237,12 +237,12 @@ export function NotasPeriodoList({ pedidos }: NotasPeriodoListProps) {
                     </div>
                   )}
 
-                  <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                  <div className="bg-accent border border-primary/30 rounded p-2">
                     <div className="flex justify-between items-end">
                       {!isReembolsoKm && (
                         <div>
                           <div className="text-xs text-muted-foreground">Valor para Nota Fiscal</div>
-                          <div className="text-sm font-semibold text-blue-600">{formatValue(valorNF)}</div>
+                          <div className="text-sm font-semibold text-primary">{formatValue(valorNF)}</div>
                         </div>
                       )}
                       <div className={`text-right ${isReembolsoKm ? "w-full" : ""}`}>

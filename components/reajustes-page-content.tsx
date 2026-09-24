@@ -225,8 +225,8 @@ export function ReajustesPageContent() {
                         <TableCell>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             reajuste.tipo_reajuste === "porcentagem" 
-                              ? "bg-blue-100 text-blue-700" 
-                              : "bg-green-100 text-green-700"
+                              ? "bg-accent text-primary" 
+                              : "bg-success-subtle text-success"
                           }`}>
                             {reajuste.tipo_reajuste === "porcentagem" 
                               ? `${reajuste.valor_reajuste}%` 
@@ -236,7 +236,7 @@ export function ReajustesPageContent() {
                         <TableCell className="text-right text-muted-foreground">
                           {formatCurrency(reajuste.salario_anterior)}
                         </TableCell>
-                        <TableCell className="text-right font-semibold text-green-600">
+                        <TableCell className="text-right font-semibold text-success">
                           {formatCurrency(reajuste.salario_novo)}
                         </TableCell>
                         <TableCell className="max-w-[200px] truncate text-muted-foreground">

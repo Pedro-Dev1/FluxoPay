@@ -498,9 +498,9 @@ export async function gerarFaturaParaTenant(
     customerPhone: tenant.telefone_faturamento,
     customerAddress: enderecoCliente,
     valorCentavos: Math.round(valorTotal * 100),
-    descricaoItem: `FluxoPay — ${String(referenciaMes).padStart(2, "0")}/${referenciaAno} (${quantidade} usuário${quantidade === 1 ? "" : "s"} ativo${quantidade === 1 ? "" : "s"})`,
+    descricaoItem: `Fluxteme — ${String(referenciaMes).padStart(2, "0")}/${referenciaAno} (${quantidade} usuário${quantidade === 1 ? "" : "s"} ativo${quantidade === 1 ? "" : "s"})`,
     dataVencimento,
-    instructions: `Fatura FluxoPay referente a ${String(referenciaMes).padStart(2, "0")}/${referenciaAno}.`,
+    instructions: `Fatura Fluxteme referente a ${String(referenciaMes).padStart(2, "0")}/${referenciaAno}.`,
   })
 
   if (!resultadoBoleto.success) {

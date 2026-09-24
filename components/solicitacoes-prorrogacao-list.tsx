@@ -156,7 +156,7 @@ export function SolicitacoesProrrogacaoList({ solicitacoes }: SolicitacoesProrro
                   size="sm"
                   onClick={() => handleAbrirDialog(solicitacao, "aprovar")}
                   disabled={loading === solicitacao.id}
-                  className="bg-success hover:bg-success/90 text-white"
+                  className="bg-success hover:bg-success/90 text-success-foreground"
                 >
                   <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
                   Aprovar
@@ -247,7 +247,7 @@ export function SolicitacoesProrrogacaoList({ solicitacoes }: SolicitacoesProrro
                 (acaoSelecionada === "negar" && !observacao.trim()) ||
                 (acaoSelecionada === "aprovar" && !novaData)
               }
-              className={acaoSelecionada === "aprovar" ? "bg-green-600 hover:bg-green-700" : ""}
+              className={acaoSelecionada === "aprovar" ? "bg-success hover:bg-success/90" : ""}
             >
               {loading ? "Processando..." : acaoSelecionada === "aprovar" ? "Aprovar" : "Negar"}
             </Button>

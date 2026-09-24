@@ -122,7 +122,7 @@ export function ReajusteDialog({ open, onOpenChange, colaborador, onSuccess }: R
           {valorReajuste && (
             <div className="p-4 bg-muted rounded-lg">
               <p className="text-sm text-muted-foreground">Novo Salário:</p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-2xl font-bold text-success">
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",

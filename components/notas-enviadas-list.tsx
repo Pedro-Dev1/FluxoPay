@@ -377,12 +377,12 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                     </h3>
                     <Badge
                       variant={isPaid ? "default" : "secondary"}
-                      className={`${isPaid ? "bg-green-600" : "bg-amber-500 text-white"} text-xs px-2 py-0`}
+                      className={`${isPaid ? "bg-success" : "bg-warning text-success-foreground"} text-xs px-2 py-0`}
                     >
                       {isPaid ? "Pago" : "Pendente"}
                     </Badge>
                     {!isPaid && !canBeApproved && (
-                      <Badge variant="destructive" className="text-xs px-2 py-0 bg-red-600">
+                      <Badge variant="destructive" className="text-xs px-2 py-0 bg-danger">
                         Sem Nota Fiscal
                       </Badge>
                     )}
@@ -394,7 +394,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                         ? new Date(pedido.data_emissao_nota).toLocaleDateString("pt-BR")
                         : "N/A"}
                     </span>
-                    <span className="flex items-center gap-1 font-semibold text-blue-600">
+                    <span className="flex items-center gap-1 font-semibold text-primary">
                       <Receipt className="w-3 h-3" />
                       R$ {valorEsperadoNF.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                     </span>
@@ -442,13 +442,13 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                 <div className="mt-3 pt-3 border-t space-y-3">
                   <PedidoComposicao pedido={pedido} />
 
-                  <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded p-2">
+                  <div className="bg-accent border border-primary/30 rounded p-2">
                     <div className="text-xs text-muted-foreground mb-1">Resumo</div>
                     <div className="flex justify-between items-end">
                       {!isReembolsoKm && (
                         <div>
                           <div className="text-xs text-muted-foreground">Valor para Nota Fiscal</div>
-                          <div className="text-sm font-semibold text-blue-600">
+                          <div className="text-sm font-semibold text-primary">
                             R$ {valorEsperadoNF.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                           </div>
                         </div>
@@ -463,12 +463,12 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                   </div>
 
                   {!canBeApproved && (
-                    <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded p-3">
+                    <div className="bg-danger-subtle border border-danger/30 rounded p-3">
                       <div className="flex items-start gap-2">
-                        <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        <XCircle className="w-5 h-5 text-danger flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm font-semibold text-red-900 dark:text-red-100">Aguardando Nota Fiscal</p>
-                          <p className="text-xs text-red-700 dark:text-red-200 mt-1">
+                          <p className="text-sm font-semibold text-danger">Aguardando Nota Fiscal</p>
+                          <p className="text-xs text-danger mt-1">
                             O colaborador ainda precisa emitir e anexar a nota fiscal. Este pedido não pode ser aprovado
                             até que a nota seja anexada.
                           </p>
@@ -496,7 +496,7 @@ export function NotasEnviadasList({ pedidos, canApprove = true }: NotasEnviadasL
                         <Button
                           onClick={() => handleAprovarNota(pedido.id)}
                           disabled={approvingId === pedido.id || !canBeApproved}
-                          className="bg-green-600 hover:bg-green-700 text-white h-9 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="bg-success hover:bg-success/90 text-success-foreground h-9 disabled:opacity-50 disabled:cursor-not-allowed"
                           size="sm"
                         >
                           <CheckCircle className="w-4 h-4 mr-1.5" />

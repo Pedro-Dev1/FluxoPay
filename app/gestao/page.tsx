@@ -31,21 +31,21 @@ export default async function GestaoPage() {
       title: "Gerenciar Notas",
       description: "Visualize e gerencie as notas fiscais organizadas por mês de competência.",
       icon: FileText,
-      color: "bg-blue-50 text-blue-600 border-blue-200",
+      color: "bg-accent text-primary border-primary/30",
     },
     {
       href: "/gestao/reajustes",
       title: "Aplicar Reajustes",
       description: "Aplique reajustes salariais nos colaboradores e consulte o histórico.",
       icon: TrendingUp,
-      color: "bg-emerald-50 text-emerald-600 border-emerald-200",
+      color: "bg-success-subtle text-success border-success/30",
     },
     {
       href: "/gestao/aceites",
       title: "Aceites de Termos",
       description: "Visualize e gerencie os aceites de termos de uso dos colaboradores.",
       icon: FileCheck,
-      color: "bg-violet-50 text-violet-600 border-violet-200",
+      color: "bg-accent text-primary border-primary/30",
     },
   ]
 

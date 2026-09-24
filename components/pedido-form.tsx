@@ -56,73 +56,73 @@ const ITEM_CONFIG: Record<
     label: "Hora Extra Normal",
     desc: "Sem adicional percentual",
     icon: Clock,
-    color: "text-sky-700",
-    bgCard: "bg-sky-50 border-sky-200",
+    color: "text-primary",
+    bgCard: "bg-accent border-primary/30",
     unidade: "horas",
   },
   hora_extra_50: {
     label: "Hora Extra 50%",
     desc: "Adicional de 50% sobre hora normal",
     icon: Clock,
-    color: "text-amber-700",
-    bgCard: "bg-amber-50 border-amber-200",
+    color: "text-primary",
+    bgCard: "bg-accent border-primary/30",
     unidade: "horas",
   },
   hora_extra_100: {
     label: "Hora Extra 100%",
     desc: "Adicional de 100% sobre hora normal",
     icon: Clock,
-    color: "text-orange-700",
-    bgCard: "bg-orange-50 border-orange-200",
+    color: "text-primary",
+    bgCard: "bg-accent border-primary/30",
     unidade: "horas",
   },
   plantao: {
-    label: "Plantao",
-    desc: "Valor fixo por plantao realizado",
+    label: "Plantão",
+    desc: "Valor fixo por plantão realizado",
     icon: AlertCircle,
-    color: "text-purple-700",
-    bgCard: "bg-purple-50 border-purple-200",
+    color: "text-primary",
+    bgCard: "bg-accent border-primary/30",
     unidade: "valor",
   },
   conducao: {
-    label: "Conducao",
+    label: "Condução",
     desc: "Vale transporte / deslocamento",
     icon: Bus,
-    color: "text-teal-700",
-    bgCard: "bg-teal-50 border-teal-200",
+    color: "text-primary",
+    bgCard: "bg-accent border-primary/30",
     unidade: "valor",
   },
   reembolso_km: {
     label: "Reembolso KM",
     desc: "Quilometragem percorrida",
     icon: MapPin,
-    color: "text-green-700",
-    bgCard: "bg-green-50 border-green-200",
+    color: "text-primary",
+    bgCard: "bg-accent border-primary/30",
     unidade: "valor",
   },
   comissao: {
-    label: "Comissao",
-    desc: "Comissao sobre vendas/resultados",
+    label: "Comissão",
+    desc: "Comissão sobre vendas/resultados",
     icon: Award,
-    color: "text-blue-700",
-    bgCard: "bg-blue-50 border-blue-200",
+    color: "text-primary",
+    bgCard: "bg-accent border-primary/30",
     unidade: "valor",
   },
   desconto_dias: {
     label: "Desconto por Dias",
-    desc: "Calculo: salario / 22 dias uteis x qtd",
+    desc: "Cálculo: salário / 22 dias úteis × quantidade",
     icon: Percent,
-    color: "text-red-700",
-    bgCard: "bg-red-50 border-red-200",
+    color: "text-danger",
+    bgCard: "bg-danger-subtle border-danger/30",
     unidade: "dias",
     isDesconto: true,
   },
   desconto_horas: {
     label: "Desconto por Horas",
-    desc: "Calculo: valor hora x quantidade",
+    desc: "Cálculo: valor da hora × quantidade",
     icon: Percent,
-    color: "text-red-700",
-    bgCard: "bg-red-50 border-red-200",
+    color: "text-danger",
+    bgCard: "bg-danger-subtle border-danger/30",
     unidade: "horas",
     isDesconto: true,
   },
@@ -130,8 +130,8 @@ const ITEM_CONFIG: Record<
     label: "Desconto Fixo",
     desc: "Valor fixo de desconto",
     icon: Percent,
-    color: "text-red-700",
-    bgCard: "bg-red-50 border-red-200",
+    color: "text-danger",
+    bgCard: "bg-danger-subtle border-danger/30",
     unidade: "valor",
     isDesconto: true,
   },
@@ -386,8 +386,8 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
         <CardContent className="pt-5 pb-4">
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-1">
-              <div className="h-6 w-6 rounded-full bg-blue-600 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">1</span>
+              <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground text-xs font-bold">1</span>
               </div>
               <Label className="text-sm font-semibold">Selecione o Colaborador</Label>
             </div>
@@ -458,8 +458,8 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
           <CardContent className="pt-5 pb-4">
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-1">
-                <div className="h-6 w-6 rounded-full bg-blue-600 flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">2</span>
+                <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
+                  <span className="text-primary-foreground text-xs font-bold">2</span>
                 </div>
                 <Label className="text-sm font-semibold">Adicionar Itens</Label>
               </div>
@@ -542,7 +542,7 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
 
                     <div className="space-y-1 sm:col-span-1">
                       <Label className="text-xs">
-                        Motivo <span className="text-red-500">*</span>
+                        Motivo <span className="text-danger">*</span>
                       </Label>
                       <Textarea
                         placeholder="Descreva o motivo..."
@@ -555,7 +555,7 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
                   </div>
 
                   {addingError && (
-                    <p className="text-xs text-red-600 flex items-center gap-1">
+                    <p className="text-xs text-danger flex items-center gap-1">
                       <AlertCircle className="h-3 w-3" />
                       {addingError}
                     </p>
@@ -593,11 +593,11 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 shrink-0">
-                          <span className={`font-semibold text-sm whitespace-nowrap ${cfg.isDesconto ? "text-red-600" : cfg.color}`}>
+                          <span className={`font-semibold text-sm whitespace-nowrap ${cfg.isDesconto ? "text-danger" : cfg.color}`}>
                             {cfg.isDesconto ? "- " : "+ "}{fmt(val)}
                           </span>
-                          <Button type="button" variant="ghost" size="icon" className="h-7 w-7 shrink-0 hover:bg-red-100" onClick={() => removeItem(item.id)}>
-                            <Trash2 className="h-3.5 w-3.5 text-red-500" />
+                          <Button type="button" variant="ghost" size="icon" className="h-7 w-7 shrink-0 hover:bg-danger-subtle" onClick={() => removeItem(item.id)}>
+                            <Trash2 className="h-3.5 w-3.5 text-danger" />
                           </Button>
                         </div>
                       </div>
@@ -612,11 +612,11 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
 
       {/* Step 3: Summary */}
       {selectedColaborador && (
-        <Card className="border-2 border-blue-200 bg-blue-50/30">
+        <Card className="border-2 border-primary/30 bg-accent">
           <CardContent className="pt-5 pb-4">
             <div className="flex items-center gap-2 mb-3">
-              <div className="h-6 w-6 rounded-full bg-blue-600 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">3</span>
+              <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground text-xs font-bold">3</span>
               </div>
               <Label className="text-sm font-semibold">Resumo do Pedido</Label>
             </div>
@@ -631,48 +631,48 @@ export function PedidoForm({ colaboradores, tipoAcesso }: PedidoFormProps) {
               {resumo.horasExtras > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" />Horas Extras</span>
-                  <span className="font-medium text-amber-700">+ {fmt(resumo.horasExtras)}</span>
+                  <span className="font-medium text-warning">+ {fmt(resumo.horasExtras)}</span>
                 </div>
               )}
               {resumo.plantao > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground flex items-center gap-1.5"><AlertCircle className="h-3.5 w-3.5" />Plantao</span>
-                  <span className="font-medium text-purple-700">+ {fmt(resumo.plantao)}</span>
+                  <span className="font-medium text-primary">+ {fmt(resumo.plantao)}</span>
                 </div>
               )}
               {resumo.conducao > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground flex items-center gap-1.5"><Bus className="h-3.5 w-3.5" />Condução</span>
-                  <span className="font-medium text-teal-700">+ {fmt(resumo.conducao)}</span>
+                  <span className="font-medium text-primary">+ {fmt(resumo.conducao)}</span>
                 </div>
               )}
               {resumo.km > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground flex items-center gap-1.5"><Car className="h-3.5 w-3.5" />Reembolso KM</span>
-                  <span className="font-medium text-green-700">+ {fmt(resumo.km)}</span>
+                  <span className="font-medium text-success">+ {fmt(resumo.km)}</span>
                 </div>
               )}
               {resumo.comissao > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground flex items-center gap-1.5"><Award className="h-3.5 w-3.5" />Comissão</span>
-                  <span className="font-medium text-blue-700">+ {fmt(resumo.comissao)}</span>
+                  <span className="font-medium text-primary">+ {fmt(resumo.comissao)}</span>
                 </div>
               )}
               {resumo.desconto > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground flex items-center gap-1.5"><Percent className="h-3.5 w-3.5" />Descontos</span>
-                  <span className="font-medium text-red-600">- {fmt(resumo.desconto)}</span>
+                  <span className="font-medium text-danger">- {fmt(resumo.desconto)}</span>
                 </div>
               )}
 
-              <div className="border-t border-blue-200 pt-2 mt-2 flex justify-between">
+              <div className="border-t border-primary/30 pt-2 mt-2 flex justify-between">
                 <span className="font-bold text-base">Total Liquido</span>
-                <span className="font-bold text-lg text-blue-700">{fmt(resumo.totalLiquido)}</span>
+                <span className="font-bold text-lg text-primary">{fmt(resumo.totalLiquido)}</span>
               </div>
             </div>
 
             {error && (
-              <div className="mt-3 p-2.5 rounded-lg bg-red-100 border border-red-200 text-red-700 text-sm flex items-center gap-2">
+              <div className="mt-3 p-2.5 rounded-lg bg-danger-subtle border border-danger/30 text-danger text-sm flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 {error}
               </div>

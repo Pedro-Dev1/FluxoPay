@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { BrandLogo } from "@/components/brand-logo"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
@@ -243,7 +244,7 @@ export function SidebarNavigation({ tipoAcesso, isSuperAdmin, viewingAsTenantId 
       <aside className="fixed top-0 left-0 z-40 h-screen w-56 hidden lg:flex flex-col border-r border-border bg-card">
         <div className="flex items-center h-16 px-4 border-b border-border">
           <Link href="/" className="flex items-center">
-            <img src="/fluxopay-logo.png" alt="Fluxopay" className="h-10 w-auto" />
+            <BrandLogo />
           </Link>
         </div>
 
@@ -272,7 +273,7 @@ export function SidebarNavigation({ tipoAcesso, isSuperAdmin, viewingAsTenantId 
           <aside className="fixed top-0 left-0 z-50 h-screen w-72 bg-card border-r border-border lg:hidden flex flex-col shadow-2xl animate-in slide-in-from-left duration-200">
             <div className="flex items-center justify-between h-16 px-4 border-b border-border">
               <Link href="/" className="flex items-center">
-                <img src="/fluxopay-logo.png" alt="Fluxopay" className="h-10 w-auto" />
+                <BrandLogo />
               </Link>
               <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)} className="h-8 w-8">
                 <X className="h-4 w-4" />

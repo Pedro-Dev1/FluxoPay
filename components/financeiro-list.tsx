@@ -130,7 +130,7 @@ export function FinanceiroList({ pedidos }: FinanceiroListProps) {
                       })}
                     </div>
                   </div>
-                  <Badge variant="default" className="bg-green-500">
+                  <Badge variant="default" className="bg-success">
                     {isReembolsoKm ? "Reembolso KM" : "Nota Emitida"}
                   </Badge>
                 </div>
@@ -199,7 +199,7 @@ export function FinanceiroList({ pedidos }: FinanceiroListProps) {
                             <Percent className="w-4 h-4" />
                             Desconto
                           </div>
-                          <p className="text-lg font-semibold text-red-600">
+                          <p className="text-lg font-semibold text-danger">
                             {formatValue(pedido.valor_desconto, true)}
                           </p>
                         </div>
@@ -209,30 +209,30 @@ export function FinanceiroList({ pedidos }: FinanceiroListProps) {
                 </div>
 
                 {pedido.horas_extras > 0 && pedido.motivo_horas_extras && (
-                  <Card className="bg-orange-50 border-orange-200 p-3">
-                    <p className="text-sm font-medium text-orange-900">Motivo das Horas Extras:</p>
-                    <p className="text-sm text-orange-800 mt-1">{pedido.motivo_horas_extras}</p>
+                  <Card className="bg-warning-subtle border-warning/30 p-3">
+                    <p className="text-sm font-medium text-warning">Motivo das Horas Extras:</p>
+                    <p className="text-sm text-warning mt-1">{pedido.motivo_horas_extras}</p>
                   </Card>
                 )}
 
                 {/* Motivo do desconto */}
                 {pedido.motivo_desconto && (
-                  <Card className="bg-amber-50 border-amber-200 p-3">
-                    <p className="text-sm font-medium text-amber-900">Motivo do Desconto:</p>
-                    <p className="text-sm text-amber-800 mt-1">{pedido.motivo_desconto}</p>
+                  <Card className="bg-warning-subtle border-warning/30 p-3">
+                    <p className="text-sm font-medium text-warning">Motivo do Desconto:</p>
+                    <p className="text-sm text-warning mt-1">{pedido.motivo_desconto}</p>
                   </Card>
                 )}
 
                 {!isReembolsoKm && (
-                  <Card className="bg-blue-50 border-blue-200 p-4">
+                  <Card className="bg-accent border-primary/30 p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-blue-900">Valor da Nota Fiscal</p>
-                        <p className="text-xs text-blue-700 mt-1">
+                        <p className="text-sm font-medium text-primary">Valor da Nota Fiscal</p>
+                        <p className="text-xs text-primary mt-1">
                           (Salário + Horas Extras + Condução + Plantão - Desconto)
                         </p>
                       </div>
-                      <p className="text-2xl font-bold text-blue-900">
+                      <p className="text-2xl font-bold text-primary">
                         {formatValue(
                           salarioBase +
                           pedido.horas_extras +
@@ -256,7 +256,7 @@ export function FinanceiroList({ pedidos }: FinanceiroListProps) {
                 {!isReembolsoKm && pedido.notas_fiscais && pedido.notas_fiscais.length > 0 && (
                   <div className="flex items-center justify-between pt-4 border-t">
                     <div className="flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-green-600" />
+                      <FileText className="w-5 h-5 text-success" />
                       <div>
                         <p className="font-medium">Nota Fiscal Anexada</p>
                         <p className="text-sm text-muted-foreground">

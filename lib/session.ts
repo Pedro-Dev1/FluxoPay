@@ -1,5 +1,5 @@
 import { cookies } from "next/headers"
-import { signPayload, verifyAndParse } from "./session-crypto"
+import { LEGACY_SESSION_COOKIE, SESSION_COOKIE, signPayload, verifyAndParse } from "./session-crypto"
 
 export interface SessionData {
   colaboradorId: string
@@ -19,7 +19,8 @@ export async function createSession(data: SessionData) {
   const cookieStore = await cookies()
   const signed = await signPayload(data)
 
-  cookieStore.set("fluxopay_session", signed, {
+  cookieStore.delete(LEGACY_SESSION_COOKIE)
+  cookieStore.set(SESSION_COOKIE, signed, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -30,7 +31,7 @@ export async function createSession(data: SessionData) {
 
 export async function getSession(): Promise<SessionData | null> {
   const cookieStore = await cookies()
-  const sessionCookie = cookieStore.get("fluxopay_session")
+  const sessionCookie = cookieStore.get(SESSION_COOKIE) ?? cookieStore.get(LEGACY_SESSION_COOKIE)
 
   // getSession() é chamada também de Server Components (ex.: app/layout.tsx),
   // e o Next.js só permite escrever/apagar cookies em Server Actions, Route
@@ -43,5 +44,6 @@ export async function getSession(): Promise<SessionData | null> {
 
 export async function destroySession() {
   const cookieStore = await cookies()
-  cookieStore.delete("fluxopay_session")
+  cookieStore.delete(SESSION_COOKIE)
+  cookieStore.delete(LEGACY_SESSION_COOKIE)
 }

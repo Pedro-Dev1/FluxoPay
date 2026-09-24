@@ -12,7 +12,7 @@ function getResendClient(): Resend | null {
   return new Resend(process.env.RESEND_API_KEY)
 }
 
-const FROM = process.env.RESEND_FROM_EMAIL || "FluxoPay <notificacoes@simpleqia.com>"
+const FROM = process.env.RESEND_FROM_EMAIL || "Fluxteme <contato@fluxteme.com.br>"
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://fluxopay.connectvending.simpleqia.com"
 
 function emailShell(opts: {
@@ -29,13 +29,13 @@ function emailShell(opts: {
   const ctaHtml = opts.cta
     ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
                 <tr>
-                  <td style="border-radius:6px; background-color:#0066E5;">
-                    <a href="${opts.cta.url}" target="_blank" style="display:inline-block; padding:12px 24px; font-size:14px; font-weight:600; color:#FFFFFF; text-decoration:none; border-radius:6px;">${opts.cta.label}</a>
+                  <td style="border-radius:6px; background-color:#4FB8DC;">
+                    <a href="${opts.cta.url}" target="_blank" style="display:inline-block; padding:12px 24px; font-size:14px; font-weight:600; color:#07182A; text-decoration:none; border-radius:6px;">${opts.cta.label}</a>
                   </td>
                 </tr>
               </table>
-              <p style="margin:20px 0 0 0; font-size:12px; line-height:18px; color:#8792A2;">Se o botão não funcionar, copie e cole este link no navegador:<br />
-                <a href="${opts.cta.url}" style="color:#0066E5; word-break:break-all;">${opts.cta.url}</a>
+              <p style="margin:20px 0 0 0; font-size:12px; line-height:18px; color:#5E7284;">Se o botão não funcionar, copie e cole este link no navegador:<br />
+                <a href="${opts.cta.url}" style="color:#05698B; word-break:break-all;">${opts.cta.url}</a>
               </p>`
     : ""
 
@@ -46,28 +46,28 @@ function emailShell(opts: {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${opts.heading}</title>
 </head>
-<body style="margin:0; padding:0; background-color:#F6F8FA; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<body style="margin:0; padding:0; background-color:#F4F7FA; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <div style="display:none; max-height:0; overflow:hidden; opacity:0;">${opts.preheader}</div>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F6F8FA; padding:32px 16px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F4F7FA; padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px; width:100%; background-color:#FFFFFF; border-radius:12px; overflow:hidden; border:1px solid #E3E8EE;">
+        <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px; width:100%; background-color:#FFFFFF; border-radius:8px; overflow:hidden; border:1px solid #E1E8EE;">
           <tr>
-            <td style="padding:28px 32px 20px 32px; border-bottom:1px solid #E3E8EE;">
-              <span style="font-size:20px; font-weight:700; color:#0066E5; letter-spacing:-0.02em;">FluxoPay</span>
+            <td style="padding:24px 32px; background-color:#07182A;">
+              <span style="display:inline-block; width:4px; height:18px; background-color:#EAF2F7; vertical-align:middle;"></span><span style="display:inline-block; width:10px; height:4px; background-color:#4FB8DC; vertical-align:middle; margin:0 14px 0 3px;"></span><span style="font-size:14px; font-weight:500; color:#EAF2F7; letter-spacing:0.4em; vertical-align:middle;">FLUXTEME</span>
             </td>
           </tr>
           <tr>
             <td style="padding:32px;">
               ${imagemHtml}
-              <h1 style="margin:0 0 16px 0; font-size:20px; line-height:28px; font-weight:600; color:#1A1F36;">${opts.heading}</h1>
-              <div style="font-size:14px; line-height:22px; color:#545C6B;">${opts.bodyHtml}</div>
+              <h1 style="margin:0 0 16px 0; font-size:20px; line-height:28px; font-weight:600; color:#07182A;">${opts.heading}</h1>
+              <div style="font-size:14px; line-height:22px; color:#4A5E70;">${opts.bodyHtml}</div>
               ${ctaHtml}
             </td>
           </tr>
           <tr>
-            <td style="padding:20px 32px; background-color:#F6F8FA; border-top:1px solid #E3E8EE;">
-              <p style="margin:0; font-size:12px; line-height:18px; color:#8792A2;">FluxoPay · Sistema de gestão de pagamentos<br />Este é um e-mail automático, não é necessário responder.</p>
+            <td style="padding:20px 32px; background-color:#F4F7FA; border-top:1px solid #E1E8EE;">
+              <p style="margin:0; font-size:12px; line-height:18px; color:#5E7284;">Fluxteme Tecnologia Desenvolvimento de Software LTDA · CNPJ 69.046.679/0001-56<br />Este é um e-mail automático, não é necessário responder.</p>
             </td>
           </tr>
         </table>
@@ -117,21 +117,21 @@ export async function enviarEmailRedefinicaoSenha(params: { destinatario: string
   const heading = "Redefinição de senha"
   const bodyHtml = `
     <p style="margin:0 0 12px 0;">Olá, ${params.nomeColaborador}.</p>
-    <p style="margin:0 0 12px 0;">Recebemos uma solicitação para redefinir a senha da sua conta no FluxoPay. Clique no botão abaixo para criar uma nova senha.</p>
+    <p style="margin:0 0 12px 0;">Recebemos uma solicitação para redefinir a senha da sua conta no Fluxteme. Clique no botão abaixo para criar uma nova senha.</p>
     <p style="margin:0;">Se você não solicitou essa alteração, pode ignorar este e-mail — sua senha atual continua válida. Este link expira em 1 hora.</p>
   `
   const resend = getResendClient()
   if (!resend) return
 
-  const textoAlternativo = `Olá, ${params.nomeColaborador}.\n\nRecebemos uma solicitação para redefinir a senha da sua conta no FluxoPay. Acesse o link abaixo para criar uma nova senha (expira em 1 hora):\n${resetUrl}\n\nSe você não solicitou essa alteração, pode ignorar este e-mail — sua senha atual continua válida.`
+  const textoAlternativo = `Olá, ${params.nomeColaborador}.\n\nRecebemos uma solicitação para redefinir a senha da sua conta no Fluxteme. Acesse o link abaixo para criar uma nova senha (expira em 1 hora):\n${resetUrl}\n\nSe você não solicitou essa alteração, pode ignorar este e-mail — sua senha atual continua válida.`
 
   try {
     await resend.emails.send({
       from: FROM,
       to: params.destinatario,
-      subject: "Redefinição de senha — FluxoPay",
+      subject: "Redefinição de senha — Fluxteme",
       html: emailShell({
-        preheader: "Clique para criar uma nova senha da sua conta FluxoPay.",
+        preheader: "Clique para criar uma nova senha da sua conta Fluxteme.",
         heading,
         bodyHtml,
         cta: { label: "Redefinir minha senha", url: resetUrl },
@@ -166,7 +166,7 @@ export async function enviarEmailAtualizacao(params: {
 }) {
   const bodyHtml = `
     <p style="margin:0 0 12px 0;">Olá, ${escapeHtml(params.nome)}.</p>
-    ${params.subtitulo ? `<p style="margin:0 0 12px 0; font-weight:600; color:#1A1F36;">${escapeHtml(params.subtitulo)}</p>` : ""}
+    ${params.subtitulo ? `<p style="margin:0 0 12px 0; font-weight:600; color:#07182A;">${escapeHtml(params.subtitulo)}</p>` : ""}
     ${paragrafosHtml(params.descricao)}
   `
   const resend = getResendClient()
@@ -203,16 +203,16 @@ export async function enviarEmailFaturaPlataforma(params: {
   boletoUrl: string | null
   boletoLinha: string | null
 }) {
-  const heading = "Fatura FluxoPay disponível"
+  const heading = "Fatura Fluxteme disponível"
   const bodyHtml = `
     <p style="margin:0 0 12px 0;">Olá.</p>
     <p style="margin:0 0 12px 0;">A fatura da ${escapeHtml(params.nomeCarteira)} referente a ${String(params.referenciaMes).padStart(2, "0")}/${params.referenciaAno} está disponível.</p>
-    <p style="margin:0 0 4px 0;"><strong style="color:#1A1F36;">Valor:</strong> ${escapeHtml(params.valorFormatado)}</p>
-    <p style="margin:0 0 12px 0;"><strong style="color:#1A1F36;">Vencimento:</strong> ${escapeHtml(params.dataVencimentoFormatada)}</p>
+    <p style="margin:0 0 4px 0;"><strong style="color:#07182A;">Valor:</strong> ${escapeHtml(params.valorFormatado)}</p>
+    <p style="margin:0 0 12px 0;"><strong style="color:#07182A;">Vencimento:</strong> ${escapeHtml(params.dataVencimentoFormatada)}</p>
     ${
       params.boletoLinha
-        ? `<p style="margin:0 0 4px 0; font-size:12px; color:#8792A2;">Linha digitável:</p>
-    <p style="margin:0; font-family:monospace; font-size:13px; word-break:break-all; color:#1A1F36;">${escapeHtml(params.boletoLinha)}</p>`
+        ? `<p style="margin:0 0 4px 0; font-size:12px; color:#5E7284;">Linha digitável:</p>
+    <p style="margin:0; font-family:monospace; font-size:13px; word-break:break-all; color:#07182A;">${escapeHtml(params.boletoLinha)}</p>`
         : ""
     }
   `
@@ -225,7 +225,7 @@ export async function enviarEmailFaturaPlataforma(params: {
     await resend.emails.send({
       from: FROM,
       to: params.destinatario,
-      subject: `Fatura FluxoPay — ${String(params.referenciaMes).padStart(2, "0")}/${params.referenciaAno}`,
+      subject: `Fatura Fluxteme — ${String(params.referenciaMes).padStart(2, "0")}/${params.referenciaAno}`,
       html: emailShell({
         preheader: `Fatura de ${params.valorFormatado}, vencimento em ${params.dataVencimentoFormatada}.`,
         heading,
@@ -248,7 +248,7 @@ export async function enviarEmailPedidoAguardandoAprovacao(params: {
   const bodyHtml = `
     <p style="margin:0 0 12px 0;">Olá, ${escapeHtml(params.nomeAprovador)}.</p>
     <p style="margin:0 0 12px 0;">${escapeHtml(params.nomeColaborador)} enviou um pedido de pagamento que está aguardando a sua aprovação.</p>
-    <p style="margin:0;">Acesse o FluxoPay para revisar e aprovar.</p>
+    <p style="margin:0;">Acesse o Fluxteme para revisar e aprovar.</p>
   `
   const resend = getResendClient()
   if (!resend) return
@@ -259,7 +259,7 @@ export async function enviarEmailPedidoAguardandoAprovacao(params: {
     await resend.emails.send({
       from: FROM,
       to: params.destinatario,
-      subject: "Pedido aguardando aprovação — FluxoPay",
+      subject: "Pedido aguardando aprovação — Fluxteme",
       html: emailShell({
         preheader: `${params.nomeColaborador} enviou um pedido aguardando sua aprovação.`,
         heading,

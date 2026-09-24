@@ -20,23 +20,23 @@ export function PedidoDetailModal({ pedido, open, onOpenChange }: PedidoDetailMo
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pendente_supervisor":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300"
+        return "bg-warning-subtle text-warning border-warning/30"
       case "pendente_gerente":
-        return "bg-orange-100 text-orange-800 border-orange-300"
+        return "bg-warning-subtle text-warning border-warning/30"
       case "pendente_financeiro":
-        return "bg-blue-100 text-blue-800 border-blue-300"
+        return "bg-accent text-primary border-primary/30"
       case "aprovado":
-        return "bg-green-100 text-green-800 border-green-300"
+        return "bg-success-subtle text-success border-success/30"
       case "pago":
-        return "bg-emerald-100 text-emerald-800 border-emerald-300"
+        return "bg-success-subtle text-success border-success/30"
       case "nota_recebida":
-        return "bg-teal-100 text-teal-800 border-teal-300"
+        return "bg-accent text-primary border-primary/30"
       case "recusado":
-        return "bg-red-100 text-red-800 border-red-300"
+        return "bg-danger-subtle text-danger border-danger/30"
       case "correcao_solicitada":
-        return "bg-purple-100 text-purple-800 border-purple-300"
+        return "bg-accent text-primary border-primary/30"
       default:
-        return "bg-gray-100 text-gray-800 border-gray-300"
+        return "bg-muted text-foreground border-border"
     }
   }
 
@@ -143,15 +143,15 @@ export function PedidoDetailModal({ pedido, open, onOpenChange }: PedidoDetailMo
                     {pedido.horas_extras > 0 && (
                       <div className="flex justify-between items-center py-2 border-b">
                         <div className="flex items-center gap-2">
-                          <Clock className="w-4 h-4 text-orange-600" />
+                          <Clock className="w-4 h-4 text-warning" />
                           <span className="text-muted-foreground">Horas Extras</span>
                         </div>
-                        <span className="font-semibold text-orange-600">{formatCurrency(pedido.horas_extras)}</span>
+                        <span className="font-semibold text-warning">{formatCurrency(pedido.horas_extras)}</span>
                       </div>
                     )}
                     {pedido.motivo_horas_extras && (
-                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                        <p className="text-sm text-orange-800">
+                      <div className="bg-warning-subtle border border-warning/30 rounded-lg p-3">
+                        <p className="text-sm text-warning">
                           <span className="font-semibold">Motivo:</span> {pedido.motivo_horas_extras}
                         </p>
                       </div>
@@ -160,11 +160,11 @@ export function PedidoDetailModal({ pedido, open, onOpenChange }: PedidoDetailMo
                       <>
                         <div className="flex justify-between items-center py-2 border-b">
                           <span className="text-muted-foreground">Plantão</span>
-                          <span className="font-semibold text-blue-600">{formatCurrency(pedido.valor_plantao)}</span>
+                          <span className="font-semibold text-primary">{formatCurrency(pedido.valor_plantao)}</span>
                         </div>
                         {pedido.motivo_plantao && (
-                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            <p className="text-sm text-blue-800">
+                          <div className="bg-accent border border-primary/30 rounded-lg p-3">
+                            <p className="text-sm text-primary">
                               <span className="font-semibold">Motivo:</span> {pedido.motivo_plantao}
                             </p>
                           </div>
@@ -175,11 +175,11 @@ export function PedidoDetailModal({ pedido, open, onOpenChange }: PedidoDetailMo
                       <>
                         <div className="flex justify-between items-center py-2 border-b">
                           <span className="text-muted-foreground">Desconto</span>
-                          <span className="font-semibold text-red-600">-{formatCurrency(pedido.valor_desconto)}</span>
+                          <span className="font-semibold text-danger">-{formatCurrency(pedido.valor_desconto)}</span>
                         </div>
                         {pedido.motivo_desconto && (
-                          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                            <p className="text-sm text-red-800">
+                          <div className="bg-danger-subtle border border-danger/30 rounded-lg p-3">
+                            <p className="text-sm text-danger">
                               <span className="font-semibold">Motivo:</span> {pedido.motivo_desconto}
                             </p>
                           </div>
@@ -191,10 +191,10 @@ export function PedidoDetailModal({ pedido, open, onOpenChange }: PedidoDetailMo
                 {pedido.valor_km > 0 && (
                   <div className="flex justify-between items-center py-2 border-b">
                     <div className="flex items-center gap-2">
-                      <Car className="w-4 h-4 text-purple-600" />
+                      <Car className="w-4 h-4 text-primary" />
                       <span className="text-muted-foreground">Quilometragem</span>
                     </div>
-                    <span className="font-semibold text-purple-600">{formatCurrency(pedido.valor_km)}</span>
+                    <span className="font-semibold text-primary">{formatCurrency(pedido.valor_km)}</span>
                   </div>
                 )}
                 <div className="flex justify-between items-center py-3 bg-primary/5 rounded-lg px-3 mt-4">
@@ -207,13 +207,13 @@ export function PedidoDetailModal({ pedido, open, onOpenChange }: PedidoDetailMo
 
           {/* Observações */}
           {pedido.observacao_recusa && (
-            <Card className="border-red-200 bg-red-50">
+            <Card className="border-danger/30 bg-danger-subtle">
               <CardContent className="pt-6">
                 <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                  <AlertCircle className="w-5 h-5 text-danger mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-lg text-red-800 mb-2">Observação de Recusa/Correção</h3>
-                    <p className="text-red-700">{pedido.observacao_recusa}</p>
+                    <h3 className="font-semibold text-lg text-danger mb-2">Observação de Recusa/Correção</h3>
+                    <p className="text-danger">{pedido.observacao_recusa}</p>
                   </div>
                 </div>
               </CardContent>

@@ -97,23 +97,23 @@ export function SystemControl() {
 
   return (
     <>
-      <Card className={isActive ? "border-green-500/30" : "border-red-500/30"}>
+      <Card className={isActive ? "border-success/30" : "border-danger/30"}>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {isActive ? (
-                <div className="p-2 rounded-full bg-green-500/10">
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                <div className="p-2 rounded-full bg-success-subtle">
+                  <CheckCircle2 className="h-5 w-5 text-success" />
                 </div>
               ) : (
-                <div className="p-2 rounded-full bg-red-500/10">
-                  <AlertTriangle className="h-5 w-5 text-red-500" />
+                <div className="p-2 rounded-full bg-danger-subtle">
+                  <AlertTriangle className="h-5 w-5 text-danger" />
                 </div>
               )}
               <div>
                 <CardTitle className="text-lg">Controle do Sistema</CardTitle>
                 <CardDescription>
-                  Gerencie o status de funcionamento do FluxoPay
+                  Gerencie o status de funcionamento do Fluxteme
                 </CardDescription>
               </div>
             </div>
@@ -124,11 +124,11 @@ export function SystemControl() {
         </CardHeader>
         <CardContent className="space-y-4">
           {!isActive && status?.suspended_reason && (
-            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
-              <p className="text-sm font-medium text-red-400 mb-1">Motivo da Suspensão:</p>
-              <p className="text-sm text-red-300">{status.suspended_reason}</p>
+            <div className="p-4 rounded-lg bg-danger-subtle border border-danger/30">
+              <p className="text-sm font-medium text-danger mb-1">Motivo da Suspensão:</p>
+              <p className="text-sm text-danger">{status.suspended_reason}</p>
               {status.suspended_at && (
-                <p className="text-xs text-red-400/70 mt-2">
+                <p className="text-xs text-danger/70 mt-2">
                   Suspenso em: {new Date(status.suspended_at).toLocaleString("pt-BR")}
                 </p>
               )}
@@ -165,7 +165,7 @@ export function SystemControl() {
               <Button 
                 variant="default" 
                 size="sm"
-                className="bg-green-600 hover:bg-green-700"
+                className="bg-success hover:bg-success/90"
                 onClick={() => setShowReactivateDialog(true)}
               >
                 <Power className="h-4 w-4 mr-2" />
@@ -180,7 +180,7 @@ export function SystemControl() {
       <AlertDialog open={showSuspendDialog} onOpenChange={setShowSuspendDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 text-red-500">
+            <AlertDialogTitle className="flex items-center gap-2 text-danger">
               <AlertTriangle className="h-5 w-5" />
               Suspender Sistema
             </AlertDialogTitle>
@@ -208,7 +208,7 @@ export function SystemControl() {
             <AlertDialogAction
               onClick={handleSuspend}
               disabled={isSubmitting || !suspensionReason.trim()}
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-danger hover:bg-danger/90"
             >
               {isSubmitting ? (
                 <>
@@ -230,7 +230,7 @@ export function SystemControl() {
       <AlertDialog open={showReactivateDialog} onOpenChange={setShowReactivateDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 text-green-500">
+            <AlertDialogTitle className="flex items-center gap-2 text-success">
               <Power className="h-5 w-5" />
               Reativar Sistema
             </AlertDialogTitle>
@@ -244,7 +244,7 @@ export function SystemControl() {
             <AlertDialogAction
               onClick={handleReactivate}
               disabled={isSubmitting}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-success hover:bg-success/90"
             >
               {isSubmitting ? (
                 <>

@@ -21,37 +21,37 @@ const cards = [
     title: "Emissão de NFSe",
     description: "Emita notas fiscais de serviço de forma automática.",
     icon: FileText,
-    color: "bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-800",
+    color: "bg-accent text-primary border-primary/30",
   },
   {
     title: "Consulta de Notas",
     description: "Visualize todas as notas fiscais emitidas.",
     icon: Search,
-    color: "bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800",
+    color: "bg-success-subtle text-success border-success/30",
   },
   {
     title: "Cancelamento de Notas",
     description: "Solicite cancelamento de notas fiscais emitidas.",
     icon: XCircle,
-    color: "bg-red-50 text-red-600 border-red-200 dark:bg-red-950/30 dark:text-red-400 dark:border-red-800",
+    color: "bg-danger-subtle text-danger border-danger/30",
   },
   {
     title: "Cálculo de Impostos",
     description: "Simule e acompanhe tributos da empresa.",
     icon: Calculator,
-    color: "bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800",
+    color: "bg-warning-subtle text-warning border-warning/30",
   },
   {
     title: "Relatórios Fiscais",
     description: "Gere relatórios para controle e contabilidade.",
     icon: BarChart3,
-    color: "bg-purple-50 text-purple-600 border-purple-200 dark:bg-purple-950/30 dark:text-purple-400 dark:border-purple-800",
+    color: "bg-accent text-primary border-primary/30",
   },
   {
     title: "Integração com Prefeituras",
     description: "Emissão automatizada através das prefeituras integradas.",
     icon: Building,
-    color: "bg-sky-50 text-sky-600 border-sky-200 dark:bg-sky-950/30 dark:text-sky-400 dark:border-sky-800",
+    color: "bg-accent text-primary border-primary/30",
   },
 ]
 
@@ -106,7 +106,7 @@ export default async function FiscalPage() {
                   </div>
                   <Badge
                     variant="outline"
-                    className="text-[11px] font-medium text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-700 flex items-center gap-1"
+                    className="text-[11px] font-medium text-warning border-warning/30 bg-warning-subtle flex items-center gap-1"
                   >
                     <Clock className="h-3 w-3" />
                     Em Desenvolvimento

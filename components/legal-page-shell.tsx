@@ -68,7 +68,7 @@ export function LegalPageShell({
 
       <footer className="py-5 px-4 border-t border-border">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-text-tertiary">
-          <p>2026 FluxoPay — Simpleqia. Todos os direitos reservados.</p>
+          <p>© 2026 Fluxteme Tecnologia Desenvolvimento de Software LTDA · CNPJ 69.046.679/0001-56</p>
           <div className="flex items-center gap-3">
             <Link href="/termos" className="hover:text-foreground transition-colors">
               Termos

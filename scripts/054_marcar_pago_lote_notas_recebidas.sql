@@ -2,7 +2,7 @@
 -- Financeiro > "Notas Recebidas" (o mesmo conjunto que listarPedidosComNota()
 -- retorna: têm nota fiscal anexada, OU são reembolso KM — que não usa nota).
 -- Uso: esses pagamentos já foram feitos de fato fora do sistema, e o
--- FluxoPay só precisa passar a refletir isso.
+-- Fluxteme só precisa passar a refletir isso.
 --
 -- NÃO inclui os pedidos "Sem Nota Fiscal" — esses ainda dependem do
 -- colaborador anexar a nota antes de virar pagamento.

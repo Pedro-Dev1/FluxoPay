@@ -7,11 +7,11 @@ export default function PrivacidadePage() {
       icon={Shield}
       activeHref="/privacidade"
       title="Política de Privacidade"
-      subtitle="FluxoPay - LGPD (Lei nº 13.709/2018)"
+      subtitle="Fluxteme - LGPD (Lei nº 13.709/2018)"
       meta={
         <>
           <Calendar className="h-3.5 w-3.5" />
-          <span>Vigência: 02/04/2026 | Versão 2.1 | CNPJ 26.344.386/0001-42</span>
+          <span>Vigência: 02/04/2026 | Versão 2.1 | CNPJ 69.046.679/0001-56</span>
         </>
       }
     >
@@ -19,12 +19,12 @@ export default function PrivacidadePage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">1. Controlador e Encarregado (DPO)</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            <strong className="text-foreground">Controlador dos Dados:</strong> FELIPE NOGUEIRA SILVA SERVIÇOS
-            COMÉRCIO E LOCAÇÃO, CNPJ 26.344.386/0001-42, nome fantasia KAFERRI TEC SERVIÇOS, com sede em Osasco/SP,
-            responsável pelas decisões relativas ao tratamento de dados pessoais no FluxoPay.
+            <strong className="text-foreground">Controlador dos Dados:</strong> FLUXTEME TECNOLOGIA DESENVOLVIMENTO DE SOFTWARE LTDA,
+            CNPJ 69.046.679/0001-56, nome fantasia Fluxteme Tech,
+            responsável pelas decisões relativas ao tratamento de dados pessoais no Fluxteme.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            <strong className="text-foreground">Encarregado de Dados (DPO):</strong> simpleqia.oficial@gmail.com. O
+            <strong className="text-foreground">Encarregado de Dados (DPO):</strong> contato@fluxteme.com.br. O
             DPO é o canal oficial para exercício de direitos dos titulares, dúvidas sobre o tratamento de dados e
             comunicação com a ANPD.
           </p>
@@ -32,7 +32,7 @@ export default function PrivacidadePage() {
             <Info className="h-4 w-4 text-primary mt-0.5 shrink-0" />
             <p className="text-primary text-sm">
               Para dados de prestadores inseridos pelas Empresas Clientes, a Empresa Cliente atua como Controladora e
-              o FluxoPay atua como Operadora, conforme Art. 37 da LGPD.
+              o Fluxteme atua como Operadora, conforme Art. 37 da LGPD.
             </p>
           </div>
         </section>
@@ -69,7 +69,7 @@ export default function PrivacidadePage() {
             <CheckCircle className="h-4 w-4 text-success mt-0.5 shrink-0" />
             <p className="text-success text-sm">
               Não coletamos dados sensíveis (saúde, biometria, etnia, orientação sexual) e não permitimos o cadastro
-              de dados de menores de 18 anos através do FluxoPay.
+              de dados de menores de 18 anos através do Fluxteme.
             </p>
           </div>
         </section>
@@ -123,7 +123,7 @@ export default function PrivacidadePage() {
           </ul>
           <div className="bg-danger-subtle border border-danger/20 rounded-control p-4">
             <p className="text-danger text-sm">
-              <strong>Proibido:</strong> O FluxoPay jamais vende, cede ou comercializa dados pessoais para terceiros
+              <strong>Proibido:</strong> O Fluxteme jamais vende, cede ou comercializa dados pessoais para terceiros
               para fins de marketing, publicidade ou qualquer finalidade alheia ao serviço contratado.
             </p>
           </div>
@@ -132,7 +132,7 @@ export default function PrivacidadePage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">5. Transferência Internacional de Dados</h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Caso dados sejam processados em infraestrutura localizada fora do Brasil, o FluxoPay garante que tais
+            Caso dados sejam processados em infraestrutura localizada fora do Brasil, o Fluxteme garante que tais
             transferências ocorrem apenas para países com grau de proteção adequado reconhecido pela ANPD ou mediante
             cláusulas contratuais padrão, conforme Arts. 33 e seguintes da LGPD.
           </p>
@@ -225,7 +225,7 @@ export default function PrivacidadePage() {
             </li>
           </ul>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Para exercer qualquer direito, envie solicitação para simpleqia.oficial@gmail.com com nome completo,
+            Para exercer qualquer direito, envie solicitação para contato@fluxteme.com.br com nome completo,
             e-mail cadastrado e descrição do pedido. Prazo de resposta: 15 dias úteis.
           </p>
         </section>
@@ -233,7 +233,7 @@ export default function PrivacidadePage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">9. Cookies e Tecnologias Similares</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            O FluxoPay utiliza exclusivamente cookies estritamente necessários para:
+            O Fluxteme utiliza exclusivamente cookies estritamente necessários para:
           </p>
           <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-1 mb-4">
             <li>Manutenção da sessão autenticada do usuário</li>
@@ -252,7 +252,7 @@ export default function PrivacidadePage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-3">10. Incidentes de Segurança</h2>
           <p className="text-text-secondary text-sm leading-relaxed mb-3">
-            Em caso de incidente que possa afetar dados pessoais, o FluxoPay:
+            Em caso de incidente que possa afetar dados pessoais, o Fluxteme:
           </p>
           <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-1 mb-4">
             <li>Notificará a Empresa Cliente no prazo máximo de 72 horas após ciência do evento</li>
@@ -261,7 +261,7 @@ export default function PrivacidadePage() {
             <li>Fornecerá relatório de incidente com causa, dados afetados e medidas adotadas</li>
           </ul>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Para reportar incidentes: simpleqia.oficial@gmail.com
+            Para reportar incidentes: contato@fluxteme.com.br
           </p>
         </section>
 
@@ -270,12 +270,12 @@ export default function PrivacidadePage() {
           <p className="text-text-secondary text-sm leading-relaxed mb-4">
             Esta Política entra em vigor em 02/04/2026 e pode ser atualizada periodicamente. Alterações relevantes
             serão comunicadas por e-mail com antecedência mínima de 15 dias. A versão vigente estará sempre
-            disponível na tela de login do FluxoPay.
+            disponível na tela de login do Fluxteme.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="mailto:simpleqia.oficial@gmail.com" className="flex items-center gap-2 text-primary hover:underline text-sm">
+            <a href="mailto:contato@fluxteme.com.br" className="flex items-center gap-2 text-primary hover:underline text-sm">
               <Mail className="h-4 w-4" />
-              simpleqia.oficial@gmail.com
+              contato@fluxteme.com.br
             </a>
           </div>
         </section>

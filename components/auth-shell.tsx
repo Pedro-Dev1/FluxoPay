@@ -1,5 +1,6 @@
 import type React from "react"
 import Link from "next/link"
+import { BrandLogo } from "@/components/brand-logo"
 
 export function AuthShell({ children }: { children: React.ReactNode }) {
   return (
@@ -24,7 +25,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
       <main className="flex-1 flex items-center justify-center px-4 py-10">
         <div className="w-full max-w-[360px]">
           <div className="text-center mb-6">
-            <img src="/fluxopay-logo.png" alt="FluxoPay" className="h-9 w-auto mx-auto" width={144} height={36} />
+            <BrandLogo className="h-7 mx-auto" />
           </div>
 
           <div className="bg-card border border-border rounded-lg p-6">{children}</div>
@@ -44,9 +45,9 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
 
       <footer className="py-5 px-4 border-t border-border">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-text-tertiary">
-          <p>2026 FluxoPay — Simpleqia. Todos os direitos reservados.</p>
+          <p>© 2026 Fluxteme Tecnologia Desenvolvimento de Software LTDA · CNPJ 69.046.679/0001-56</p>
           <div className="flex items-center gap-3">
-            <span>Suporte: simpleqia.oficial@gmail.com</span>
+            <span>Suporte: contato@fluxteme.com.br</span>
           </div>
         </div>
       </footer>

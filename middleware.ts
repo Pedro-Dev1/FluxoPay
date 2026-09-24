@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { verifyAndParse } from "./lib/session-crypto"
+import { LEGACY_SESSION_COOKIE, SESSION_COOKIE, verifyAndParse } from "./lib/session-crypto"
 
 // Chamadas de fora (Vercel Cron, webhook da Pagar.me, API do Super Admin
 // pra automação/scripts) nunca têm o cookie de sessão — cada uma dessas
@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
 
   response.headers.set("x-pathname", request.nextUrl.pathname)
 
-  const sessionCookie = request.cookies.get("fluxopay_session")
+  const sessionCookie = request.cookies.get(SESSION_COOKIE) ?? request.cookies.get(LEGACY_SESSION_COOKIE)
   const session = await verifyAndParse<{ tipoAcesso: string; isSuperAdmin?: boolean }>(sessionCookie?.value)
 
   const publicRoutes = ["/login", "/setup", "/faq", "/termos", "/privacidade", "/esqueci-senha", "/redefinir-senha"]

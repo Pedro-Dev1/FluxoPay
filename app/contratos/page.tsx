@@ -23,37 +23,37 @@ const cards = [
     title: "Criar Contrato",
     description: "Gere contratos personalizados em poucos minutos.",
     icon: FilePlus,
-    color: "bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-800",
+    color: "bg-accent text-primary border-primary/30",
   },
   {
     title: "Biblioteca de Modelos",
     description: "Utilize modelos prontos para diferentes serviços.",
     icon: Library,
-    color: "bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800",
+    color: "bg-success-subtle text-success border-success/30",
   },
   {
     title: "Assinatura Eletrônica",
     description: "Assine documentos digitalmente com validade jurídica.",
     icon: PenLine,
-    color: "bg-indigo-50 text-indigo-600 border-indigo-200 dark:bg-indigo-950/30 dark:text-indigo-400 dark:border-indigo-800",
+    color: "bg-accent text-primary border-primary/30",
   },
   {
     title: "Gestão de Contratos",
     description: "Acompanhe contratos ativos e encerrados.",
     icon: FolderOpen,
-    color: "bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800",
+    color: "bg-warning-subtle text-warning border-warning/30",
   },
   {
     title: "Armazenamento Seguro",
     description: "Centralize todos os documentos da empresa.",
     icon: ShieldCheck,
-    color: "bg-teal-50 text-teal-600 border-teal-200 dark:bg-teal-950/30 dark:text-teal-400 dark:border-teal-800",
+    color: "bg-accent text-primary border-primary/30",
   },
   {
     title: "Renovação Automática",
     description: "Receba alertas e automatize renovações.",
     icon: RefreshCw,
-    color: "bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-800",
+    color: "bg-danger-subtle text-danger border-danger/30",
   },
 ]
 
@@ -109,7 +109,7 @@ export default async function ContratosPage() {
                   </div>
                   <Badge
                     variant="outline"
-                    className="text-[11px] font-medium text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-700 flex items-center gap-1"
+                    className="text-[11px] font-medium text-warning border-warning/30 bg-warning-subtle flex items-center gap-1"
                   >
                     <Clock className="h-3 w-3" />
                     Em Desenvolvimento

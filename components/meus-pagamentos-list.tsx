@@ -223,7 +223,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                       {isReembolsoKm ? "Reembolso de Quilometragem" : "Pedido de Pagamento"}
                     </CardTitle>
                     {isReembolsoKm && (
-                      <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
+                      <span className="px-2 py-1 text-xs font-medium bg-accent text-primary rounded-full">
                         Apenas KM
                       </span>
                     )}
@@ -231,10 +231,10 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                       <span
                         className={`px-2 py-1 text-xs font-medium rounded-full ${
                           pedido.status === "pago" 
-                            ? "bg-emerald-100 text-emerald-700" 
+                            ? "bg-success-subtle text-success" 
                             : pedido.status === "nota_recebida" 
-                              ? "bg-teal-100 text-teal-700" 
-                              : "bg-yellow-100 text-yellow-700"
+                              ? "bg-accent text-primary" 
+                              : "bg-warning-subtle text-warning"
                         }`}
                       >
                         {pedido.status === "pago" 
@@ -245,13 +245,13 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                       </span>
                     )}
                     {aguardandoProrrogacao && (
-                      <span className="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-700 rounded-full flex items-center gap-1">
+                      <span className="px-2 py-1 text-xs font-medium bg-warning-subtle text-warning rounded-full flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         Aguardando Prorrogação
                       </span>
                     )}
                     {prorrogacaoNegada && (
-                      <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full flex items-center gap-1">
+                      <span className="px-2 py-1 text-xs font-medium bg-danger-subtle text-danger rounded-full flex items-center gap-1">
                         <XCircle className="w-3 h-3" />
                         Prorrogação Negada
                       </span>
@@ -350,9 +350,9 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
 
                     {/* Desconto summary */}
                     {pedido.valor_desconto && pedido.valor_desconto > 0 && (
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800">
-                        <span className="text-red-700 dark:text-red-300 font-medium">Desconto:</span>
-                        <span className="text-red-600 dark:text-red-400 font-semibold">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-danger-subtle border border-danger/30">
+                        <span className="text-danger font-medium">Desconto:</span>
+                        <span className="text-danger font-semibold">
                           - {formatValue(pedido.valor_desconto)}
                         </span>
                       </div>
@@ -374,10 +374,10 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                 ) : (
                   <>
                     {isReembolsoKm ? (
-                      <div className="flex items-start gap-3 p-3 rounded-lg bg-purple-50">
-                        <MapPin className="w-5 h-5 text-purple-600 mt-0.5" />
+                      <div className="flex items-start gap-3 p-3 rounded-lg bg-accent">
+                        <MapPin className="w-5 h-5 text-primary mt-0.5" />
                         <div>
-                          <p className="text-sm text-purple-900 font-medium">Quilometragem</p>
+                          <p className="text-sm text-primary font-medium">Quilometragem</p>
                           <p className="font-semibold">{formatValue(pedido.valor_km)}</p>
                         </div>
                       </div>
@@ -427,45 +427,45 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
 
                     {!isReembolsoKm && pedido.valor_desconto && pedido.valor_desconto > 0 && (
                       <>
-                        <div className="flex items-start gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800">
-                          <Percent className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+                        <div className="flex items-start gap-3 p-3 rounded-lg bg-danger-subtle border border-danger/30">
+                          <Percent className="w-5 h-5 text-danger mt-0.5" />
                           <div className="flex-1">
-                            <p className="text-sm font-medium text-red-900 dark:text-red-100">Desconto Aplicado</p>
-                            <p className="font-semibold text-red-700 dark:text-red-300">
+                            <p className="text-sm font-medium text-danger">Desconto Aplicado</p>
+                            <p className="font-semibold text-danger">
                               - {formatValue(pedido.valor_desconto)}
                             </p>
                           </div>
                         </div>
 
                         {pedido.motivo_desconto && (
-                          <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800">
-                            <p className="text-sm font-medium mb-1 text-amber-900 dark:text-amber-100">
+                          <div className="p-3 rounded-lg bg-warning-subtle border border-warning/30">
+                            <p className="text-sm font-medium mb-1 text-warning">
                               Motivo do Desconto:
                             </p>
-                            <p className="text-sm text-amber-800 dark:text-amber-200">{pedido.motivo_desconto}</p>
+                            <p className="text-sm text-warning">{pedido.motivo_desconto}</p>
                           </div>
                         )}
                       </>
                     )}
 
                     {aguardandoProrrogacao && (
-                      <div className="p-4 rounded-lg bg-orange-50 dark:bg-orange-950 border-2 border-orange-200 dark:border-orange-800">
+                      <div className="p-4 rounded-lg bg-warning-subtle border-2 border-warning/30">
                         <div className="flex items-start gap-3">
-                          <Clock className="w-5 h-5 text-orange-600 dark:text-orange-400 mt-0.5" />
+                          <Clock className="w-5 h-5 text-warning mt-0.5" />
                           <div className="flex-1">
-                            <p className="font-semibold text-orange-900 dark:text-orange-100 mb-2">
+                            <p className="font-semibold text-warning mb-2">
                               Solicitação de Prorrogação em Análise
                             </p>
-                            <p className="text-sm text-orange-700 dark:text-orange-300 mb-3">
+                            <p className="text-sm text-warning mb-3">
                               Sua solicitação de prorrogação de prazo foi enviada ao financeiro e está aguardando
                               aprovação.
                             </p>
                             {pedido.motivo_prorrogacao && (
-                              <div className="p-3 rounded bg-white dark:bg-orange-950/30">
-                                <p className="text-xs font-medium text-orange-900 dark:text-orange-100 mb-1">
+                              <div className="p-3 rounded bg-card">
+                                <p className="text-xs font-medium text-warning mb-1">
                                   Motivo informado:
                                 </p>
-                                <p className="text-sm text-orange-800 dark:text-orange-200">
+                                <p className="text-sm text-warning">
                                   {pedido.motivo_prorrogacao}
                                 </p>
                               </div>
@@ -476,25 +476,25 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                     )}
 
                     {prorrogacaoNegada && (
-                      <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950 border-2 border-red-200 dark:border-red-800">
+                      <div className="p-4 rounded-lg bg-danger-subtle border-2 border-danger/30">
                         <div className="flex items-start gap-3">
-                          <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+                          <XCircle className="w-5 h-5 text-danger mt-0.5" />
                           <div className="flex-1">
-                            <p className="font-semibold text-red-900 dark:text-red-100 mb-2">Prorrogação Negada</p>
-                            <p className="text-sm text-red-700 dark:text-red-300 mb-3">
+                            <p className="font-semibold text-danger mb-2">Prorrogação Negada</p>
+                            <p className="text-sm text-danger mb-3">
                               Sua solicitação de prorrogação foi negada pelo financeiro.
                             </p>
                             {pedido.observacao_prorrogacao && (
-                              <div className="p-3 rounded bg-white dark:bg-red-950/30">
-                                <p className="text-xs font-medium text-red-900 dark:text-red-100 mb-1">
+                              <div className="p-3 rounded bg-card">
+                                <p className="text-xs font-medium text-danger mb-1">
                                   Motivo da negação:
                                 </p>
-                                <p className="text-sm text-red-800 dark:text-red-200">
+                                <p className="text-sm text-danger">
                                   {pedido.observacao_prorrogacao}
                                 </p>
                               </div>
                             )}
-                            <p className="text-sm text-red-700 dark:text-red-300 mt-3">
+                            <p className="text-sm text-danger mt-3">
                               Entre em contato com o seu supervisor para resolver esta situação.
                             </p>
                           </div>
@@ -521,11 +521,11 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
 
                         {pedido.nota_emitida ? (
                           <div className="space-y-2">
-                            <div className="flex items-center gap-2 p-3 rounded-lg bg-green-100 dark:bg-green-900 border border-green-300 dark:border-green-700">
-                              <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                            <div className="flex items-center gap-2 p-3 rounded-lg bg-success-subtle border border-success/30">
+                              <CheckCircle className="w-5 h-5 text-success" />
                               <div className="flex-1">
-                                <p className="font-medium text-green-900 dark:text-green-100">Nota Emitida</p>
-                                <p className="text-xs text-green-700 dark:text-green-300">
+                                <p className="font-medium text-success">Nota Emitida</p>
+                                <p className="text-xs text-success">
                                   {pedido.data_emissao_nota &&
                                     new Date(pedido.data_emissao_nota).toLocaleDateString("pt-BR")}
                                 </p>
@@ -550,14 +550,14 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
 
                             {prazoExpirado && !pedido.prorrogacao_solicitada ? (
                               <div className="space-y-3">
-                                <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950 border-2 border-red-200 dark:border-red-800">
+                                <div className="p-4 rounded-lg bg-danger-subtle border-2 border-danger/30">
                                   <div className="flex items-start gap-3 mb-3">
-                                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+                                    <AlertCircle className="w-5 h-5 text-danger mt-0.5" />
                                     <div className="flex-1">
-                                      <p className="font-semibold text-red-900 dark:text-red-100 mb-2">
+                                      <p className="font-semibold text-danger mb-2">
                                         Você não anexou a nota a tempo
                                       </p>
-                                      <p className="text-sm text-red-700 dark:text-red-300">
+                                      <p className="text-sm text-danger">
                                         O prazo para anexar a nota fiscal expirou. Você precisa solicitar uma nova data
                                         ao financeiro.
                                       </p>
@@ -569,7 +569,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                                     setPedidoSelecionado(pedido)
                                     setProrrogacaoDialogOpen(true)
                                   }}
-                                  className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+                                  className="w-full bg-warning hover:bg-warning/90 text-warning-foreground"
                                 >
                                   <Clock className="w-4 h-4 mr-2" />
                                   Solicitar Nova Data
@@ -577,7 +577,7 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                               </div>
                             ) : (
                               <>
-                                <p className="text-sm font-medium text-green-900 dark:text-green-100">
+                                <p className="text-sm font-medium text-success">
                                   Você já emitiu sua nota?
                                 </p>
                                 <Button
@@ -585,12 +585,12 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                                     setPedidoSelecionado(pedido)
                                     setDialogOpen(true)
                                   }}
-                                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                                  className="w-full bg-success hover:bg-success/90 text-success-foreground"
                                 >
                                   <Upload className="w-4 h-4 mr-2" />
                                   Anexar Nota Fiscal
                                 </Button>
-                                <p className="text-xs text-center text-green-700 dark:text-green-300">
+                                <p className="text-xs text-center text-success">
                                   * A nota será validada automaticamente
                                 </p>
                               </>
@@ -602,11 +602,11 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
 
                     {isHistorico && pedido.nota_fiscal_url && (
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-green-100 dark:bg-green-900 border border-green-300 dark:border-green-700">
-                          <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        <div className="flex items-center gap-2 p-3 rounded-lg bg-success-subtle border border-success/30">
+                          <CheckCircle className="w-5 h-5 text-success" />
                           <div className="flex-1">
-                            <p className="font-medium text-green-900 dark:text-green-100">Nota Fiscal Enviada</p>
-                            <p className="text-xs text-green-700 dark:text-green-300">
+                            <p className="font-medium text-success">Nota Fiscal Enviada</p>
+                            <p className="text-xs text-success">
                               {pedido.data_emissao_nota &&
                                 new Date(pedido.data_emissao_nota).toLocaleDateString("pt-BR")}
                             </p>
@@ -621,10 +621,10 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                           Ver Nota Fiscal
                         </Button>
                         {(pedido.status === "pago" || pedido.status === "nota_recebida") && (
-                          <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800">
+                          <div className="p-3 rounded-lg bg-accent border border-primary/30">
                             <div className="flex items-center gap-2">
-                              <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                              <p className="font-medium text-blue-900 dark:text-blue-100">Pagamento Aprovado</p>
+                              <CheckCircle className="w-5 h-5 text-primary" />
+                              <p className="font-medium text-primary">Pagamento Aprovado</p>
                             </div>
                           </div>
                         )}
@@ -632,11 +632,11 @@ export function MeusPagamentosList({ pedidos, colaborador, isHistorico = false }
                     )}
 
                     {pedido.data_previsao_pagamento && (
-                      <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800">
-                        <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      <div className="flex items-center gap-3 p-3 rounded-lg bg-accent border border-primary/30">
+                        <Calendar className="w-5 h-5 text-primary" />
                         <div>
-                          <p className="text-sm font-medium text-blue-900 dark:text-blue-100">Previsão de Pagamento</p>
-                          <p className="font-semibold text-blue-700 dark:text-blue-300">
+                          <p className="text-sm font-medium text-primary">Previsão de Pagamento</p>
+                          <p className="font-semibold text-primary">
                             {pedido.data_previsao_pagamento.includes("T")
                               ? new Date(pedido.data_previsao_pagamento).toLocaleDateString("pt-BR")
                               : new Date(pedido.data_previsao_pagamento + "T12:00:00").toLocaleDateString("pt-BR")}

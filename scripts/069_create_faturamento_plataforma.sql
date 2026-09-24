@@ -1,4 +1,4 @@
--- Faturamento da plataforma: a FluxoPay cobra cada carteira mensalmente, no
+-- Faturamento da plataforma: a Fluxteme cobra cada carteira mensalmente, no
 -- dia configurado, com base na quantidade de colaboradores ativos vezes o
 -- valor por usuário definido pra aquela carteira. unique(tenant_id,
 -- referencia_ano, referencia_mes) é o mecanismo de idempotência — a mesma

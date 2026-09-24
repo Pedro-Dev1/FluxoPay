@@ -43,11 +43,11 @@ export function CountdownTimer({ dataLimite }: CountdownTimerProps) {
 
   if (timeLeft.expired) {
     return (
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800">
-        <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-danger-subtle border border-danger/30">
+        <AlertTriangle className="w-5 h-5 text-danger" />
         <div className="flex-1">
-          <p className="text-sm font-medium text-red-900 dark:text-red-100">Prazo Expirado</p>
-          <p className="text-xs text-red-700 dark:text-red-300">O prazo para anexar a nota fiscal terminou</p>
+          <p className="text-sm font-medium text-danger">Prazo Expirado</p>
+          <p className="text-xs text-danger">O prazo para anexar a nota fiscal terminou</p>
         </div>
       </div>
     )
@@ -59,21 +59,21 @@ export function CountdownTimer({ dataLimite }: CountdownTimerProps) {
     <div
       className={`flex items-center gap-2 p-3 rounded-lg border ${
         isUrgent
-          ? "bg-orange-50 dark:bg-orange-950 border-orange-200 dark:border-orange-800"
-          : "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800"
+          ? "bg-warning-subtle border-warning/30"
+          : "bg-accent border-primary/30"
       }`}
     >
       <Clock
-        className={`w-5 h-5 ${isUrgent ? "text-orange-600 dark:text-orange-400" : "text-blue-600 dark:text-blue-400"}`}
+        className={`w-5 h-5 ${isUrgent ? "text-warning" : "text-primary"}`}
       />
       <div className="flex-1">
         <p
-          className={`text-sm font-medium ${isUrgent ? "text-orange-900 dark:text-orange-100" : "text-blue-900 dark:text-blue-100"}`}
+          className={`text-sm font-medium ${isUrgent ? "text-warning" : "text-primary"}`}
         >
           Tempo Restante para Anexar Nota
         </p>
         <div
-          className={`flex gap-2 text-xs font-mono ${isUrgent ? "text-orange-700 dark:text-orange-300" : "text-blue-700 dark:text-blue-300"}`}
+          className={`flex gap-2 text-xs font-mono ${isUrgent ? "text-warning" : "text-primary"}`}
         >
           {timeLeft.days > 0 && <span>{timeLeft.days}d</span>}
           <span>{timeLeft.hours.toString().padStart(2, "0")}h</span>

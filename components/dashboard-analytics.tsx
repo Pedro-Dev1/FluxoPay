@@ -26,13 +26,13 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  pendente_gerente: "bg-amber-50 text-amber-800 border-amber-200",
-  pendente_financeiro: "bg-sky-50 text-sky-800 border-sky-200",
-  aprovado: "bg-emerald-50 text-emerald-800 border-emerald-200",
-  recusado: "bg-red-50 text-red-800 border-red-200",
-  correcao: "bg-orange-50 text-orange-800 border-orange-200",
-  pago: "bg-green-50 text-green-800 border-green-200",
-  nota_recebida: "bg-teal-50 text-teal-800 border-teal-200",
+  pendente_gerente: "bg-warning-subtle text-warning border-warning/30",
+  pendente_financeiro: "bg-accent text-primary border-primary/30",
+  aprovado: "bg-success-subtle text-success border-success/30",
+  recusado: "bg-danger-subtle text-danger border-danger/30",
+  correcao: "bg-warning-subtle text-warning border-warning/30",
+  pago: "bg-success-subtle text-success border-success/30",
+  nota_recebida: "bg-accent text-primary border-primary/30",
 }
 
 function formatDateBR(dateString: string) {
@@ -183,7 +183,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `fluxopay_relatorio_${new Date().toISOString().split("T")[0]}.xls`
+    a.download = `fluxteme_relatorio_${new Date().toISOString().split("T")[0]}.xls`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -344,7 +344,7 @@ export function DashboardAnalytics({ pedidos }: DashboardAnalyticsProps) {
                                   {(p.valor_desconto || 0) > 0 && (
                                     <div>
                                       <span className="text-muted-foreground text-xs block">Desconto</span>
-                                      <span className="font-medium text-red-600">{formatValue(p.valor_desconto, true)}</span>
+                                      <span className="font-medium text-danger">{formatValue(p.valor_desconto, true)}</span>
                                       {p.motivo_desconto && (
                                         <span className="text-xs text-muted-foreground block">{p.motivo_desconto}</span>
                                       )}

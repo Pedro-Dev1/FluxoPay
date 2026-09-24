@@ -8,102 +8,122 @@
   }
 }
 
+/*
+ * Identidade Fluxteme. Tema escuro é o padrão da marca (navy + ciano); o
+ * claro usa os mesmos matizes, com o petróleo no lugar do ciano para manter
+ * contraste AA sobre branco. Um acento só — o resto é neutro. Verde, âmbar e
+ * vermelho aparecem apenas para estado.
+ */
 @layer base {
   :root {
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
+    --font-sans: var(--font-inter);
+    --font-display: var(--font-jost);
+    --font-mono: var(--font-jetbrains-mono);
 
     /* Superfície */
-    --background: 0 0% 100%;         /* page #FFFFFF */
-    --foreground: 229 35% 16%;       /* texto primary #1A1F36 */
+    --background: 0 0% 100%;           /* #FFFFFF */
+    --foreground: 211 71% 10%;         /* #07182A navy */
     --card: 0 0% 100%;
-    --card-foreground: 229 35% 16%;
+    --card-foreground: 211 71% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 229 35% 16%;
-    --surface: 210 29% 97%;          /* #F6F8FA — cabeçalho de tabela, hover, fundo sutil */
-    --border: 213 24% 91%;           /* #E3E8EE — régua padrão do sistema, 1px */
-    --border-strong: 214 20% 86%;    /* #D5DBE3 — separação de seção */
-    --input: 213 24% 91%;
+    --popover-foreground: 211 71% 10%;
+    --surface: 210 37% 97%;            /* #F4F7FA — cabeçalho de tabela, hover */
+    --border: 208 28% 91%;             /* #E1E8EE — régua padrão, 1px */
+    --border-strong: 208 25% 85%;      /* #D0DAE3 — separação de seção */
+    --input: 208 25% 85%;
 
-    /* Texto — três níveis, não dois */
-    --text-secondary: 219 12% 37%;   /* #545C6B — rótulos, apoio */
-    --text-tertiary: 216 13% 58%;    /* #8792A2 — metadado, timestamp */
+    /* Texto — três níveis */
+    --text-secondary: 208 20% 36%;     /* #4A5E70 */
+    --text-tertiary: 208 17% 44%;      /* #5E7284 */
 
-    /* Acento — único, azul FluxoPay. Tudo mais é neutro. */
-    --primary: 213 100% 45%;         /* #0066E5 */
-    --primary-hover: 214 100% 37%;   /* #0052BC */
+    /* Acento — petróleo Fluxteme (ciano escurecido para AA sobre branco) */
+    --primary: 195 93% 28%;            /* #05698B */
+    --primary-hover: 194 93% 23%;      /* #04566F */
     --primary-foreground: 0 0% 100%;
-    --accent: 215 90% 96%;           /* #EBF3FE — fundo de item ativo/seleção */
-    --accent-foreground: 213 100% 45%;
+    --accent: 196 61% 94%;             /* #E6F4F9 — item ativo/seleção */
+    --accent-foreground: 195 93% 28%;
 
-    --secondary: 210 29% 97%;
-    --secondary-foreground: 229 35% 16%;
-    --muted: 210 29% 97%;
-    --muted-foreground: 219 12% 37%;
+    --secondary: 210 37% 97%;
+    --secondary-foreground: 211 71% 10%;
+    --muted: 210 37% 97%;
+    --muted-foreground: 208 20% 36%;
 
-    /* Estado — texto sobre fundo claro, nunca fundo saturado */
-    --success: 150 73% 29%;          /* #14804A */
-    --success-subtle: 148 45% 94%;   /* #E7F6EE */
-    --warning: 22 92% 37%;           /* #B54708 */
-    --warning-subtle: 39 92% 95%;    /* #FEF6E7 */
-    --danger: 4 76% 40%;             /* #B42318 */
-    --danger-subtle: 3 90% 96%;      /* #FEECEB */
-    --neutral-state: 219 12% 37%;    /* #545C6B */
-    --neutral-state-subtle: 216 22% 95%; /* #F1F3F6 */
+    /* Estado */
+    --success: 153 74% 27%;            /* #12784A */
+    --success-subtle: 150 45% 94%;
+    --success-foreground: 0 0% 100%;
+    --warning: 27 89% 35%;             /* #A8520A */
+    --warning-subtle: 36 90% 94%;
+    --warning-foreground: 0 0% 100%;
+    --danger: 4 76% 40%;               /* #B42318 */
+    --danger-subtle: 3 90% 96%;
+    --danger-foreground: 0 0% 100%;
+    --neutral-state: 208 20% 36%;
+    --neutral-state-subtle: 210 30% 95%;
 
     --destructive: 4 76% 40%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 213 100% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 195 93% 28%;
 
     /* Forma — controle (botão/input/badge) vs. superfície (card/modal) */
-    --radius-control: 0.375rem;      /* 6px */
-    --radius: 0.5rem;                /* 8px — superfície */
+    --radius-control: 0.375rem;        /* 6px */
+    --radius: 0.5rem;                  /* 8px */
 
-    --chart-1: 213 100% 45%;
-    --chart-2: 219 12% 37%;
-    --chart-3: 216 13% 58%;
-    --chart-4: 150 73% 29%;
-    --chart-5: 22 92% 37%;
+    /* Gráfico: um destaque + neutros */
+    --chart-1: 195 93% 28%;
+    --chart-2: 208 20% 36%;
+    --chart-3: 208 17% 60%;
+    --chart-4: 153 74% 27%;
+    --chart-5: 27 89% 35%;
   }
 
   .dark {
-    --background: 230 30% 6%;
-    --foreground: 220 20% 98%;
-    --card: 230 25% 9%;
-    --card-foreground: 220 20% 98%;
-    --popover: 230 25% 9%;
-    --popover-foreground: 220 20% 98%;
-    --surface: 230 22% 13%;
-    --border: 230 20% 18%;
-    --border-strong: 230 18% 24%;
-    --input: 230 20% 18%;
+    --background: 211 71% 10%;         /* #07182A navy */
+    --foreground: 203 45% 94%;         /* #EAF2F7 */
+    --card: 209 67% 13%;               /* #0B2238 */
+    --card-foreground: 203 45% 94%;
+    --popover: 209 66% 16%;            /* #0E2A44 */
+    --popover-foreground: 203 45% 94%;
+    --surface: 209 67% 13%;
+    --border: 209 62% 19%;             /* #12304D — régua fina da grade */
+    --border-strong: 210 59% 22%;      /* #173858 */
+    --input: 210 59% 22%;
 
-    --text-secondary: 230 12% 68%;
-    --text-tertiary: 230 10% 52%;
+    --text-secondary: 206 26% 73%;     /* #A9BDCC */
+    --text-tertiary: 207 17% 52%;      /* #6F8699 */
 
-    --primary: 213 90% 60%;
-    --primary-hover: 213 90% 68%;
-    --primary-foreground: 230 30% 5%;
-    --accent: 213 40% 18%;
-    --accent-foreground: 213 90% 68%;
+    --primary: 195 67% 59%;            /* #4FB8DC ciano */
+    --primary-hover: 195 71% 66%;      /* #6CC7E6 */
+    --primary-foreground: 211 71% 10%; /* navy sobre ciano */
+    --accent: 200 75% 19%;             /* #0C3B53 */
+    --accent-foreground: 195 71% 66%;
 
-    --secondary: 230 20% 15%;
-    --secondary-foreground: 220 20% 95%;
-    --muted: 230 20% 15%;
-    --muted-foreground: 230 12% 68%;
+    --secondary: 209 66% 16%;
+    --secondary-foreground: 203 45% 94%;
+    --muted: 209 66% 16%;
+    --muted-foreground: 206 26% 73%;
 
-    --success: 150 55% 55%;
-    --success-subtle: 150 30% 14%;
-    --warning: 30 90% 60%;
-    --warning-subtle: 30 40% 14%;
-    --danger: 4 70% 62%;
-    --danger-subtle: 4 40% 15%;
-    --neutral-state: 230 12% 68%;
-    --neutral-state-subtle: 230 15% 16%;
+    --success: 151 50% 53%;            /* #4CC38A */
+    --success-subtle: 155 45% 13%;
+    --success-foreground: 211 71% 10%;
+    --warning: 32 85% 62%;             /* #F0A34A */
+    --warning-subtle: 30 45% 14%;
+    --warning-foreground: 211 71% 10%;
+    --danger: 4 84% 68%;               /* #F2736B */
+    --danger-subtle: 4 45% 16%;
+    --danger-foreground: 211 71% 10%;
+    --neutral-state: 206 26% 73%;
+    --neutral-state-subtle: 209 66% 16%;
 
-    --destructive: 4 70% 45%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 213 90% 60%;
+    --destructive: 4 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 195 67% 59%;
+
+    --chart-1: 195 67% 59%;
+    --chart-2: 206 26% 73%;
+    --chart-3: 207 17% 52%;
+    --chart-4: 151 50% 53%;
+    --chart-5: 32 85% 62%;
   }
 }
 
@@ -116,8 +136,27 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
+  /* Títulos de página e seção na fonte da marca. */
+  h1,
+  h2 {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+  }
+
   html {
     scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   ::-webkit-scrollbar {
@@ -130,57 +169,10 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary/20 rounded-full;
+    @apply bg-border-strong rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-primary/40;
+    @apply bg-text-tertiary;
   }
-}
-
-@layer utilities {
-  .glass {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg;
-  }
-  
-  .glass-dark {
-    @apply bg-black/40 backdrop-blur-xl border border-white/10;
-  }
-
-  .gradient-primary {
-    @apply bg-gradient-to-r from-[#1150E3] to-[#3B7AFF];
-  }
-
-  .gradient-subtle {
-    @apply bg-gradient-to-br from-background via-background to-primary/5;
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-shimmer {
-    animation: shimmer 2s linear infinite;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(17, 80, 227, 0.1) 50%,
-      transparent 100%
-    );
-    background-size: 200% 100%;
-  }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }

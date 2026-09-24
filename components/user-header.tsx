@@ -5,6 +5,7 @@ import { useValoresVisibility } from "@/contexts/valores-visibility-context"
 import { Button } from "@/components/ui/button"
 import { NotificacoesBell } from "@/components/notificacoes-bell"
 import { TenantSwitcher } from "@/components/tenant-switcher"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 interface UserHeaderProps {
   nomeCompleto: string
@@ -51,6 +52,8 @@ export function UserHeader({
         </div>
 
         {isSuperAdmin && <TenantSwitcher tenants={tenants || []} viewingAsTenantId={viewingAsTenantId ?? null} />}
+
+        <ThemeToggle />
 
         <NotificacoesBell />
 

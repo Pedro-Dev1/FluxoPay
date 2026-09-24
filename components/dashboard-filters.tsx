@@ -210,7 +210,7 @@ export function DashboardFilters({ pedidos }: DashboardFiltersProps) {
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.setAttribute("href", url)
-    link.setAttribute("download", `FluxoPay_Pedidos_${format(new Date(), "dd-MM-yyyy_HH-mm")}.csv`)
+    link.setAttribute("download", `Fluxteme_Pedidos_${format(new Date(), "dd-MM-yyyy_HH-mm")}.csv`)
     link.style.visibility = "hidden"
     document.body.appendChild(link)
     link.click()
@@ -303,7 +303,7 @@ export function DashboardFilters({ pedidos }: DashboardFiltersProps) {
               Limpar Tudo
             </Button>
           )}
-          <Button onClick={exportarParaExcel} variant="default" size="sm" className="bg-green-600 hover:bg-green-700">
+          <Button onClick={exportarParaExcel} variant="default" size="sm" className="bg-success hover:bg-success/90">
             <Download className="mr-2 h-4 w-4" />
             Exportar
           </Button>
@@ -368,7 +368,7 @@ export function DashboardFilters({ pedidos }: DashboardFiltersProps) {
           <CardContent className="pt-6">
             <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
               <table className="w-full text-sm">
-                <thead className="border-b sticky top-0 bg-white z-10">
+                <thead className="border-b sticky top-0 bg-card z-10">
                   <tr className="text-left">
                     <th className="pb-3 px-2 font-semibold">Data</th>
                     <th className="pb-3 px-2 font-semibold">Colaborador</th>
@@ -390,41 +390,41 @@ export function DashboardFilters({ pedidos }: DashboardFiltersProps) {
                       <td className="py-3 px-2 font-medium">{pedido.colaborador?.nome_completo}</td>
                       <td className="py-3 px-2">
                         {pedido.tipo_pedido === "reembolso_km" ? (
-                          <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                          <span className="text-xs bg-accent text-primary px-2 py-1 rounded-full">
                             Reembolso KM
                           </span>
                         ) : (
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Completo</span>
+                          <span className="text-xs bg-accent text-primary px-2 py-1 rounded-full">Completo</span>
                         )}
                       </td>
                       <td className="py-3 px-2 text-right font-semibold">{formatCurrency(pedido.valor_total)}</td>
                       <td className="py-3 px-2">
                         {pedido.status === "pendente_gerente" && (
-                          <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">
+                          <span className="text-xs bg-warning-subtle text-warning px-2 py-1 rounded-full">
                             Aguardando Gerente
                           </span>
                         )}
                         {pedido.status === "pendente_financeiro" && (
-                          <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full">
+                          <span className="text-xs bg-warning-subtle text-warning px-2 py-1 rounded-full">
                             Aguardando Financeiro
                           </span>
                         )}
                         {pedido.status === "aprovado" && (
-                          <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">Aprovado</span>
+                          <span className="text-xs bg-accent text-primary px-2 py-1 rounded-full">Aprovado</span>
                         )}
                         {pedido.status === "pago" && (
-                          <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Pago</span>
+                          <span className="text-xs bg-success-subtle text-success px-2 py-1 rounded-full">Pago</span>
                         )}
                         {pedido.status === "nota_recebida" && (
-                          <span className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded-full">
+                          <span className="text-xs bg-accent text-primary px-2 py-1 rounded-full">
                             Nota Recebida
                           </span>
                         )}
                         {pedido.status === "recusado" && (
-                          <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">Recusado</span>
+                          <span className="text-xs bg-danger-subtle text-danger px-2 py-1 rounded-full">Recusado</span>
                         )}
                         {pedido.status === "correcao" && (
-                          <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Em Correção</span>
+                          <span className="text-xs bg-muted text-foreground px-2 py-1 rounded-full">Em Correção</span>
                         )}
                       </td>
                     </tr>

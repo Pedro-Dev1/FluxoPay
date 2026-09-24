@@ -78,7 +78,7 @@ export function NotasMesesList({ meses }: NotasMesesListProps) {
                 <Card className="p-4 transition-all hover:shadow-md hover:border-foreground/20 group-hover:bg-muted/30">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-amber-50 text-amber-600 border border-amber-200">
+                      <div className="p-2 rounded-lg bg-warning-subtle text-warning border border-warning/30">
                         <Folder className="h-5 w-5" />
                       </div>
                       <div>
@@ -100,14 +100,14 @@ export function NotasMesesList({ meses }: NotasMesesListProps) {
                     </div>
 
                     {mes.pendentes > 0 && (
-                      <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs px-2 py-0">
+                      <Badge variant="outline" className="bg-warning-subtle text-warning border-warning/30 text-xs px-2 py-0">
                         <Clock className="h-3 w-3 mr-1" />
                         {mes.pendentes} pendente{mes.pendentes > 1 ? "s" : ""}
                       </Badge>
                     )}
 
                     {mes.recebidas > 0 && (
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs px-2 py-0">
+                      <Badge variant="outline" className="bg-success-subtle text-success border-success/30 text-xs px-2 py-0">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         {mes.recebidas}
                       </Badge>

@@ -7,7 +7,7 @@ export default function SetupPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Configuração do Sistema</h1>
           <p className="text-muted-foreground mt-2">
-            Siga as instruções abaixo para configurar o FluxoPay corretamente
+            Siga as instruções abaixo para configurar o Fluxteme corretamente
           </p>
         </div>
         <SetupInstructions />

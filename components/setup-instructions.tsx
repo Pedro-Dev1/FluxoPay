@@ -38,10 +38,10 @@ export function SetupInstructions() {
         </AlertDescription>
       </Alert>
 
-      <Alert variant="default" className="border-green-200 bg-green-50">
-        <CheckCircle2 className="h-4 w-4 text-green-600" />
-        <AlertTitle className="text-green-900">Alternativa Temporária</AlertTitle>
-        <AlertDescription className="text-green-800 mt-2">
+      <Alert variant="default" className="border-success/30 bg-success-subtle">
+        <CheckCircle2 className="h-4 w-4 text-success" />
+        <AlertTitle className="text-success">Alternativa Temporária</AlertTitle>
+        <AlertDescription className="text-success mt-2">
           <p>Se você já criou usuários e eles não conseguem fazer login, você pode confirmá-los manualmente:</p>
           <ol className="list-decimal list-inside space-y-1 ml-2 mt-2">
             <li>

@@ -160,8 +160,8 @@ export function FaturasList({ faturas: initialFaturas, colaboradores, isAdmin, c
             return (
               <Card key={fatura.id} className="relative overflow-hidden">
                 <div className={`absolute top-0 left-0 right-0 h-1 ${
-                  realStatus === "pago" ? "bg-green-500" : 
-                  realStatus === "vencido" ? "bg-red-500" : "bg-yellow-500"
+                  realStatus === "pago" ? "bg-success" : 
+                  realStatus === "vencido" ? "bg-danger" : "bg-warning"
                 }`} />
                 
                 <CardHeader className="pb-2">

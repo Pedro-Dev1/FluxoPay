@@ -109,10 +109,10 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
       {/* Alert for Correction or Rejection */}
       {(isCorrecao || isRecusado) && (
         <Alert variant={isRecusado ? "destructive" : "default"} className={cn(
-          isCorrecao && "border-amber-500 bg-amber-50 text-amber-900 dark:bg-amber-950 dark:text-amber-100"
+          isCorrecao && "border-warning/30 bg-warning-subtle text-warning"
         )}>
           {isCorrecao ? (
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertTriangle className="h-4 w-4 text-warning" />
           ) : (
             <XCircle className="h-4 w-4" />
           )}
@@ -129,10 +129,10 @@ export function PedidoTimeline({ pedido }: PedidoTimelineProps) {
           <div className={cn(
             "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium",
             isConcluido 
-              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+              ? "bg-success-subtle text-success"
               : stageInfo.stage === "anexar_nota"
-                ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
-                : "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100"
+                ? "bg-accent text-primary"
+                : "bg-warning-subtle text-warning"
           )}>
             {isConcluido ? (
               <Check className="h-4 w-4" />

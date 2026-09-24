@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Inter, Jost, JetBrains_Mono } from "next/font/google"
 import "./globals.css" // Import globals.css here
 import "./main.css"
 import { SidebarNavigation } from "@/components/sidebar-navigation"
@@ -14,23 +14,30 @@ import { TermsAcceptanceProvider } from "@/components/terms-acceptance-provider"
 import { TermoComercialGate } from "@/components/termo-comercial-gate"
 import { SystemStatusProvider } from "@/components/system-status-provider"
 import { Toaster } from "@/components/ui/sonner"
+import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster as ToasterShadcn } from "@/components/ui/toaster"
 import cn from "classnames"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 })
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Fonte dos títulos, a mesma do site da Fluxteme.
+const jost = Jost({
+  variable: "--font-jost",
+  subsets: ["latin"],
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 })
 
 export const metadata: Metadata = {
-  title: "FluxoPay - Sistema de Gestão de Pagamentos",
-  description: "Gerencie pagamentos de colaboradores com facilidade",
-    generator: 'v0.app'
+  title: "Fluxteme",
+  description: "Contrato, medição da entrega, validação da nota e pagamento de cada prestador PJ, com trilha auditável.",
+  icons: { icon: "/favicon.svg" },
 }
 
 export default async function RootLayout({
@@ -54,8 +61,13 @@ export default async function RootLayout({
     pathname.startsWith("/redefinir-senha/")
 
   return (
-    <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="antialiased bg-background">
+    <html
+      lang="pt-BR"
+      className={`${inter.variable} ${jost.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="antialiased bg-background font-sans">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
         <Toaster richColors position="top-right" />
         {/* Duas bibliotecas de toast coexistem no projeto: a maioria dos
             componentes chama a `toast()` da lib "sonner" (Toaster acima), mas
@@ -108,6 +120,7 @@ export default async function RootLayout({
             </main>
           </div>
         </ValoresVisibilityProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

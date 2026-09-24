@@ -55,8 +55,8 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
       {isReembolsoKm ? (
         <div className="grid grid-cols-1 gap-3 mb-3">
           <div className="flex items-center gap-2 text-sm">
-            <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center">
-              <Car className="w-4 h-4 text-purple-600" />
+            <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+              <Car className="w-4 h-4 text-primary" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Quilometragem</p>
@@ -67,8 +67,8 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
       ) : (
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div className="flex items-center gap-2 text-sm">
-            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center">
-              <span className="text-xs font-bold text-blue-600">R$</span>
+            <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+              <span className="text-xs font-bold text-primary">R$</span>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Salário Base</p>
@@ -80,8 +80,8 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
             <>
               {horas50 > 0 && (
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center">
-                    <Clock className="w-4 h-4 text-orange-600" />
+                  <div className="w-8 h-8 rounded-full bg-warning-subtle flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-warning" />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">HE 50% ({horas50}h)</p>
@@ -92,8 +92,8 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
 
               {horas100 > 0 && (
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
-                    <Clock className="w-4 h-4 text-red-600" />
+                  <div className="w-8 h-8 rounded-full bg-danger-subtle flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-danger" />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">HE 100% ({horas100}h)</p>
@@ -106,8 +106,8 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
 
           {pedido.valor_km > 0 && (
             <div className="flex items-center gap-2 text-sm">
-              <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center">
-                <Car className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+                <Car className="w-4 h-4 text-primary" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Quilometragem</p>
@@ -118,8 +118,8 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
 
           {pedido.conducao > 0 && (
             <div className="flex items-center gap-2 text-sm">
-              <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center">
-                <Bus className="w-4 h-4 text-teal-600" />
+              <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+                <Bus className="w-4 h-4 text-primary" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Condução</p>
@@ -130,12 +130,12 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
 
           {pedido.valor_desconto && pedido.valor_desconto > 0 && (
             <div className="flex items-center gap-2 text-sm">
-              <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
-                <Percent className="w-4 h-4 text-red-600" />
+              <div className="w-8 h-8 rounded-full bg-danger-subtle flex items-center justify-center">
+                <Percent className="w-4 h-4 text-danger" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Desconto</p>
-                <p className="font-medium text-red-600">{formatValue(pedido.valor_desconto, true)}</p>
+                <p className="font-medium text-danger">{formatValue(pedido.valor_desconto, true)}</p>
               </div>
             </div>
           )}
@@ -143,9 +143,9 @@ export function PedidoItem({ pedido }: PedidoItemProps) {
       )}
 
       {pedido.motivo_desconto && (
-        <div className="mb-3 p-2 bg-amber-50 border border-amber-200 rounded text-xs">
-          <p className="font-semibold text-amber-900">Motivo do desconto:</p>
-          <p className="text-amber-700">{pedido.motivo_desconto}</p>
+        <div className="mb-3 p-2 bg-warning-subtle border border-warning/30 rounded text-xs">
+          <p className="font-semibold text-warning">Motivo do desconto:</p>
+          <p className="text-warning">{pedido.motivo_desconto}</p>
         </div>
       )}
 

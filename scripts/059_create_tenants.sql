@@ -1,5 +1,5 @@
 -- Primeira peça do multi-tenant: a tabela de carteiras/empresas.
--- Cada cliente do FluxoPay vira uma linha aqui; Connect Vending é a primeira.
+-- Cada cliente do Fluxteme vira uma linha aqui; Connect Vending é a primeira.
 
 -- PASSO 1 — preview: nada muda ainda
 select count(*) as total_colaboradores from colaboradores;

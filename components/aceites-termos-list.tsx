@@ -115,10 +115,10 @@ export function AceitesTermosList() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Termos Aceitos</CardTitle>
-            <FileCheck className="h-4 w-4 text-green-500" />
+            <FileCheck className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{stats.acceptedCurrentVersion}</div>
+            <div className="text-2xl font-bold text-success">{stats.acceptedCurrentVersion}</div>
             <p className="text-xs text-muted-foreground">Versao {CURRENT_TERMS_VERSION}</p>
           </CardContent>
         </Card>
@@ -126,10 +126,10 @@ export function AceitesTermosList() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pendentes</CardTitle>
-            <Clock className="h-4 w-4 text-amber-500" />
+            <Clock className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-600">{stats.pendingAcceptance}</div>
+            <div className="text-2xl font-bold text-warning">{stats.pendingAcceptance}</div>
             <p className="text-xs text-muted-foreground">Ainda não aceitaram</p>
           </CardContent>
         </Card>
@@ -216,7 +216,7 @@ export function AceitesTermosList() {
                         </TableCell>
                         <TableCell>
                           {acceptance.accepted ? (
-                            <Badge variant="default" className="bg-green-500 hover:bg-green-600">
+                            <Badge variant="default" className="bg-success hover:bg-success/90">
                               Aceito
                             </Badge>
                           ) : (

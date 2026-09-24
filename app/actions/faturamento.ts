@@ -88,7 +88,7 @@ export async function listarFaturasPlataforma(tenantId?: string): Promise<
 }
 
 // Visão do próprio cliente (Adm/Financeiro da carteira) sobre as faturas
-// que a FluxoPay emitiu pra empresa dele — mesma tabela do painel Super
+// que a Fluxteme emitiu pra empresa dele — mesma tabela do painel Super
 // Admin, só que escopada pra carteira de quem está logado. Fica em
 // app/faturas (não em /admin), por isso o guard é de papel normal, não
 // requireRole([]).

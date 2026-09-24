@@ -33,6 +33,12 @@ async function getKey(): Promise<CryptoKey> {
   ])
 }
 
+export const SESSION_COOKIE = "fluxteme_session"
+// Nome usado antes da troca de marca. Ainda é aceito na leitura para ninguém
+// ser deslogado na virada; o próximo login grava o nome novo e apaga este.
+// Pode ser removido depois de 7 dias (validade máxima da sessão).
+export const LEGACY_SESSION_COOKIE = "fluxopay_session"
+
 export async function signPayload(payload: unknown): Promise<string> {
   const payloadB64 = base64UrlEncode(new TextEncoder().encode(JSON.stringify(payload)))
   const key = await getKey()

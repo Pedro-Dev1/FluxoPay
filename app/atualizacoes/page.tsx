@@ -22,7 +22,7 @@ export default async function AtualizacoesPage() {
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold mb-1 text-foreground">Atualizações</h1>
-          <p className="text-sm text-muted-foreground">Tudo o que há de novo no FluxoPay.</p>
+          <p className="text-sm text-muted-foreground">Tudo o que há de novo no Fluxteme.</p>
         </div>
         {session.isSuperAdmin && (
           <Button variant="outline" size="sm" asChild>
@@ -37,7 +37,7 @@ export default async function AtualizacoesPage() {
       {atualizacoes.length === 0 ? (
         <EmptyState
           title="Nenhuma atualização por enquanto"
-          description="Quando houver novidades no FluxoPay, elas aparecem aqui."
+          description="Quando houver novidades no Fluxteme, elas aparecem aqui."
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">

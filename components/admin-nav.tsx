@@ -10,6 +10,7 @@ const ITENS = [
   { href: "/admin/usuarios", label: "Usuários" },
   { href: "/admin/auditoria", label: "Auditoria" },
   { href: "/admin/faturamento", label: "Faturamento" },
+  { href: "/admin/termos", label: "Termos comerciais" },
   { href: "/atualizacoes/gerenciar", label: "Atualizações" },
 ]
 

@@ -11,6 +11,7 @@ import { headers } from "next/headers"
 import { AutoLogoutProvider } from "@/components/auto-logout-provider"
 import { ValoresVisibilityProvider } from "@/contexts/valores-visibility-context"
 import { TermsAcceptanceProvider } from "@/components/terms-acceptance-provider"
+import { TermoComercialGate } from "@/components/termo-comercial-gate"
 import { SystemStatusProvider } from "@/components/system-status-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { Toaster as ToasterShadcn } from "@/components/ui/toaster"
@@ -95,6 +96,11 @@ export default async function RootLayout({
                       userId={session.colaboradorId}
                     >
                       {children}
+                      <TermoComercialGate
+                        tipoAcesso={session.tipoAcesso}
+                        isSuperAdmin={!!session.isSuperAdmin}
+                        userName={session.nomeCompleto}
+                      />
                     </TermsAcceptanceProvider>
                   </AutoLogoutProvider>
                 </SystemStatusProvider>

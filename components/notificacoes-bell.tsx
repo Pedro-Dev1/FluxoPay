@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Bell } from "lucide-react"
+import { IconeNotificacoes } from "@/components/icons/fx-icons"
 import { formatDistanceToNow } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { useRouter } from "next/navigation"
@@ -94,7 +94,7 @@ export function NotificacoesBell() {
         title="Notificações"
         onClick={() => setAberto(true)}
       >
-        <Bell className="h-4 w-4 text-muted-foreground" />
+        <IconeNotificacoes className="h-4 w-4 text-text-secondary" />
         {naoLidas > 0 && (
           <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-semibold px-1 tabular-nums">
             {naoLidas > 9 ? "9+" : naoLidas}

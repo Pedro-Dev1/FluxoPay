@@ -198,52 +198,6 @@ export async function enviarEmailAtualizacao(params: {
   }
 }
 
-export async function enviarEmailFaturaPlataforma(params: {
-  destinatario: string
-  nomeCarteira: string
-  referenciaMes: number
-  referenciaAno: number
-  valorFormatado: string
-  dataVencimentoFormatada: string
-  boletoUrl: string | null
-  boletoLinha: string | null
-}) {
-  const heading = "Fatura Fluxteme disponível"
-  const bodyHtml = `
-    <p style="margin:0 0 12px 0;">Olá.</p>
-    <p style="margin:0 0 12px 0;">A fatura da ${escapeHtml(params.nomeCarteira)} referente a ${String(params.referenciaMes).padStart(2, "0")}/${params.referenciaAno} está disponível.</p>
-    <p style="margin:0 0 4px 0;"><strong style="color:#011832;">Valor:</strong> ${escapeHtml(params.valorFormatado)}</p>
-    <p style="margin:0 0 12px 0;"><strong style="color:#011832;">Vencimento:</strong> ${escapeHtml(params.dataVencimentoFormatada)}</p>
-    ${
-      params.boletoLinha
-        ? `<p style="margin:0 0 4px 0; font-size:12px; color:#5A6B7B;">Linha digitável:</p>
-    <p style="margin:0; font-family:Consolas,'Courier New',monospace; font-size:13px; word-break:break-all; color:#011832;">${escapeHtml(params.boletoLinha)}</p>`
-        : ""
-    }
-  `
-  const resend = getResendClient()
-  if (!resend) return
-
-  const textoAlternativo = `A fatura da ${params.nomeCarteira} referente a ${String(params.referenciaMes).padStart(2, "0")}/${params.referenciaAno} está disponível.\n\nValor: ${params.valorFormatado}\nVencimento: ${params.dataVencimentoFormatada}${params.boletoLinha ? `\nLinha digitável: ${params.boletoLinha}` : ""}${params.boletoUrl ? `\n\nBoleto: ${params.boletoUrl}` : ""}`
-
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to: params.destinatario,
-      subject: `Fatura Fluxteme — ${String(params.referenciaMes).padStart(2, "0")}/${params.referenciaAno}`,
-      html: emailShell({
-        preheader: `Fatura de ${params.valorFormatado}, vencimento em ${params.dataVencimentoFormatada}.`,
-        heading,
-        bodyHtml,
-        cta: params.boletoUrl ? { label: "Ver boleto", url: params.boletoUrl } : null,
-      }),
-      text: textoAlternativo,
-    })
-  } catch (error) {
-    console.error("[v0] Erro ao enviar e-mail de fatura da plataforma:", error)
-  }
-}
-
 export async function enviarEmailPedidoAguardandoAprovacao(params: {
   destinatario: string
   nomeAprovador: string

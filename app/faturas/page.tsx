@@ -1,10 +1,8 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { getFaturas } from "@/app/actions/faturas"
-import { listarFaturasPlataformaDoTenant } from "@/app/actions/faturamento"
 import { getColaboradores } from "@/app/actions/colaboradores"
 import { FaturasList } from "@/components/faturas-list"
-import { FaturaPlataformaCard } from "@/components/fatura-plataforma-card"
 import { PageHeader } from "@/components/ui/page-header"
 
 export default async function FaturasPage() {
@@ -29,7 +27,6 @@ export default async function FaturasPage() {
   
   const faturas = await getFaturas(colaboradorId, shouldViewAllFaturas)
   const colaboradores = canManageFaturas ? await getColaboradores() : []
-  const faturasPlataforma = await listarFaturasPlataformaDoTenant()
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
@@ -42,8 +39,6 @@ export default async function FaturasPage() {
             : "Faturas da carteira, com exportação."
         }
       />
-
-      <FaturaPlataformaCard faturas={faturasPlataforma} />
 
       <FaturasList
         faturas={faturas}

@@ -15,7 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <PageHeader
         eyebrow="Plataforma"
         title="Painel Super Admin"
-        description="Carteiras, usuários, faturamento, termos e trilha de auditoria de todas as carteiras."
+        description="Carteiras, usuários, termos e trilha de auditoria de todas as carteiras."
       />
       <AdminNav />
       <div className="mt-6">{children}</div>

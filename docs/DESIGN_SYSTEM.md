@@ -136,9 +136,23 @@ e toast. Cards, tabelas e botões **não** têm sombra — hierarquia vem de sup
 
 ## 10. Ícones
 
-- Biblioteca única: `lucide-react`, traço padrão, 16 px em controles e menus, 12 px em badges, 20 px em estados vazios.
-- Ícone acompanha texto; ícone sozinho exige `aria-label` e `title`.
-- Proibido: emoji como ícone, ícone decorativo colorido.
+Dois conjuntos, cada um com seu papel:
+
+| Conjunto | Onde | Arquivo |
+|---|---|---|
+| **Ícones Fluxteme** (próprios) | Navegação, cabeçalho, tema, notificações, sair/recolher | `components/icons/fx-icons.tsx` |
+| **lucide-react** | Utilitários universais: mais, baixar, fechar, setas, busca, status | pacote |
+
+Ícones Fluxteme — derivados da geometria do símbolo F:
+
+- Grade de 24, traço 1,5, **pontas retas e cantos vivos** (sem arredondar tudo, como as bibliotecas genéricas).
+- **Um único canto arredondado no alto à esquerda**, o mesmo da haste do F — aparece em painel, documentos, aprovação, cédula, cadastro.
+- Metáforas do produto: trilha de auditoria (eventos em sequência), organograma (hierarquia por cargo), documento com percentual (fiscal), documento com assinatura (contratos).
+- 18 px na sidebar, 16 px no resto. Cor herdada do texto; aqua só no item ativo.
+- Referência visual em `/design-system/icones` (só em desenvolvimento).
+
+Regras gerais: ícone acompanha texto; ícone sozinho exige `aria-label` e `title`; lucide com traço 1,75.
+Proibido: emoji como ícone, ícone decorativo colorido, misturar outra biblioteca.
 
 ## 11. Logo
 

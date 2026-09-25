@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useTheme } from "next-themes"
-import { Moon, Sun } from "lucide-react"
+import { IconeLua, IconeSol } from "@/components/icons/fx-icons"
 import { Button } from "@/components/ui/button"
 
 export function ThemeToggle() {
@@ -16,7 +16,7 @@ export function ThemeToggle() {
 
   return (
     <Button variant="ghost" size="icon" onClick={() => setTheme(escuro ? "light" : "dark")} aria-label={rotulo} title={rotulo}>
-      {escuro ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {escuro ? <IconeSol className="h-4 w-4" /> : <IconeLua className="h-4 w-4" />}
     </Button>
   )
 }

@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { ChevronsLeft, ChevronsRight, LogOut, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
+import { IconeExpandir, IconeRecolher, IconeSair } from "@/components/icons/fx-icons"
 import { BrandLogo } from "@/components/brand-logo"
 import { cn } from "@/lib/utils"
 import { logout } from "@/app/actions/auth"
@@ -99,7 +100,7 @@ export function SidebarNavigation({ tipoAcesso, isSuperAdmin, viewingAsTenantId 
               aria-label={recolhida ? "Expandir menu" : "Recolher menu"}
               title={recolhida ? "Expandir menu" : "Recolher menu"}
             >
-              {recolhida ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
+              {recolhida ? <IconeExpandir className="h-4 w-4" /> : <IconeRecolher className="h-4 w-4" />}
               {!recolhida && <span>Recolher menu</span>}
             </button>
           }
@@ -176,7 +177,7 @@ function Painel({
                       )}
                     >
                       {isAtivo && <span className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-sidebar-active" aria-hidden="true" />}
-                      <Icon className={cn("h-4 w-4 shrink-0", isAtivo ? "text-sidebar-active" : "text-sidebar-group")} />
+                      <Icon className={cn("h-[18px] w-[18px] shrink-0", isAtivo ? "text-sidebar-active" : "text-sidebar-muted")} />
                       {!recolhida && <span className="flex-1 truncate">{item.label}</span>}
                       {contador > 0 &&
                         (recolhida ? (
@@ -206,7 +207,7 @@ function Painel({
               recolhida ? "justify-center" : "px-3",
             )}
           >
-            <LogOut className="h-4 w-4" />
+            <IconeSair className="h-4 w-4" />
             {!recolhida && <span>Sair</span>}
           </button>
         )}

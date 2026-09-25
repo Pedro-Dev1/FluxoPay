@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { Eye, EyeOff } from "lucide-react"
+import { IconeOculto, IconeVisivel } from "@/components/icons/fx-icons"
 import { useValoresVisibility } from "@/contexts/valores-visibility-context"
 import { Button } from "@/components/ui/button"
 import { NotificacoesBell } from "@/components/notificacoes-bell"
@@ -72,7 +72,7 @@ export function UserHeader({
             aria-label={valoresVisiveis ? "Ocultar valores" : "Mostrar valores"}
             title={valoresVisiveis ? "Ocultar valores" : "Mostrar valores"}
           >
-            {valoresVisiveis ? <Eye /> : <EyeOff className="text-foreground" />}
+            {valoresVisiveis ? <IconeVisivel /> : <IconeOculto className="text-foreground" />}
           </Button>
           <ThemeToggle />
           <NotificacoesBell />

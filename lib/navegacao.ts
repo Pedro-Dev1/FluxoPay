@@ -1,25 +1,28 @@
 import {
-  Bell,
-  Building2,
-  CheckSquare,
-  ClipboardList,
-  DollarSign,
-  FileSignature,
-  FileText,
-  History,
-  KeyRound,
-  Landmark,
-  LayoutDashboard,
-  Megaphone,
-  Receipt,
-  ScrollText,
-  ShieldCheck,
-  SquarePen,
-  Users,
-  UsersRound,
-  Wallet,
-  type LucideIcon,
-} from "lucide-react"
+  IconeAceites,
+  IconeAcompanhamento,
+  IconeAprovacoes,
+  IconeAtualizacoes,
+  IconeAvisos,
+  IconeCadastros,
+  IconeCarteiras,
+  IconeContratos,
+  IconeCriarPedido,
+  IconeFaturas,
+  IconeFinanceiro,
+  IconeFiscal,
+  IconeNotasEquipe,
+  IconePagamentos,
+  IconePainel,
+  IconePedidos,
+  IconePessoas,
+  IconePlataforma,
+  IconeSenha,
+  IconeTermos,
+  IconeTrilha,
+  IconeUsuarios,
+  type FxIcon,
+} from "@/components/icons/fx-icons"
 
 // Estrutura única de navegação — sidebar e breadcrumb do cabeçalho leem
 // daqui (DESIGN_SYSTEM.md §13 e §15). As permissões (roles) são as mesmas de
@@ -31,7 +34,7 @@ export type Pendencias = { aprovacoes: number; painelFinanceiro: number; correco
 export interface ItemNav {
   href: string
   label: string
-  icon: LucideIcon
+  icon: FxIcon
   roles?: string[]
   contador?: keyof Pendencias
 }
@@ -45,13 +48,12 @@ export const PLATAFORMA: GrupoNav[] = [
   {
     titulo: "Plataforma",
     itens: [
-      { href: "/admin", label: "Painel", icon: ShieldCheck },
-      { href: "/admin/carteiras", label: "Carteiras", icon: Building2 },
-      { href: "/admin/usuarios", label: "Usuários", icon: UsersRound },
-      { href: "/admin/faturamento", label: "Faturamento", icon: Wallet },
-      { href: "/admin/termos", label: "Termos comerciais", icon: FileSignature },
-      { href: "/atualizacoes/gerenciar", label: "Avisos", icon: Bell },
-      { href: "/admin/auditoria", label: "Trilha de auditoria", icon: ScrollText },
+      { href: "/admin", label: "Painel", icon: IconePlataforma },
+      { href: "/admin/carteiras", label: "Carteiras", icon: IconeCarteiras },
+      { href: "/admin/usuarios", label: "Usuários", icon: IconeUsuarios },
+      { href: "/admin/termos", label: "Termos comerciais", icon: IconeTermos },
+      { href: "/atualizacoes/gerenciar", label: "Avisos", icon: IconeAvisos },
+      { href: "/admin/auditoria", label: "Trilha de auditoria", icon: IconeTrilha },
     ],
   },
 ]
@@ -60,55 +62,55 @@ const OPERACIONAL: GrupoNav[] = [
   {
     titulo: "Visão geral",
     itens: [
-      { href: "/", label: "Dashboard", icon: LayoutDashboard, roles: ["Adm", "Gerente", "Financeiro", "Supervisor"] },
-      { href: "/atualizacoes", label: "Atualizações", icon: Megaphone },
+      { href: "/", label: "Dashboard", icon: IconePainel, roles: ["Adm", "Gerente", "Financeiro", "Supervisor"] },
+      { href: "/atualizacoes", label: "Atualizações", icon: IconeAtualizacoes },
     ],
   },
   {
     titulo: "Operação",
     itens: [
-      { href: "/pedidos", label: "Criar pedido", icon: SquarePen, roles: ["Adm", "Gerente", "Supervisor"] },
-      { href: "/historico", label: "Meus pedidos", icon: FileText, roles: ["Gerente", "Supervisor"], contador: "correcoes" },
-      { href: "/aprovacoes", label: "Aprovações", icon: CheckSquare, roles: ["Adm", "Gerente", "Financeiro"], contador: "aprovacoes" },
+      { href: "/pedidos", label: "Criar pedido", icon: IconeCriarPedido, roles: ["Adm", "Gerente", "Supervisor"] },
+      { href: "/historico", label: "Meus pedidos", icon: IconePedidos, roles: ["Gerente", "Supervisor"], contador: "correcoes" },
+      { href: "/aprovacoes", label: "Aprovações", icon: IconeAprovacoes, roles: ["Adm", "Gerente", "Financeiro"], contador: "aprovacoes" },
       {
         href: "/acompanhamento",
         label: "Acompanhamento",
-        icon: ClipboardList,
+        icon: IconeAcompanhamento,
         roles: ["Adm", "Gerente", "Financeiro", "Supervisor"],
         contador: "acompanhamento",
       },
-      { href: "/supervisor/notas-equipe", label: "Notas da equipe", icon: Users, roles: ["Supervisor"] },
-      { href: "/meus-pagamentos", label: "Meus pagamentos", icon: Receipt, roles: ["Gerente", "Financeiro", "Supervisor", "Colaborador"] },
+      { href: "/supervisor/notas-equipe", label: "Notas da equipe", icon: IconeNotasEquipe, roles: ["Supervisor"] },
+      { href: "/meus-pagamentos", label: "Meus pagamentos", icon: IconePagamentos, roles: ["Gerente", "Financeiro", "Supervisor", "Colaborador"] },
     ],
   },
   {
     titulo: "Financeiro",
     itens: [
-      { href: "/financeiro", label: "Painel financeiro", icon: DollarSign, roles: ["Adm", "Financeiro"], contador: "painelFinanceiro" },
+      { href: "/financeiro", label: "Painel financeiro", icon: IconeFinanceiro, roles: ["Adm", "Financeiro"], contador: "painelFinanceiro" },
       // A página só abre para Adm e Financeiro (app/faturas/page.tsx); antes o
       // menu mostrava o item para todos e quem clicava voltava para o início.
-      { href: "/faturas", label: "Faturas", icon: FileText, roles: ["Adm", "Financeiro"] },
-      { href: "/fiscal", label: "Fiscal", icon: Landmark, roles: ["Adm", "Financeiro"] },
-      { href: "/contratos", label: "Contratos", icon: ScrollText, roles: ["Adm", "Financeiro"] },
+      { href: "/faturas", label: "Faturas", icon: IconeFaturas, roles: ["Adm", "Financeiro"] },
+      { href: "/fiscal", label: "Fiscal", icon: IconeFiscal, roles: ["Adm", "Financeiro"] },
+      { href: "/contratos", label: "Contratos", icon: IconeContratos, roles: ["Adm", "Financeiro"] },
     ],
   },
   {
     titulo: "Gestão",
     itens: [
-      { href: "/cadastros", label: "Cadastros", icon: Building2, roles: ["Adm", "Financeiro"] },
-      { href: "/gestao", label: "Gestão de pessoas", icon: UsersRound, roles: ["Adm", "Financeiro"] },
+      { href: "/cadastros", label: "Cadastros", icon: IconeCadastros, roles: ["Adm", "Financeiro"] },
+      { href: "/gestao", label: "Gestão de pessoas", icon: IconePessoas, roles: ["Adm", "Financeiro"] },
     ],
   },
   {
     titulo: "Auditoria",
     itens: [
-      { href: "/historico-completo", label: "Histórico de pedidos", icon: History, roles: ["Adm", "Gerente", "Financeiro"] },
-      { href: "/gestao/aceites", label: "Aceites de termos", icon: FileSignature, roles: ["Adm", "Financeiro"] },
+      { href: "/historico-completo", label: "Histórico de pedidos", icon: IconeTrilha, roles: ["Adm", "Gerente", "Financeiro"] },
+      { href: "/gestao/aceites", label: "Aceites de termos", icon: IconeAceites, roles: ["Adm", "Financeiro"] },
     ],
   },
   {
     titulo: "Sistema",
-    itens: [{ href: "/redefinir-senha", label: "Redefinir senha", icon: KeyRound }],
+    itens: [{ href: "/redefinir-senha", label: "Redefinir senha", icon: IconeSenha }],
   },
 ]
 

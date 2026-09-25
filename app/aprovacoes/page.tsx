@@ -15,6 +15,11 @@ export default async function AprovacoesPage() {
     redirect("/")
   }
 
+  // O Financeiro aprova no fluxo único de /financeiro.
+  if (usuario.tipo_acesso === "Financeiro") {
+    redirect("/financeiro?tab=aprovacao")
+  }
+
   let pedidos = []
   try {
     pedidos = await listarPedidosPendentes()

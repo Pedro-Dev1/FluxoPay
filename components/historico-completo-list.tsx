@@ -15,6 +15,7 @@ import { ChevronRight, History, Search, X } from "lucide-react"
 import { SimplePager } from "@/components/ui/simple-pager"
 import { useMaskedCurrency } from "@/components/currency-display"
 import { PedidoDrawer } from "@/components/pedido-drawer"
+import { PedidoWorkflowMini } from "@/components/pedido-workflow"
 
 interface HistoricoCompletoListProps {
   pedidos: PedidoPagamento[]
@@ -186,6 +187,7 @@ export function HistoricoCompletoList({ pedidos, equipes }: HistoricoCompletoLis
                   <TableHead className="hidden md:table-cell">Lançado por</TableHead>
                   <TableHead className="hidden sm:table-cell">Lançado em</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead className="hidden lg:table-cell">Fluxo</TableHead>
                   <TableHead className="text-right">Valor total</TableHead>
                   <TableHead className="w-8">
                     <span className="sr-only">Abrir</span>
@@ -219,6 +221,9 @@ export function HistoricoCompletoList({ pedidos, equipes }: HistoricoCompletoLis
                     <TableCell>
                       <StatusBadge status={pedido.status} />
                     </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      <PedidoWorkflowMini pedido={pedido} />
+                    </TableCell>
                     <TableCell className="whitespace-nowrap text-right text-sm font-medium tabular-nums text-foreground">
                       {formatValue(pedido.valor_total)}
                     </TableCell>
@@ -230,7 +235,10 @@ export function HistoricoCompletoList({ pedidos, equipes }: HistoricoCompletoLis
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={4} className="py-2 type-eyebrow text-text-tertiary">
+                  <TableCell colSpan={4} className="py-2 type-eyebrow text-text-tertiary lg:hidden">
+                    Total do filtro
+                  </TableCell>
+                  <TableCell colSpan={5} className="hidden py-2 type-eyebrow text-text-tertiary lg:table-cell">
                     Total do filtro
                   </TableCell>
                   <TableCell colSpan={2} className="whitespace-nowrap py-2 text-right text-sm font-semibold tabular-nums">

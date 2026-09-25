@@ -7,6 +7,7 @@ import { StatusBadge } from "@/components/ui/status-badge"
 import { AuditFields, AuditId, AuditTimestamp, AuditTrail, type AuditEvento } from "@/components/ui/audit"
 import { useMaskedCurrency } from "@/components/currency-display"
 import { PedidoComposicao } from "@/components/pedido-composicao"
+import { PedidoWorkflow } from "@/components/pedido-workflow"
 
 interface PedidoDrawerProps {
   pedido: PedidoPagamento | null
@@ -116,6 +117,13 @@ export function PedidoDrawer({ pedido, onOpenChange }: PedidoDrawerProps) {
             </SheetHeader>
 
             <div className="space-y-8 p-6">
+              <section className="space-y-4">
+                <h3 className="type-intertitle text-foreground">Fluxo do pedido</h3>
+                <div className="rounded-lg border border-border bg-surface px-3 pb-4 pt-7">
+                  <PedidoWorkflow pedido={pedido} />
+                </div>
+              </section>
+
               <section className="space-y-3">
                 <h3 className="type-intertitle text-foreground">Dados</h3>
                 <AuditFields

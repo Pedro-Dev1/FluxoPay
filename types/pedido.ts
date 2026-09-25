@@ -23,6 +23,7 @@ export interface PedidoPagamento {
   aprovado_gerente: boolean
   aprovado_financeiro: boolean
   observacao_gerente?: string
+  correcao_solicitada_por?: "gerente" | "financeiro" | null
   observacao_financeiro?: string
   data_aprovacao_gerente?: string
   data_aprovacao_financeiro?: string

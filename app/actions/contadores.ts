@@ -24,9 +24,11 @@ export async function contarPendencias() {
   try {
     // Reaproveita as mesmas funções que alimentam as telas — o contador
     // nunca pode divergir do que a lista de fato mostra.
+    let aguardandoFinanceiro = 0
     if (["Gerente", "Financeiro", "Adm"].includes(tipoAcesso)) {
       const pendentes = await listarPedidosPendentes()
       aprovacoes = pendentes?.length || 0
+      aguardandoFinanceiro = (pendentes || []).filter((p: any) => p.status === "pendente_financeiro").length
     }
 
     if (["Financeiro", "Adm"].includes(tipoAcesso)) {
@@ -36,7 +38,9 @@ export async function contarPendencias() {
         listarSolicitacoesProrrogacao(),
       ])
       const comNotaPendentePagamento = (comNota || []).filter((p: any) => p.status !== "pago").length
-      painelFinanceiro = (semNota?.length || 0) + comNotaPendentePagamento + (prorrogacoes?.length || 0)
+      // Mesmo total da página /financeiro: aprovação + controle de NF.
+      painelFinanceiro =
+        aguardandoFinanceiro + (semNota?.length || 0) + comNotaPendentePagamento + (prorrogacoes?.length || 0)
     }
 
     if (tipoAcesso === "Gerente") {

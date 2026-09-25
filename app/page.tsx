@@ -65,11 +65,16 @@ export default async function Home() {
         listarSolicitacoesProrrogacao(),
       ])
       acaoAgoraItens = [
-        { label: "notas recebidas p/ pagar", count: comNota.length, href: "/financeiro?tab=pagar" },
-        { label: "sem nota fiscal", count: semNota.length, href: "/financeiro?tab=sem-nota" },
-        { label: "prorrogações", count: prorrogacoes.length, href: "/financeiro?tab=prorrogacoes" },
+        {
+          label: "aguardando aprovação do financeiro",
+          count: pedidos.filter((p: any) => p.status === "pendente_financeiro").length,
+          href: "/financeiro?tab=aprovacao",
+        },
+        { label: "notas para conferir e pagar", count: comNota.filter((p: any) => p.status !== "pago").length, href: "/financeiro?tab=conferir" },
+        { label: "aguardando nota fiscal", count: semNota.length, href: "/financeiro?tab=aguardando" },
+        { label: "prorrogações para decidir", count: prorrogacoes.length, href: "/financeiro?tab=prorrogacoes" },
       ]
-      acaoAgoraCandidatos = [...comNota, ...semNota]
+      acaoAgoraCandidatos = [...pedidos.filter((p: any) => p.status === "pendente_financeiro"), ...comNota, ...semNota]
     } else if (session?.tipoAcesso === "Gerente") {
       const pendentes = pedidos.filter((p) => p.status === "pendente_gerente")
       acaoAgoraItens = [{ label: "aguardando sua aprovação", count: pendentes.length, href: "/aprovacoes" }]

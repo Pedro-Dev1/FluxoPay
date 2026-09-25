@@ -158,7 +158,7 @@ export async function criarPedido(data: NovoPedido) {
       entityType: "pedido_pagamento",
       entityId: pedido.id,
       ctaTexto: "Aprovar pedido",
-      ctaUrl: "/aprovacoes",
+      ctaUrl: etapaAprovacao === "gerente" ? "/aprovacoes" : "/financeiro?tab=aprovacao",
       destinatarios: aprovadores,
       enviarEmail: true,
       enviarEmailFn: async ({ destinatario, nome }) => {
@@ -240,7 +240,7 @@ export async function acaoGerente(data: AcaoPedido) {
         entityType: "pedido_pagamento",
         entityId: data.pedido_id,
         ctaTexto: "Aprovar pedido",
-        ctaUrl: "/aprovacoes",
+        ctaUrl: "/financeiro?tab=aprovacao",
         destinatarios: aprovadores,
         enviarEmail: true,
         enviarEmailFn: async ({ destinatario, nome }) => {
@@ -979,6 +979,14 @@ export async function listarPedidosParaFinanceiro(filtros?: {
   return pedidosFiltrados
 }
 
+/** 00:00 do dia 1 do mês corrente no horário de Brasília (UTC−3), em ISO. */
+function inicioDoMesEmBrasilia(): string {
+  const partes = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit" })
+    .formatToParts(new Date())
+    .reduce<Record<string, string>>((acc, p) => ({ ...acc, [p.type]: p.value }), {})
+  return new Date(`${partes.year}-${partes.month}-01T00:00:00-03:00`).toISOString()
+}
+
 export async function listarPedidosComNotaPendente() {
   const ctx = await requireAuth()
   const supabase = await getSupabaseServerClient()
@@ -995,7 +1003,8 @@ export async function listarPedidosComNotaPendente() {
         nome_completo,
         salario,
         tipo_acesso,
-        equipe_id
+        equipe_id,
+        equipe:equipes!colaboradores_equipe_id_fkey ( id, nome )
       ),
       criado_por:colaboradores!criado_por_colaborador_id (
         nome_completo,
@@ -1005,7 +1014,10 @@ export async function listarPedidosComNotaPendente() {
       )
       .eq("tipo_pedido", "completo")
       .eq("status", "aprovado")
-      .or("nota_emitida.is.null,nota_emitida.eq.false"),
+      .or("nota_emitida.is.null,nota_emitida.eq.false")
+      // Acompanhamento é do mês corrente: o que foi aprovado em meses
+      // anteriores sai daqui (continua no Painel financeiro e no histórico).
+      .gte("data_aprovacao_financeiro", inicioDoMesEmBrasilia()),
     ctx,
   )
 

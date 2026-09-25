@@ -69,7 +69,8 @@ const OPERACIONAL: GrupoNav[] = [
     itens: [
       { href: "/pedidos", label: "Criar pedido", icon: IconeCriarPedido, roles: ["Adm", "Gerente", "Supervisor"] },
       { href: "/historico", label: "Meus pedidos", icon: IconePedidos, roles: ["Gerente", "Supervisor"], contador: "correcoes" },
-      { href: "/aprovacoes", label: "Aprovações", icon: IconeAprovacoes, roles: ["Adm", "Gerente", "Financeiro"], contador: "aprovacoes" },
+      // O Financeiro aprova dentro de /financeiro (fluxo único com o controle de NF).
+      { href: "/aprovacoes", label: "Aprovações", icon: IconeAprovacoes, roles: ["Adm", "Gerente"], contador: "aprovacoes" },
       {
         href: "/acompanhamento",
         label: "Acompanhamento",
@@ -84,7 +85,7 @@ const OPERACIONAL: GrupoNav[] = [
   {
     titulo: "Financeiro",
     itens: [
-      { href: "/financeiro", label: "Painel financeiro", icon: IconeFinanceiro, roles: ["Adm", "Financeiro"], contador: "painelFinanceiro" },
+      { href: "/financeiro", label: "Aprovação e notas", icon: IconeFinanceiro, roles: ["Adm", "Financeiro"], contador: "painelFinanceiro" },
       // A página só abre para Adm e Financeiro (app/faturas/page.tsx); antes o
       // menu mostrava o item para todos e quem clicava voltava para o início.
       { href: "/faturas", label: "Faturas", icon: IconeFaturas, roles: ["Adm", "Financeiro"] },

@@ -1,110 +1,73 @@
-import { listarPedidosSemNota, listarPedidosComNota, listarSolicitacoesProrrogacao } from "@/app/actions/pedidos"
-import { getUsuarioLogado } from "@/lib/auth-utils"
-import { PedidosSemNotaList } from "@/components/pedidos-sem-nota-list"
-import { MarcarPagoList } from "@/components/marcar-pago-list"
-import { SolicitacoesProrrogacaoList } from "@/components/solicitacoes-prorrogacao-list"
 import { redirect } from "next/navigation"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  listarPedidosComNota,
+  listarPedidosPendentes,
+  listarPedidosSemNota,
+  listarSolicitacoesProrrogacao,
+} from "@/app/actions/pedidos"
+import { getUsuarioLogado } from "@/lib/auth-utils"
 import { PageHeader } from "@/components/ui/page-header"
+import { FinanceiroFluxo } from "@/components/financeiro-fluxo"
 
-export default async function FinanceiroPage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    tab?: string
-    dataInicio?: string
-    dataFim?: string
-    colaboradorNome?: string
-    equipeId?: string
-  }>
-}) {
+type Etapa = "aprovacao" | "aguardando" | "conferir" | "prorrogacoes"
+
+// Links antigos (?tab=pagar, sem-nota) continuam funcionando.
+const ALIAS: Record<string, Etapa> = {
+  aprovacao: "aprovacao",
+  aguardando: "aguardando",
+  "sem-nota": "aguardando",
+  conferir: "conferir",
+  pagar: "conferir",
+  prorrogacoes: "prorrogacoes",
+}
+
+export default async function FinanceiroPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   const usuario = await getUsuarioLogado()
-
-  if (!usuario) {
-    redirect("/login")
-  }
-
-  if (!["Financeiro", "Adm"].includes(usuario.tipo_acesso)) {
-    redirect("/")
-  }
+  if (!usuario) redirect("/login")
+  if (!["Financeiro", "Adm"].includes(usuario.tipo_acesso)) redirect("/")
 
   const params = await searchParams
 
-  const filtros = {
-    dataInicio: params.dataInicio,
-    dataFim: params.dataFim,
-    colaboradorNome: params.colaboradorNome,
-    equipeId: params.equipeId,
-  }
+  const [pendentes, semNota, comNota, prorrogacoes] = await Promise.allSettled([
+    listarPedidosPendentes(),
+    listarPedidosSemNota(),
+    listarPedidosComNota(),
+    listarSolicitacoesProrrogacao(),
+  ])
+  const valor = <T,>(r: PromiseSettledResult<T>, padrao: T) => (r.status === "fulfilled" ? r.value : padrao)
 
-  let pedidosSemNota: any[] = []
-  let pedidosComNota: any[] = []
-  let solicitacoes: any[] = []
+  // Na aprovação do financeiro entram só os pedidos já aprovados pelo gerente
+  // (para o Adm, a lista geral também traz os que aguardam gerente).
+  const aprovacao = (valor(pendentes, []) || []).filter((p: any) => p.status === "pendente_financeiro")
+  const listaComNota = valor(comNota, [] as any[])
+  const listaSemNota = valor(semNota, [] as any[])
+  const listaProrrogacoes = valor(prorrogacoes, [] as any[])
 
-  try {
-    const [semNota, comNota, prorro] = await Promise.allSettled([
-      listarPedidosSemNota(filtros),
-      listarPedidosComNota(filtros),
-      listarSolicitacoesProrrogacao(),
-    ])
-    pedidosSemNota = semNota.status === "fulfilled" ? semNota.value : []
-    pedidosComNota = comNota.status === "fulfilled" ? comNota.value : []
-    solicitacoes = prorro.status === "fulfilled" ? prorro.value : []
-  } catch (error) {
-    console.error("[v0] Erro ao carregar dados financeiro:", error)
-  }
-
-  const defaultTab = params.tab || "pagar"
+  // Sem aba pedida: abre onde há trabalho, na ordem do fluxo.
+  const etapaInicial: Etapa =
+    ALIAS[params.tab ?? ""] ??
+    (aprovacao.length > 0
+      ? "aprovacao"
+      : listaComNota.some((p: any) => p.status !== "pago")
+        ? "conferir"
+        : listaSemNota.length > 0
+          ? "aguardando"
+          : "aprovacao")
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 lg:px-8">
       <PageHeader
         eyebrow="Financeiro"
-        title="Painel financeiro"
-        description="Notas recebidas, pagamentos a marcar e pedidos de prorrogação de prazo."
+        title="Aprovação e notas fiscais"
+        description="Um fluxo só: aprovar o pedido, acompanhar a nota fiscal do prestador, conferir e marcar o pagamento."
       />
-
-      <Tabs defaultValue={defaultTab} className="w-full">
-        <TabsList className="h-auto w-full justify-start rounded-none bg-transparent p-0 border-b border-border gap-6">
-          <TabsTrigger
-            value="pagar"
-            className="rounded-none border-b-2 border-transparent px-0 pb-3 text-sm font-medium text-text-tertiary shadow-none data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
-          >
-            Notas recebidas
-            {pedidosComNota.length > 0 && (
-              <span className="ml-1.5 text-xs tabular-nums text-text-tertiary">{pedidosComNota.length}</span>
-            )}
-          </TabsTrigger>
-          <TabsTrigger
-            value="sem-nota"
-            className="rounded-none border-b-2 border-transparent px-0 pb-3 text-sm font-medium text-text-tertiary shadow-none data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
-          >
-            Sem nota
-            {pedidosSemNota.length > 0 && (
-              <span className="ml-1.5 text-xs tabular-nums text-text-tertiary">{pedidosSemNota.length}</span>
-            )}
-          </TabsTrigger>
-          <TabsTrigger
-            value="prorrogacoes"
-            className="rounded-none border-b-2 border-transparent px-0 pb-3 text-sm font-medium text-text-tertiary shadow-none data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
-          >
-            Prorrogações
-            {solicitacoes.length > 0 && (
-              <span className="ml-1.5 text-xs tabular-nums text-text-tertiary">{solicitacoes.length}</span>
-            )}
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="pagar" className="mt-5">
-          <MarcarPagoList pedidos={pedidosComNota} />
-        </TabsContent>
-        <TabsContent value="sem-nota" className="mt-5">
-          <PedidosSemNotaList pedidos={pedidosSemNota} />
-        </TabsContent>
-        <TabsContent value="prorrogacoes" className="mt-5">
-          <SolicitacoesProrrogacaoList solicitacoes={solicitacoes} />
-        </TabsContent>
-      </Tabs>
+      <FinanceiroFluxo
+        aprovacao={aprovacao}
+        semNota={listaSemNota}
+        comNota={listaComNota}
+        prorrogacoes={listaProrrogacoes}
+        etapaInicial={etapaInicial}
+      />
     </div>
   )
 }

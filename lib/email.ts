@@ -29,7 +29,7 @@ export function configuracaoEmail() {
  * retorno fazia envio recusado ser registrado como "enviado"). Quem chama
  * decide: registrar a falha ou seguir o fluxo. Devolve o id no Resend.
  */
-async function enviar(msg: { to: string; subject: string; html: string; text: string }): Promise<string> {
+async function enviar(msg: { to: string; subject: string; html: string; text: string; replyTo?: string }): Promise<string> {
   const resend = getResendClient()
   if (!resend) throw new Error("RESEND_API_KEY não configurada no ambiente")
   const { data, error } = await resend.emails.send({ from: FROM, ...msg })
@@ -240,5 +240,62 @@ export async function enviarEmailTeste(params: { destinatario: string; nome: str
     text: `Olá, ${params.nome}.
 
 Este é um teste disparado do painel Super Admin em ${agora}. Se ele chegou, o envio de e-mails do Fluxteme está funcionando.`,
+  })
+}
+
+export const EMAIL_SUPORTE = process.env.SUPORTE_EMAIL || "contato@fluxteme.com.br"
+
+/** Chamado aberto pelo botão de ajuda. Responder ao e-mail responde direto a quem abriu. */
+export async function enviarEmailSuporte(params: {
+  protocolo: string
+  categoria: string
+  assunto: string
+  descricao: string
+  nome: string
+  email: string
+  cargo: string
+  carteira: string
+  pagina: string
+  navegador: string
+  quando: string
+}) {
+  const linha = (rotulo: string, valor: string, mono = false) => `
+      <tr>
+        <td style="padding:6px 12px 6px 0; font-size:12px; color:#5A6B7B; white-space:nowrap; vertical-align:top;">${rotulo}</td>
+        <td style="padding:6px 0; font-size:13px; color:#011832;${mono ? " font-family:Consolas,'Courier New',monospace;" : ""}">${escapeHtml(valor)}</td>
+      </tr>`
+  const bodyHtml = `
+    <p style="margin:0 0 4px 0; font-size:12px; color:#5A6B7B;">${escapeHtml(params.categoria)}</p>
+    <p style="margin:0 0 16px 0; font-size:16px; font-weight:600; color:#011832;">${escapeHtml(params.assunto)}</p>
+    <div style="margin:0 0 20px 0; padding:12px 14px; background-color:#F6F8F9; border-left:2px solid #00668A;">${paragrafosHtml(params.descricao)}</div>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="border-top:1px solid #DFE3E6; padding-top:8px; width:100%;">
+      ${linha("Protocolo", params.protocolo, true)}
+      ${linha("Quem", `${params.nome} · ${params.cargo}`)}
+      ${linha("E-mail", params.email)}
+      ${linha("Carteira", params.carteira)}
+      ${linha("Página", params.pagina, true)}
+      ${linha("Quando", params.quando, true)}
+      ${linha("Navegador", params.navegador, true)}
+    </table>
+  `
+  return enviar({
+    to: EMAIL_SUPORTE,
+    replyTo: params.email,
+    subject: `[${params.protocolo}] ${params.categoria}: ${params.assunto}`,
+    html: emailShell({ preheader: `${params.nome} abriu um chamado: ${params.assunto}`, heading: "Novo chamado de suporte", bodyHtml }),
+    text: [
+      `Protocolo: ${params.protocolo}`,
+      `Categoria: ${params.categoria}`,
+      `Assunto: ${params.assunto}`,
+      "",
+      params.descricao,
+      "",
+      `Quem: ${params.nome} · ${params.cargo}`,
+      `E-mail: ${params.email}`,
+      `Carteira: ${params.carteira}`,
+      `Página: ${params.pagina}`,
+      `Quando: ${params.quando}`,
+      `Navegador: ${params.navegador}`,
+    ].join("\n"),
   })
 }

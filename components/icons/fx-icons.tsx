@@ -237,6 +237,14 @@ export const IconeExpandir: FxIcon = ({ className }) => (
   </Base>
 )
 
+/** Suporte: balão de conversa com o canto do F. */
+export const IconeSuporte: FxIcon = ({ className }) => (
+  <Base className={className}>
+    <path d="M3.75 17.5V7.25a3.5 3.5 0 0 1 3.5-3.5h13v13.75H9.5l-4.25 3.25v-3.25z" />
+    <path d="M10 9.25a2.25 2.25 0 1 1 3.4 1.95c-.75.45-1.15.95-1.15 1.8M12.25 14.5v.01" />
+  </Base>
+)
+
 // Cabeçalho
 export const IconeVisivel: FxIcon = ({ className }) => (
   <Base className={className}>

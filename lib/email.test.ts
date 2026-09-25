@@ -46,4 +46,29 @@ describe("envio de e-mail", () => {
     expect(enviado.html).toContain("Carlos")
     expect(enviado.text).toContain("Carlos")
   })
+
+  it("chamado de suporte vai para o suporte, com resposta direta a quem abriu", async () => {
+    process.env.RESEND_API_KEY = "re_teste"
+    send.mockResolvedValue({ data: { id: "msg_sup" }, error: null })
+    const { enviarEmailSuporte } = await import("./email")
+    await enviarEmailSuporte({
+      protocolo: "SUP-20260925-A1B2",
+      categoria: "Nota fiscal",
+      assunto: "Não consigo anexar a nota",
+      descricao: "Aparece erro ao enviar o XML.",
+      nome: "Carlos Mendes",
+      email: "carlos@empresa.com.br",
+      cargo: "Supervisor",
+      carteira: "Connect Vending",
+      pagina: "/meus-pagamentos",
+      navegador: "Chrome",
+      quando: "25/09/2026 14:00:00",
+    })
+    const enviado = send.mock.calls[0][0]
+    expect(enviado.to).toBe("contato@fluxteme.com.br")
+    expect(enviado.replyTo).toBe("carlos@empresa.com.br")
+    expect(enviado.subject).toBe("[SUP-20260925-A1B2] Nota fiscal: Não consigo anexar a nota")
+    expect(enviado.html).toContain("/meus-pagamentos")
+    expect(enviado.text).toContain("Carteira: Connect Vending")
+  })
 })

@@ -27,7 +27,7 @@ export async function criarNotificacaoTransacional(params: {
   ctaUrl?: string
   destinatarios: Destinatario[]
   enviarEmail: boolean
-  enviarEmailFn?: (params: { destinatario: string; nome: string }) => Promise<void>
+  enviarEmailFn?: (params: { destinatario: string; nome: string }) => Promise<unknown>
 }): Promise<void> {
   try {
     const supabase = await createAdminClient()
@@ -97,8 +97,15 @@ export async function criarNotificacaoTransacional(params: {
       }
 
       try {
-        await params.enviarEmailFn({ destinatario: destinatario.email, nome: destinatario.nome })
-        await supabase.from("email_envios").update({ status: "enviado", enviado_em: new Date().toISOString() }).eq("id", envio.id)
+        const idProvedor = await params.enviarEmailFn({ destinatario: destinatario.email, nome: destinatario.nome })
+        await supabase
+          .from("email_envios")
+          .update({
+            status: "enviado",
+            enviado_em: new Date().toISOString(),
+            provider_message_id: typeof idProvedor === "string" && idProvedor ? idProvedor : null,
+          })
+          .eq("id", envio.id)
       } catch (erroEnvio) {
         console.error("[v0] Erro ao enviar e-mail de notificação:", erroEnvio)
         await supabase

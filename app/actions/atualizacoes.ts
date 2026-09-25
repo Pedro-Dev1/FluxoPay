@@ -437,7 +437,7 @@ export async function enviarEmailDaAtualizacao(id: string) {
     }
 
     try {
-      await enviarEmailAtualizacaoResend({
+      const idProvedor = await enviarEmailAtualizacaoResend({
         destinatario: destinatario.email,
         nome: destinatario.nome_completo,
         titulo: atualizacao.titulo,
@@ -448,7 +448,7 @@ export async function enviarEmailDaAtualizacao(id: string) {
       })
       await supabase
         .from("email_envios")
-        .update({ status: "enviado", enviado_em: new Date().toISOString() })
+        .update({ status: "enviado", enviado_em: new Date().toISOString(), provider_message_id: idProvedor || null })
         .eq("id", envio.id)
       enviados++
     } catch (erro) {

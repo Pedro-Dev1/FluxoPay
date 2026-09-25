@@ -18,6 +18,8 @@ const ACAO_LABELS: Record<string, string> = {
   fatura_plataforma_paga: "Fatura paga",
   fatura_plataforma_falhou: "Falha ao emitir fatura",
   fatura_plataforma_cancelada: "Fatura cancelada",
+  colaborador_desativado: "Usuário desativado",
+  colaborador_reativado: "Usuário reativado",
   termo_comercial_criado: "Termo comercial criado",
   termo_comercial_editado: "Rascunho de termo editado",
   termo_comercial_publicado: "Termo comercial publicado",

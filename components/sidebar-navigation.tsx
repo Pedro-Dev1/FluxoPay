@@ -140,11 +140,19 @@ function Painel({
   return (
     <>
       <div className={cn("flex h-14 shrink-0 items-center border-b border-sidebar-border", recolhida ? "justify-center" : "px-5")}>
-        <Link href="/" aria-label="Fluxteme — início" className="rounded-control focus-visible:outline-offset-4">
+        <Link
+          href="/"
+          aria-label="Fluxteme · Módulo FluxoPay — início"
+          title={recolhida ? "Módulo FluxoPay" : undefined}
+          className="rounded-control focus-visible:outline-offset-4"
+        >
           {recolhida ? (
             <BrandLogo forma="icone" fundo="escuro" className="h-8 w-8" />
           ) : (
-            <BrandLogo forma="assinatura" fundo="escuro" className="h-[22px]" />
+            <span className="flex flex-col gap-1.5">
+              <BrandLogo forma="assinatura" fundo="escuro" className="h-[18px]" />
+              <span className="type-eyebrow text-[9.5px] leading-none tracking-[0.2em] text-sidebar-active">Módulo FluxoPay</span>
+            </span>
           )}
         </Link>
       </div>

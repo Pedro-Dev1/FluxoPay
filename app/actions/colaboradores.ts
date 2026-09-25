@@ -5,6 +5,7 @@ import type { NovoColaborador } from "@/types/colaborador"
 import { revalidatePath } from "next/cache"
 import { requireAuth, requireRole, scopeToTenant } from "@/lib/auth-utils"
 import { idsVisiveis } from "@/lib/hierarquia"
+import { registrarAuditoria } from "@/lib/auditoria"
 import bcrypt from "bcryptjs"
 
 export async function criarColaborador(data: NovoColaborador) {
@@ -232,7 +233,7 @@ export async function alterarStatusAtivoColaborador(id: string, ativo: boolean) 
   }
 
   const { data, error } = await scopeToTenant(supabase.from("colaboradores").update({ ativo }).eq("id", id), ctx)
-    .select("id")
+    .select("id, nome_completo, email")
     .maybeSingle()
 
   if (error) {
@@ -244,7 +245,71 @@ export async function alterarStatusAtivoColaborador(id: string, ativo: boolean) 
     throw new Error("Colaborador não encontrado")
   }
 
+  // Quem ativou/desativou quem e quando fica na trilha de auditoria.
+  await registrarAuditoria({
+    colaboradorId: ctx.colaboradorId,
+    tenantId: ctx.tenantId,
+    acao: ativo ? "colaborador_reativado" : "colaborador_desativado",
+    tabela: "colaboradores",
+    registroId: id,
+    detalhes: { nome: data.nome_completo, email: data.email },
+  })
+
   revalidatePath("/cadastros/colaboradores")
+  revalidatePath("/cadastros/usuarios")
+}
+
+export type UsuarioSituacao = {
+  id: string
+  nome_completo: string
+  email: string
+  tipo_acesso: string
+  ativo: boolean
+  created_at: string
+  equipe: { nome: string } | null
+  ultimo_pedido: string | null
+}
+
+/** Usuários da carteira com situação (ativo/inativo) e data do último pedido. */
+export async function listarUsuariosComSituacao(): Promise<UsuarioSituacao[]> {
+  const ctx = await requireRole(["Adm", "Financeiro"])
+  const supabase = await getSupabaseServerClient()
+
+  const [{ data: usuarios, error }, { data: pedidos }] = await Promise.all([
+    scopeToTenant(
+      supabase
+        .from("colaboradores")
+        .select("id, nome_completo, email, tipo_acesso, ativo, created_at, equipe:equipes!equipe_id(nome)")
+        .eq("is_super_admin", false),
+      ctx,
+    ).order("nome_completo", { ascending: true }),
+    scopeToTenant(
+      supabase.from("pedidos_pagamento").select("colaborador_id, created_at").order("created_at", { ascending: false }),
+      ctx,
+    ),
+  ])
+
+  if (error) {
+    console.error("[v0] Erro ao listar usuários com situação:", error)
+    throw new Error("Não foi possível carregar os usuários da carteira")
+  }
+
+  // Primeiro registro de cada colaborador na lista ordenada = pedido mais recente
+  const ultimo = new Map<string, string>()
+  for (const p of pedidos || []) {
+    if (!ultimo.has(p.colaborador_id)) ultimo.set(p.colaborador_id, p.created_at)
+  }
+
+  return (usuarios || []).map((u: any) => ({
+    id: u.id,
+    nome_completo: u.nome_completo,
+    email: u.email,
+    tipo_acesso: u.tipo_acesso,
+    ativo: u.ativo !== false,
+    created_at: u.created_at,
+    equipe: Array.isArray(u.equipe) ? (u.equipe[0] ?? null) : (u.equipe ?? null),
+    ultimo_pedido: ultimo.get(u.id) ?? null,
+  }))
 }
 
 export async function atualizarColaborador(id: string, data: Partial<NovoColaborador>) {

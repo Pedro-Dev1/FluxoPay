@@ -208,7 +208,7 @@ filtro ou contorno, trocar a cor da barra, recriar o wordmark em outra fonte. Á
 - Uma fonte de verdade: `lib/navegacao.ts` (sidebar, breadcrumb e abas do painel admin).
 - O menu só mostra o que a pessoa pode abrir; cada página continua validando o acesso no servidor.
 - Módulos: o Manual (seção 11) mantém a nomenclatura de módulos **pendente**. O produto descreve por
-  função ("Aprovações", "Fiscal") e não usa nomes de módulo (Ledger, Lex, Flux…) até a decisão formal.
+  função ("Aprovações", "Painel financeiro") e não usa nomes de módulo (Ledger, Lex, Flux…) até a decisão formal.
 
 ## 16. Buttons
 

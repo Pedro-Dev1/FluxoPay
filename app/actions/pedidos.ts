@@ -162,7 +162,7 @@ export async function criarPedido(data: NovoPedido) {
       destinatarios: aprovadores,
       enviarEmail: true,
       enviarEmailFn: async ({ destinatario, nome }) => {
-        await enviarEmailPedidoAguardandoAprovacao({
+        return enviarEmailPedidoAguardandoAprovacao({
           destinatario,
           nomeAprovador: nome,
           nomeColaborador: colaboradorAlvo.nome_completo,
@@ -244,7 +244,7 @@ export async function acaoGerente(data: AcaoPedido) {
         destinatarios: aprovadores,
         enviarEmail: true,
         enviarEmailFn: async ({ destinatario, nome }) => {
-          await enviarEmailPedidoAguardandoAprovacao({
+          return enviarEmailPedidoAguardandoAprovacao({
             destinatario,
             nomeAprovador: nome,
             nomeColaborador,
@@ -310,11 +310,16 @@ export async function acaoFinanceiro(data: AcaoPedido) {
       ? pedidoAtualizado.colaborador[0]
       : pedidoAtualizado?.colaborador
     if (colaboradorInfo?.email) {
-      await enviarEmailNotaFiscalPendente({
-        destinatario: colaboradorInfo.email,
-        nomeColaborador: colaboradorInfo.nome_completo,
-        prazoDias: 2,
-      })
+      // Falha no e-mail não desfaz a aprovação; fica registrada no log.
+      try {
+        await enviarEmailNotaFiscalPendente({
+          destinatario: colaboradorInfo.email,
+          nomeColaborador: colaboradorInfo.nome_completo,
+          prazoDias: 2,
+        })
+      } catch (erroEmail) {
+        console.error("[v0] Falha ao enviar e-mail de nota fiscal pendente:", erroEmail)
+      }
     }
 
     if (colaboradorInfo) {

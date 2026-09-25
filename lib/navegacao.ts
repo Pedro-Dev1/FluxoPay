@@ -6,11 +6,9 @@ import {
   IconeAvisos,
   IconeCadastros,
   IconeCarteiras,
-  IconeContratos,
   IconeCriarPedido,
   IconeFaturas,
   IconeFinanceiro,
-  IconeFiscal,
   IconeNotasEquipe,
   IconePagamentos,
   IconePainel,
@@ -90,8 +88,6 @@ const OPERACIONAL: GrupoNav[] = [
       // A página só abre para Adm e Financeiro (app/faturas/page.tsx); antes o
       // menu mostrava o item para todos e quem clicava voltava para o início.
       { href: "/faturas", label: "Faturas", icon: IconeFaturas, roles: ["Adm", "Financeiro"] },
-      { href: "/fiscal", label: "Fiscal", icon: IconeFiscal, roles: ["Adm", "Financeiro"] },
-      { href: "/contratos", label: "Contratos", icon: IconeContratos, roles: ["Adm", "Financeiro"] },
     ],
   },
   {
@@ -99,6 +95,7 @@ const OPERACIONAL: GrupoNav[] = [
     itens: [
       { href: "/cadastros", label: "Cadastros", icon: IconeCadastros, roles: ["Adm", "Financeiro"] },
       { href: "/gestao", label: "Gestão de pessoas", icon: IconePessoas, roles: ["Adm", "Financeiro"] },
+      { href: "/cadastros/usuarios", label: "Usuários", icon: IconeUsuarios, roles: ["Adm", "Financeiro"] },
     ],
   },
   {

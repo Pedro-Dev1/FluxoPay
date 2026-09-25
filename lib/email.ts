@@ -5,15 +5,37 @@ import { Resend } from "resend"
 // (ou qualquer rota que importe este arquivo) em qualquer ambiente sem a
 // variável configurada — inclusive antes da primeira configuração na Vercel.
 function getResendClient(): Resend | null {
-  if (!process.env.RESEND_API_KEY) {
-    console.error("[v0] RESEND_API_KEY não configurada — e-mail não enviado.")
-    return null
-  }
+  if (!process.env.RESEND_API_KEY) return null
   return new Resend(process.env.RESEND_API_KEY)
 }
 
 const FROM = process.env.RESEND_FROM_EMAIL || "Fluxteme <contato@fluxteme.com.br>"
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://fluxopay.connectvending.simpleqia.com"
+
+/** Estado da configuração de e-mail, para diagnóstico (sem expor a chave). */
+export function configuracaoEmail() {
+  return {
+    chaveConfigurada: !!process.env.RESEND_API_KEY,
+    remetente: FROM,
+    remetentePadrao: !process.env.RESEND_FROM_EMAIL,
+    urlApp: APP_URL,
+    urlAppPadrao: !process.env.NEXT_PUBLIC_APP_URL,
+  }
+}
+
+/**
+ * Único ponto de envio. Lança erro quando não há chave configurada ou quando
+ * o Resend recusa (o SDK devolve `error` em vez de lançar — ignorar esse
+ * retorno fazia envio recusado ser registrado como "enviado"). Quem chama
+ * decide: registrar a falha ou seguir o fluxo. Devolve o id no Resend.
+ */
+async function enviar(msg: { to: string; subject: string; html: string; text: string }): Promise<string> {
+  const resend = getResendClient()
+  if (!resend) throw new Error("RESEND_API_KEY não configurada no ambiente")
+  const { data, error } = await resend.emails.send({ from: FROM, ...msg })
+  if (error) throw new Error(`Resend recusou o envio: ${error.message}`)
+  return data?.id ?? ""
+}
 
 // Manual de Marca v2.0 · seção 09: e-mail transacional usa a assinatura
 // horizontal com 180 px de largura, sobre fundo claro. Seção 06: onde Jost e
@@ -94,27 +116,19 @@ export async function enviarEmailNotaFiscalPendente(params: {
     <p style="margin:0 0 12px 0;">Seu pedido de pagamento foi aprovado pelo financeiro. Para que o pagamento seja processado, você precisa anexar a nota fiscal em até ${params.prazoDias} dias.</p>
     <p style="margin:0;">Acesse o sistema e anexe sua nota fiscal o quanto antes.</p>
   `
-  const resend = getResendClient()
-  if (!resend) return
-
   const textoAlternativo = `Olá, ${params.nomeColaborador}.\n\nSeu pedido de pagamento foi aprovado pelo financeiro. Para que o pagamento seja processado, você precisa anexar a nota fiscal em até ${params.prazoDias} dias.\n\nAcesse: ${APP_URL}`
 
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to: params.destinatario,
-      subject: "Pedido aprovado — anexe sua nota fiscal",
-      html: emailShell({
-        preheader: "Seu pedido foi aprovado. Anexe a nota fiscal para receber o pagamento.",
-        heading,
-        bodyHtml,
-        cta: { label: "Acessar e anexar nota", url: APP_URL },
-      }),
-      text: textoAlternativo,
-    })
-  } catch (error) {
-    console.error("[v0] Erro ao enviar e-mail de nota fiscal pendente:", error)
-  }
+  return enviar({
+    to: params.destinatario,
+    subject: "Pedido aprovado — anexe sua nota fiscal",
+    html: emailShell({
+      preheader: "Seu pedido foi aprovado. Anexe a nota fiscal para receber o pagamento.",
+      heading,
+      bodyHtml,
+      cta: { label: "Acessar e anexar nota", url: APP_URL },
+    }),
+    text: textoAlternativo,
+  })
 }
 
 export async function enviarEmailRedefinicaoSenha(params: { destinatario: string; nomeColaborador: string; token: string }) {
@@ -125,27 +139,19 @@ export async function enviarEmailRedefinicaoSenha(params: { destinatario: string
     <p style="margin:0 0 12px 0;">Recebemos uma solicitação para redefinir a senha da sua conta no Fluxteme. Clique no botão abaixo para criar uma nova senha.</p>
     <p style="margin:0;">Se você não solicitou essa alteração, pode ignorar este e-mail — sua senha atual continua válida. Este link expira em 1 hora.</p>
   `
-  const resend = getResendClient()
-  if (!resend) return
-
   const textoAlternativo = `Olá, ${params.nomeColaborador}.\n\nRecebemos uma solicitação para redefinir a senha da sua conta no Fluxteme. Acesse o link abaixo para criar uma nova senha (expira em 1 hora):\n${resetUrl}\n\nSe você não solicitou essa alteração, pode ignorar este e-mail — sua senha atual continua válida.`
 
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to: params.destinatario,
-      subject: "Redefinição de senha — Fluxteme",
-      html: emailShell({
-        preheader: "Clique para criar uma nova senha da sua conta Fluxteme.",
-        heading,
-        bodyHtml,
-        cta: { label: "Redefinir minha senha", url: resetUrl },
-      }),
-      text: textoAlternativo,
-    })
-  } catch (error) {
-    console.error("[v0] Erro ao enviar e-mail de redefinição de senha:", error)
-  }
+  return enviar({
+    to: params.destinatario,
+    subject: "Redefinição de senha — Fluxteme",
+    html: emailShell({
+      preheader: "Clique para criar uma nova senha da sua conta Fluxteme.",
+      heading,
+      bodyHtml,
+      cta: { label: "Redefinir minha senha", url: resetUrl },
+    }),
+    text: textoAlternativo,
+  })
 }
 
 function escapeHtml(texto: string): string {
@@ -174,28 +180,20 @@ export async function enviarEmailAtualizacao(params: {
     ${params.subtitulo ? `<p style="margin:0 0 12px 0; font-weight:600; color:#011832;">${escapeHtml(params.subtitulo)}</p>` : ""}
     ${paragrafosHtml(params.descricao)}
   `
-  const resend = getResendClient()
-  if (!resend) return
-
   const textoAlternativo = `Olá, ${params.nome}.\n\n${params.subtitulo ? params.subtitulo + "\n\n" : ""}${params.descricao}${params.cta ? `\n\n${params.cta.label}: ${params.cta.url}` : ""}`
 
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to: params.destinatario,
-      subject: params.titulo,
-      html: emailShell({
-        preheader: params.subtitulo || params.titulo,
-        heading: params.titulo,
-        bodyHtml,
-        imagemUrl: params.imagemUrl || undefined,
-        cta: params.cta,
-      }),
-      text: textoAlternativo,
-    })
-  } catch (error) {
-    console.error("[v0] Erro ao enviar e-mail de atualização:", error)
-  }
+  return enviar({
+    to: params.destinatario,
+    subject: params.titulo,
+    html: emailShell({
+      preheader: params.subtitulo || params.titulo,
+      heading: params.titulo,
+      bodyHtml,
+      imagemUrl: params.imagemUrl || undefined,
+      cta: params.cta,
+    }),
+    text: textoAlternativo,
+  })
 }
 
 export async function enviarEmailPedidoAguardandoAprovacao(params: {
@@ -209,25 +207,38 @@ export async function enviarEmailPedidoAguardandoAprovacao(params: {
     <p style="margin:0 0 12px 0;">${escapeHtml(params.nomeColaborador)} enviou um pedido de pagamento que está aguardando a sua aprovação.</p>
     <p style="margin:0;">Acesse o Fluxteme para revisar e aprovar.</p>
   `
-  const resend = getResendClient()
-  if (!resend) return
-
   const textoAlternativo = `Olá, ${params.nomeAprovador}.\n\n${params.nomeColaborador} enviou um pedido de pagamento que está aguardando a sua aprovação.\n\nAcesse: ${APP_URL}`
 
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to: params.destinatario,
-      subject: "Pedido aguardando aprovação — Fluxteme",
-      html: emailShell({
-        preheader: `${params.nomeColaborador} enviou um pedido aguardando sua aprovação.`,
-        heading,
-        bodyHtml,
-        cta: { label: "Aprovar pedido", url: APP_URL },
-      }),
-      text: textoAlternativo,
-    })
-  } catch (error) {
-    console.error("[v0] Erro ao enviar e-mail de pedido aguardando aprovação:", error)
-  }
+  return enviar({
+    to: params.destinatario,
+    subject: "Pedido aguardando aprovação — Fluxteme",
+    html: emailShell({
+      preheader: `${params.nomeColaborador} enviou um pedido aguardando sua aprovação.`,
+      heading,
+      bodyHtml,
+      cta: { label: "Aprovar pedido", url: APP_URL },
+    }),
+    text: textoAlternativo,
+  })
+}
+
+/** E-mail de teste do diagnóstico do painel Super Admin. */
+export async function enviarEmailTeste(params: { destinatario: string; nome: string }) {
+  const agora = new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "medium" }).format(new Date())
+  return enviar({
+    to: params.destinatario,
+    subject: "Teste de envio — Fluxteme",
+    html: emailShell({
+      preheader: "Teste de envio de e-mail do Fluxteme.",
+      heading: "Teste de envio de e-mail",
+      bodyHtml: `
+    <p style="margin:0 0 12px 0;">Olá, ${escapeHtml(params.nome)}.</p>
+    <p style="margin:0;">Este é um teste disparado do painel Super Admin em ${agora}. Se ele chegou, o envio de e-mails do Fluxteme está funcionando.</p>
+  `,
+      cta: { label: "Abrir o Fluxteme", url: APP_URL },
+    }),
+    text: `Olá, ${params.nome}.
+
+Este é um teste disparado do painel Super Admin em ${agora}. Se ele chegou, o envio de e-mails do Fluxteme está funcionando.`,
+  })
 }

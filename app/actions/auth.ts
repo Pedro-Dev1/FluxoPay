@@ -298,11 +298,17 @@ export async function solicitarRedefinicaoSenha(email: string) {
     return { success: true, message: MENSAGEM_GENERICA }
   }
 
-  await enviarEmailRedefinicaoSenha({
-    destinatario: colaborador.email,
-    nomeColaborador: colaborador.nome_completo,
-    token,
-  })
+  // A resposta continua genérica (não revela se o e-mail existe); a falha de
+  // envio fica no log para diagnóstico.
+  try {
+    await enviarEmailRedefinicaoSenha({
+      destinatario: colaborador.email,
+      nomeColaborador: colaborador.nome_completo,
+      token,
+    })
+  } catch (erroEmail) {
+    console.error("[v0] Falha ao enviar e-mail de redefinição de senha:", erroEmail)
+  }
 
   return { success: true, message: MENSAGEM_GENERICA }
 }
